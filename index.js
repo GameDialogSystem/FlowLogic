@@ -2,5 +2,9 @@
 'use strict';
 
 module.exports = {
-  name: 'flow-logic'
+  name: 'flow-logic',
+
+  isDevelopingAddon() {
+    return true;
+  }
 };
