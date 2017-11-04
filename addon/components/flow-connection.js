@@ -1,6 +1,11 @@
 import Ember from 'ember';
 import layout from '../templates/components/flow-connection';
 
+/**
+* A component that displays the connection between two elements with a curve.
+* The component is rendered as an SVG path so make sure to place it in a SVG
+* container. Otherwise it will not be displayed.
+*/
 export default Ember.Component.extend({
   layout,
 
@@ -12,9 +17,10 @@ export default Ember.Component.extend({
   endX: -1,
   endY: -1,
 
+  /**
+   * Computes the form of the path that will be displayed to the user
+   */
   d: Ember.computed('startX', 'startY', 'endX', 'endY', function(){
-
-
     let index = this.get('index')-1;
     let answersCount = this.get('start.answers.length');
 
@@ -25,10 +31,10 @@ export default Ember.Component.extend({
     let endY = this.get('endY');
 
     let cX = startX;
-    let cY = endY; //startY + (endY - startY) / 2;
+    let cY = endY;
 
     let dX = endX;
-    let dY = startY; //endY - (endY - startY) / 2;
+    let dY = startY;
 
     if(isNaN(startX) || isNaN(startY) || isNaN(endX) || isNaN(endY))
       return `M0,0 C0,0 0,0 0,0`;

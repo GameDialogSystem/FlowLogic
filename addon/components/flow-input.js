@@ -2,6 +2,9 @@ import Ember from 'ember';
 import layout from '../templates/components/flow-input';
 import ConnectorMixin from '../mixins/connector';
 
+/**
+* Connector that will be used to display an input pin on a block element.
+*/
 export default Ember.Component.extend(ConnectorMixin, {
   layout,
 
@@ -11,6 +14,13 @@ export default Ember.Component.extend(ConnectorMixin, {
 
   classNameBindings: ['connected'],
 
+  /**
+   * returns if the input connector is connected with an output connector
+   * or not.
+   *
+   * @returns {boolean} If connected with an output connector, this will
+   * return true, otherwise false will be returned
+   */
   connected: Ember.computed('model.output', function(){
     return (this.get('model.output').content != null);
   }),

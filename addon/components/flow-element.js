@@ -7,6 +7,10 @@ export default Ember.Component.extend(MovableMixin, {
 
   tagName: 'flow-element',
 
+  /**
+   * set tabindex to 1 in order to receive keyevents on this component
+   * to allow deletion by pressing the DELETE button
+   */
   attributeBindings: ['tabindex'],
 
   tabindex: '1',
@@ -23,15 +27,18 @@ export default Ember.Component.extend(MovableMixin, {
 
   /**
    * Update the position in the model in case the element was dragged to a
-   * new position
+   * new position.
    */
   mouseMove: function(e){
     this._super(e);
 
     if(this.get('moveStart')){
+      let scrollOffsetX = this.get('scrollOffsetX');
+      let scrollOffsetY = this.get('scrollOffsetY');
+
       let model = this.get('model');
-      model.set('x', this.get('position').x);
-      model.set('y', this.get('position').y);
+      model.set('x', this.get('position').x - scrollOffsetX);
+      model.set('y', this.get('position').y - scrollOffsetY);
     };
   },
 
@@ -43,8 +50,8 @@ export default Ember.Component.extend(MovableMixin, {
     let scrollOffsetX = this.get('scrollOffsetX');
     let scrollOffsetY = this.get('scrollOffsetY');
 
-    Ember.$(this.element).css('left', `${this.get('model.x')+scrollOffsetX}px`);
-    Ember.$(this.element).css('top', `${this.get('model.y')+scrollOffsetY}px`);
+    Ember.$(this.element).css('left', `${this.get('model.x') + scrollOffsetX}px`);
+    Ember.$(this.element).css('top', `${this.get('model.y') + scrollOffsetY}px`);
   }),
 
   /**
@@ -55,6 +62,10 @@ export default Ember.Component.extend(MovableMixin, {
     return false;
   },
 
+  /**
+   * Respond to keypress events to allow the deletion of the element
+   * by pressing the DELETE button.
+   */
   keyPress: function(e){
     let deleteBlock = this.get('deleteBlock');
 

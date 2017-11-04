@@ -1,5 +1,12 @@
 import Ember from 'ember';
 
+/**
+* Implements functionality needed for the connectors of two elements.
+* This mixin might change in future to an own component so please be aware of
+* this.
+*
+* @mixin
+*/
 export default Ember.Mixin.create({
   didInsertElement(){
     let self = this;
@@ -21,7 +28,7 @@ export default Ember.Mixin.create({
 
   /**
    * Gets the size of the parent element and returns this as an object.
-   * The object has the form {width: x, height: x}. 
+   * The object has the form {width: x, height: x}.
    */
   getParentSize: function(){
     let element = Ember.$(this.element);

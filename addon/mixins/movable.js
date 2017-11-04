@@ -1,6 +1,12 @@
 import Ember from 'ember';
 import { computed } from '@ember/object';
 
+/**
+* Provides methods to make a component movable by using drag and drop.
+* Use this only for components
+*
+* @mixin
+*/
 export default Ember.Mixin.create({
   moveStart : false,
 
@@ -10,11 +16,28 @@ export default Ember.Mixin.create({
   mouseMoveListener: null,
   mouseUpListener : null,
 
+  /**
+   * Defines a grid size that will be used for calculation the position.
+   * Set this value in your component to 1 in order to disable the grid
+   */
   gridSize : 10,
 
   position: { x : 0, y : 0 },
 
+  /**
+   * converts an absolute position to a grid based position.
+   * Always use this function to read the component position
+   * to prevent bypassing the grid attribute.
+   *
+   * @param {number} coordinate - the coordinate value that will be converted
+   */
+  getScaledCoordinate(coordinate){
+    let gridSize = this.get('gridSize');
+    return (Math.floor(coordinate / gridSize) * gridSize);
+  },
+
   mouseDown: function(e){
+
     if(e.button == 0){
       this.set('moveStart', true);
 
@@ -33,15 +56,7 @@ export default Ember.Mixin.create({
 
       document.addEventListener('mousemove', this.get('mouseMoveListener'));
       document.addEventListener('mouseup', this.get('mouseUpListener'));
-    }else if(e.button == 2){
-      e.preventDefault();
-
     }
-  },
-
-  getScaledCoordinate(coordinate){
-    let gridSize = this.get('gridSize');
-    return (Math.floor(coordinate / gridSize) * gridSize);
   },
 
   mouseMove: function(e){

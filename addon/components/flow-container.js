@@ -4,6 +4,10 @@ import RSVP from 'rsvp';
 import layout from '../templates/components/flow-container';
 import { observer } from '@ember/object';
 
+/**
+* Renders a container component where all flow blocks are displayed.
+* Also all connections are rendered within this container.
+*/
 export default Ember.Component.extend({
   layout,
 
@@ -55,6 +59,12 @@ export default Ember.Component.extend({
       }
     },
 
+    /**
+     * action will triggered if the user reroutes a connection to the container
+     * and not to a new connection point, a new block will be added to the
+     * container. Specify the method that modifies model and adds the new block
+     * in the route class or controller.
+     */
     cancelReroute: function(output, point){
       this.set('showReconnector', false);
 
@@ -75,6 +85,11 @@ export default Ember.Component.extend({
     }
   },
 
+  /**
+   * calculates the offset caused by scrolling and sets the value to the
+   * attributes scrollOffsetX and scrollOffsetY to make the values publicly
+   * available to other components
+   */
   mouseMove: function(e){
     if(this.get('scrollModeEnabled') === true){
       let x = e.clientX;
@@ -90,6 +105,10 @@ export default Ember.Component.extend({
     }
   },
 
+  /**
+   * disables the scroll mode and sets the current scroll offset to a fixed
+   * value.
+   */
   mouseUp: function(e){
     this.set('scrollModeEnabled', false);
 
