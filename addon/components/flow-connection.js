@@ -40,7 +40,7 @@ export default Ember.Component.extend({
 
   stroke: '#78909C',
 
-  'stroke-width': '5',
+  'stroke-width': '4',
 
   'stroke-linecap': 'round'
 });

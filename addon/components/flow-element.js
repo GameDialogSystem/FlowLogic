@@ -7,11 +7,11 @@ export default Ember.Component.extend(MovableMixin, {
 
   tagName: 'flow-element',
 
-  actions: {
-    reroute: function(start, end){
-      this.get('reroute')(start, end);
-    },
+  attributeBindings: ['tabindex'],
 
+  tabindex: '1',
+
+  actions: {
     acceptRerouting: function(){
 
     },
@@ -21,29 +21,59 @@ export default Ember.Component.extend(MovableMixin, {
     },
   },
 
+  /**
+   * Update the position in the model in case the element was dragged to a
+   * new position
+   */
   mouseMove: function(e){
     this._super(e);
 
-    let model = this.get('model');
-    model.set('x', this.get('position').x);
-    model.set('y', this.get('position').y);
+    if(this.get('moveStart')){
+      let model = this.get('model');
+      model.set('x', this.get('position').x);
+      model.set('y', this.get('position').y);
+    };
   },
 
-  positionChanged: Ember.observer('model.x', 'model.y', function(){
-    Ember.$(this.element).css('left', this.get('model.x') + 'px');
-    Ember.$(this.element).css('top', this.get('model.y') + 'px');
+  /**
+   * Update the position of the DOM element each time the model position
+   * was changed.
+   */
+  positionChanged: Ember.observer('model.x', 'model.y', 'scrollOffsetX', 'scrollOffsetY', function(){
+    let scrollOffsetX = this.get('scrollOffsetX');
+    let scrollOffsetY = this.get('scrollOffsetY');
+
+    Ember.$(this.element).css('left', `${this.get('model.x')+scrollOffsetX}px`);
+    Ember.$(this.element).css('top', `${this.get('model.y')+scrollOffsetY}px`);
   }),
 
+  /**
+   * Overwrite the custom behaviour in order to hide the context menu in case
+   * the right mouse button was pressed.
+   */
   contextMenu: function(){
     return false;
   },
 
+  keyPress: function(e){
+    let deleteBlock = this.get('deleteBlock');
+
+    if(e.keyCode === 127 && (deleteBlock !== null || deleteBlock !== undefined)){
+      deleteBlock(this.get('model'));
+    }
+  },
+
+  /**
+   * Change the position of the DOM element to the saved position from the model
+   * each time the element is inserted for the first time to the DOM.
+   */
   didInsertElement: function(){
     let x = this.get('model').get('x');
     let y = this.get('model').get('y');
 
-    Ember.$(this.element).css('left', x + 'px');
-    Ember.$(this.element).css('top', y + 'px');
+    let element = Ember.$(this.element);
+    element.css('left', x + 'px');
+    element.css('top', y + 'px');
 
     this.set('position', { 'x': x, 'y': y});
   }

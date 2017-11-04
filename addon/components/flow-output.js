@@ -16,21 +16,25 @@ export default Ember.Component.extend(ConnectorMixin, {
   }),
 
 
+
   mouseMove: function(e){
     let point = this.getCenteredPosition();
-    let x = e.clientX;
-    let y = e.clientY;
 
     if(this.get('moveStart')){
-      this.get('reroute')(point, { 'x': x, 'y': y });
+      this.get('reroute')(point, this.getCorrectMousePosition(e));
     }
   },
 
+  contextMenu() {
+    return false;
+  },
+
   mouseUp : function(e){
+    e.preventDefault();
     if(this.get('moveStart')){
       this._super(e);
 
-      this.get('cancelReroute')(this.get('model'), {'x': e.clientX, 'y': e.clientY});
+      this.get('connectToNewBlock')(this.get('model'), this.getCorrectMousePosition(e));
     }
-  }
+  },
 });
