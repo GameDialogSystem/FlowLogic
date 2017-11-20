@@ -3,5 +3,7 @@ import DS from 'ember-data';
 import Point from './point';
 
 export default Point.extend({
-  input: DS.belongsTo('input')
+  input: DS.belongsTo('input'),
+
+  belongsTo: DS.belongsTo('block'),
 });

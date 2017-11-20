@@ -165,7 +165,7 @@ export default Ember.Mixin.create({
    * that were added during the mouseDown action. Also the 'moveStart' will be
    * set to false to cancel the reconnection of the connector
    */
-  mouseUp: function(){
+  mouseUp: function(e){
     if(e.button == 0){
       e.stopPropagation();
       e.preventDefault();

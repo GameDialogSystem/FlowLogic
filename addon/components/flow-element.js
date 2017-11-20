@@ -58,9 +58,9 @@ export default Ember.Component.extend(MovableMixin, {
    * Overwrite the custom behaviour in order to hide the context menu in case
    * the right mouse button was pressed.
    */
-  contextMenu: function(){
-    return false;
-  },
+  //contextMenu: function(){
+  //  return false;
+  //},
 
   /**
    * Respond to keypress events to allow the deletion of the element

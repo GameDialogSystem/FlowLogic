@@ -1,6 +1,7 @@
 
 import Ember from 'ember';
 import RSVP from 'rsvp';
+import ScrollingMixin from '../mixins/scrolling';
 import layout from '../templates/components/flow-container';
 import { observer } from '@ember/object';
 
@@ -8,7 +9,7 @@ import { observer } from '@ember/object';
 * Renders a container component where all flow blocks are displayed.
 * Also all connections are rendered within this container.
 */
-export default Ember.Component.extend({
+export default Ember.Component.extend(ScrollingMixin, {
   layout,
 
   tagName: 'flow-container',
@@ -114,5 +115,5 @@ export default Ember.Component.extend({
 
     this.set('currentScrollOffsetX', this.get('scrollOffsetX'));
     this.set('currentScrollOffsetY', this.get('scrollOffsetY'));
-  }
+  },
 });
