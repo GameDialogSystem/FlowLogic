@@ -3,7 +3,7 @@ import DS from 'ember-data';
 import Point from './point';
 
 export default Point.extend({
-  output: DS.belongsTo('output'),
+  connection: DS.belongsTo('connection'),
 
   belongsTo: DS.belongsTo('block'),
 });

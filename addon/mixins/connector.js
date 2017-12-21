@@ -115,7 +115,6 @@ export default Ember.Mixin.create({
    */
   updatePosition : function(){
     let point = this.getCenteredPosition();
-    let self = this;
     let model = this.get('model');
 
     // schedule the modification of the position until the DOM rendering

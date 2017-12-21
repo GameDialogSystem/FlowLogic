@@ -21,7 +21,7 @@ export default Ember.Component.extend(ConnectorMixin, {
    * @returns {boolean} If connected with an output connector, this will
    * return true, otherwise false will be returned
    */
-  connected: Ember.computed('model.output', function(){
-    return (this.get('model.output').content != null);
+  connected: Ember.computed('model.connection', function(){
+    return (this.get('model.connection').content != null);
   }),
 });

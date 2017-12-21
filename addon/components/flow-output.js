@@ -14,11 +14,11 @@ export default Ember.Component.extend(ConnectorMixin, {
 
   classNameBindings: ['connected'],
 
-  connected: Ember.computed('model.input', function(){
+  connected: Ember.computed('model.connection', function(){
     if(this.get('model') === undefined)
       return false;
       
-    return (this.get('model.input').content != null);
+    return (this.get('model.connection').content != null);
   }),
 
 
