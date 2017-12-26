@@ -1,9 +1,30 @@
 <svg width="1680px" height="1000px" viewBox="0 0 1680 1000" xmlns="http://www.w3.org/2000/svg" version="1.1">
-  {{#each blocks.outputs as |output|}}
-    {{flow-connection startX=output.x startY=output.y endX=output.input.x endY=output.input.y}}
+  {{#each blocks as |block|}}
+    {{#each block.outputs as |output|}}
+      {{flow-connection startX=output.x
+                        startY=output.y
+                        endX=output.connection.input.x
+                        endY=output.connection.input.y
+      }}
+    {{/each}}
   {{/each}}
 
   {{#if showReconnector}}
     {{flow-connection startX=start.x startY=start.y endX=end.x endY=end.y}}
   {{/if}}
 </svg>
+
+{{#multi-selection as |selection|}}
+  {{#each blocks as |block|}}
+    {{component logicBlockComponent
+      selection=selection
+      model=block
+      scrollOffsetX=scrollOffsetX
+      scrollOffsetY=scrollOffsetY
+      browserScrollOffset=scrollOffset
+      zoom=zoom
+      reroute=(action 'reroute')
+      deleteBlock=(action 'deleteBlock')
+      connectToNewBlock=(action 'connectToNewBlock')}}
+  {{/each}}
+{{/multi-selection}}

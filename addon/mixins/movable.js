@@ -36,7 +36,15 @@ export default Ember.Mixin.create({
     return (Math.floor(coordinate / gridSize) * gridSize);
   },
 
+  /**
+   * mouseDown - handle the mouse down event. To move an element
+   * the movable state is set during this event.
+   *
+   * @param  {type} e description
+   * @return {type}   description
+   */
   mouseDown: function(e){
+    e.preventDefault();
 
     if(e.button == 0){
       this.set('moveStart', true);
@@ -57,9 +65,21 @@ export default Ember.Mixin.create({
       document.addEventListener('mousemove', this.get('mouseMoveListener'));
       document.addEventListener('mouseup', this.get('mouseUpListener'));
     }
+
+    return false;
   },
 
+
+  /**
+   * mouseMove - moving an element is caused by moving the mouse while in
+   * state "moveStart".
+   *
+   * @param  {type} e description
+   * @return {type}   description
+   */
   mouseMove: function(e){
+    e.preventDefault();
+
     if(this.get('moveStart')){
       this.set('customLayouted', true);
 
@@ -69,13 +89,26 @@ export default Ember.Mixin.create({
 
       this.set('position', {x: x, y: y});
     }
+
+    return false;
   },
 
-  mouseUp: function(){
+
+  /**
+   * mouseUp - reset the "moveStart" flag after releasing the pressed mouse
+   * button to stop moving an element
+   *
+   * @return {type}  description
+   */
+  mouseUp: function(e){
+    e.preventDefault();
+
     if(this.get('moveStart')){
       this.set('moveStart', false);
       document.removeEventListener('mousemove', this.get('mouseMoveListener'));
       document.removeEventListener('mouseup', this.get('mouseUpListener'));
     }
+
+    return false;
   }
 });

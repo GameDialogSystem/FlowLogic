@@ -2,6 +2,7 @@
 import Ember from 'ember';
 import RSVP from 'rsvp';
 import ScrollingMixin from '../mixins/scrolling';
+import MultiSelectionComponent from './multi-selection';
 import layout from '../templates/components/flow-container';
 import { observer } from '@ember/object';
 
@@ -44,6 +45,7 @@ export default Ember.Component.extend(ScrollingMixin, {
 
       if(connectToNewBlock !== null){
         this.set('showReconnector', false);
+        console.log("flow-container.connectToNewBlock");
         connectToNewBlock(output, point);
       }
     },
@@ -72,48 +74,28 @@ export default Ember.Component.extend(ScrollingMixin, {
       this.get('onAddNewElement')(output, point);
     },
   },
-
-  /**
-   * Handle the mouse down action to enable scrolling with the middle
-   * mouse button
-   */
+/*
   mouseDown: function(e){
-    // pressed mouse button was the middle mouse button
-    if(e.button == 1){
-      this.set('scrollModeEnabled', true);
-      this.set('scrollStartPositionX', e.clientX);
-      this.set('scrollStartPositionY', e.clientY);
-    }
+    this._super(...arguments);
   },
-
+*/
   /**
    * calculates the offset caused by scrolling and sets the value to the
    * attributes scrollOffsetX and scrollOffsetY to make the values publicly
    * available to other components
    */
+/*
   mouseMove: function(e){
-    if(this.get('scrollModeEnabled') === true){
-      let x = e.clientX;
-      let y = e.clientY;
-
-      let scrollStartX = this.get('scrollStartPositionX');
-      let scrollStartY = this.get('scrollStartPositionY');
-
-      Ember.run.schedule('afterRender', this, function(){
-        this.set('scrollOffsetX', x-scrollStartX + this.get('currentScrollOffsetX'));
-        this.set('scrollOffsetY', y-scrollStartY + this.get('currentScrollOffsetY'));
-      });
-    }
+    this._super(...arguments);
   },
-
+*/
   /**
    * disables the scroll mode and sets the current scroll offset to a fixed
    * value.
    */
+/*
   mouseUp: function(e){
-    this.set('scrollModeEnabled', false);
-
-    this.set('currentScrollOffsetX', this.get('scrollOffsetX'));
-    this.set('currentScrollOffsetY', this.get('scrollOffsetY'));
+    this._super(...arguments);
   },
+*/
 });

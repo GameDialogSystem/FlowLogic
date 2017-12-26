@@ -11,9 +11,15 @@ export default Ember.Component.extend(MovableMixin, {
    * set tabindex to 1 in order to receive keyevents on this component
    * to allow deletion by pressing the DELETE button
    */
-  attributeBindings: ['tabindex'],
+  attributeBindings: ['tabindex', 'unselectable', 'onselectstart', 'onmousedown'],
 
   tabindex: '1',
+
+  unselectable: 'on',
+
+  onselectstart: 'return false;',
+
+  onmousedown: 'return false;',
 
   actions: {
     acceptRerouting: function(){
@@ -35,6 +41,8 @@ export default Ember.Component.extend(MovableMixin, {
     if(this.get('moveStart')){
       let scrollOffsetX = this.get('scrollOffsetX');
       let scrollOffsetY = this.get('scrollOffsetY');
+
+      console.log(this.get("browserScrollOffset"));
 
       let model = this.get('model');
       model.set('x', this.get('position').x - scrollOffsetX);
@@ -87,5 +95,22 @@ export default Ember.Component.extend(MovableMixin, {
     element.css('top', y + 'px');
 
     this.set('position', { 'x': x, 'y': y});
-  }
+  },
+
+
+  selected: Ember.observer("selection.x", "selection.y", "selection.width", "selection.height", function(){
+    const selection = this.get("selection");
+
+    const element = Ember.$(this.element);
+/*
+    const offset = element.offset();
+    const size = element.size();
+
+    if(offset.left >= selection.x && offset.left + size.width <= selection.x + selection.width){
+      console.log("selected");
+    }else{
+      console.log("not selected");
+    }
+    */
+  })
 });
