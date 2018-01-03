@@ -13,18 +13,22 @@
     {{flow-connection startX=start.x startY=start.y endX=end.x endY=end.y}}
   {{/if}}
 </svg>
-
 {{#multi-selection as |selection|}}
   {{#each blocks as |block|}}
     {{component logicBlockComponent
       selection=selection
       model=block
-      scrollOffsetX=scrollOffsetX
-      scrollOffsetY=scrollOffsetY
+      offsetX=offsetX
+      offsetY=offsetY
       browserScrollOffset=scrollOffset
       zoom=zoom
       reroute=(action 'reroute')
       deleteBlock=(action 'deleteBlock')
-      connectToNewBlock=(action 'connectToNewBlock')}}
+      connectToNewBlock=(action 'connectToNewBlock')
+
+      onElementSelect=(action 'elementSelected')
+      onElementUnselect=(action 'elementUnselected')
+      onElementMoved=(action 'elementMoved')
+    }}
   {{/each}}
 {{/multi-selection}}

@@ -5,6 +5,15 @@ import Ember from 'ember';
  * Mixin to allow scrolling within a container
  */
 export default Ember.Mixin.create({
+  scrollModeEnabled : false,
+  scrollStartPositionX : 0,
+  scrollStartPositionY : 0,
+
+  scrollOffsetX : 0,
+  scrollOffsetY : 0,
+
+  currentScrollOffsetX : 0,
+  currentScrollOffsetY : 0,
 
   /**
    * Handle the mouse down action to enable scrolling with the middle

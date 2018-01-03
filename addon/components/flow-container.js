@@ -2,6 +2,7 @@
 import Ember from 'ember';
 import RSVP from 'rsvp';
 import ScrollingMixin from '../mixins/scrolling';
+import MovableContainerMixin from '../mixins/movable-container';
 import MultiSelectionComponent from './multi-selection';
 import layout from '../templates/components/flow-container';
 import { observer } from '@ember/object';
@@ -10,20 +11,53 @@ import { observer } from '@ember/object';
 * Renders a container component where all flow blocks are displayed.
 * Also all connections are rendered within this container.
 */
-export default Ember.Component.extend(ScrollingMixin, {
+export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
   layout,
 
   tagName: 'flow-container',
 
-  scrollModeEnabled : false,
-  scrollStartPositionX : null,
-  scrollStartPositionY : null,
+  offsetX : Ember.computed("scrollOffsetX", "relocateOffsetX", function(){
+    const scrollOffsetX = this.get("scrollOffsetX");
+    const relocateOffsetX = this.get("relocateOffsetX");
 
-  scrollOffsetX : 0,
-  scrollOffsetY : 0,
+    if(scrollOffsetX === undefined && relocateOffsetX === undefined){
+      return 0;
+    }
 
-  currentScrollOffsetX : 0,
-  currentScrollOffsetY : 0,
+    if(scrollOffsetX === undefined && relocateOffsetX !== undefined){
+      return relocateOffsetX;
+    }
+
+    if(scrollOffsetX !== undefined && relocateOffsetX === undefined){
+      return scrollOffsetX;
+    }
+
+    if(scrollOffsetX !== undefined && relocateOffsetX !== undefined){
+      return scrollOffsetX + relocateOffsetX;
+    }
+  }),
+
+
+  offsetY : Ember.computed("scrollOffsetY", "relocateOffsetY", function(){
+    const scrollOffsetY = this.get("scrollOffsetY");
+    const relocateOffsetY = this.get("relocateOffsetY");
+
+    if(scrollOffsetY === undefined && relocateOffsetY === undefined){
+      return 0;
+    }
+
+    if(scrollOffsetY === undefined && relocateOffsetY !== undefined){
+      return relocateOffsetY;
+    }
+
+    if(scrollOffsetY !== undefined && relocateOffsetY === undefined){
+      return scrollOffsetY;
+    }
+
+    if(scrollOffsetY !== undefined && relocateOffsetY !== undefined){
+      return scrollOffsetY + relocateOffsetY;
+    }
+  }),
 
   actions: {
     reroute: function(start, end){
@@ -72,7 +106,7 @@ export default Ember.Component.extend(ScrollingMixin, {
       this.set('showReconnector', false);
 
       this.get('onAddNewElement')(output, point);
-    },
+    }
   },
 /*
   mouseDown: function(e){

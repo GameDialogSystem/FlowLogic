@@ -10,8 +10,8 @@ import { computed } from '@ember/object';
 export default Ember.Mixin.create({
   moveStart : false,
 
-  _mouseOffsetX: 0,
-  _mouseOffsetY: 0,
+  mouseOffsetX: 0,
+  mouseOffsetY: 0,
 
   mouseMoveListener: null,
   mouseUpListener : null,
@@ -22,7 +22,14 @@ export default Ember.Mixin.create({
    */
   gridSize : 10,
 
-  position: { x : 0, y : 0 },
+  positionX: 0,
+  positionY: 0,
+
+  p : Ember.observer("positionX", "positionY", function(){
+    $(this.element).css("left", this.get("positionX"));
+    $(this.element).css("top", this.get("positionY"));
+  }),
+
 
   /**
    * converts an absolute position to a grid based position.
@@ -46,14 +53,19 @@ export default Ember.Mixin.create({
   mouseDown: function(e){
     e.preventDefault();
 
+    this._super(e);
+
     if(e.button == 0){
       this.set('moveStart', true);
 
-      let offset = Ember.$(this.element).offset();
-      this.set('_mouseOffsetX', e.clientX-offset.left);
-      this.set('_mouseOffsetY', e.clientY-offset.top);
+      const offset = Ember.$(this.element).offset();
+      this.set('mouseOffsetX', e.clientX-offset.left);
+      this.set('mouseOffsetY', e.clientY-offset.top);
 
-      var self = this;
+      const position = Ember.$(this.element).position();
+      this.set("oldPosition", {"x": position.left, "y": position.top});
+
+      const self = this;
       this.set('mouseMoveListener', function(e){
         self.mouseMove(e);
       });
@@ -69,7 +81,6 @@ export default Ember.Mixin.create({
     return false;
   },
 
-
   /**
    * mouseMove - moving an element is caused by moving the mouse while in
    * state "moveStart".
@@ -77,20 +88,32 @@ export default Ember.Mixin.create({
    * @param  {type} e description
    * @return {type}   description
    */
+
+
   mouseMove: function(e){
     e.preventDefault();
 
     if(this.get('moveStart')){
       this.set('customLayouted', true);
 
-      let parentOffset = Ember.$(this.element).parent().offset();
-      let x = this.getScaledCoordinate(e.clientX - this.get('_mouseOffsetX') - parentOffset.left);
-      let y = this.getScaledCoordinate(e.clientY - this.get('_mouseOffsetY') - parentOffset.top);
+      const parentOffset = Ember.$(this.element).parent().offset();
+      const x = this.getScaledCoordinate(e.clientX - this.get('mouseOffsetX') - parentOffset.left);
+      const y = this.getScaledCoordinate(e.clientY - this.get('mouseOffsetY') - parentOffset.top);
 
-      this.set('position', {x: x, y: y});
+
+      const oldPosition = this.get("oldPosition");
+      const position = Ember.$(this.element).position();
+      const elementMovedEvent = this.get("onElementMoved");
+
+      if(typeof elementMovedEvent === "function"){
+        elementMovedEvent({
+          "x": x - position.left,
+          "y": y - position.top
+        });
+      }
+
+      return false;
     }
-
-    return false;
   },
 
 
@@ -103,12 +126,17 @@ export default Ember.Mixin.create({
   mouseUp: function(e){
     e.preventDefault();
 
+    this._super(e);
+
     if(this.get('moveStart')){
       this.set('moveStart', false);
+
       document.removeEventListener('mousemove', this.get('mouseMoveListener'));
       document.removeEventListener('mouseup', this.get('mouseUpListener'));
-    }
 
-    return false;
+      // prevent bubbling in case the user started moving the component
+      // and therefore the mouse up action is handled only by the mixin
+      return false;
+    }
   }
 });

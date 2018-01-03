@@ -51,7 +51,13 @@ export default Ember.Component.extend(BrowserScrolling, {
     const left = this.get("scrollOffset.left");
     const top = this.get("scrollOffset.top");
 
-    this.updateSelectionHandlerGeometry(this.get("endX"), this.get("endY"));
+    const endX = this.get("endX");
+    const endY = this.get("endY");
+
+    // only update the selection handler if there was a change of the selection
+    if(endX !== null || endY !== null){
+        this.updateSelectionHandlerGeometry(this.get("endX"), this.get("endY"));
+    }
   }),
 
 
@@ -175,7 +181,7 @@ export default Ember.Component.extend(BrowserScrolling, {
 
   mouseMove: function(e){
     e.preventDefault();
-
+    
     this.updateSelectionHandlerGeometry(e.clientX, e.clientY);
   },
 

@@ -3,8 +3,8 @@ import DS from 'ember-data';
 import { computed } from '@ember/object';
 
 export default Model.extend({
-  x: DS.attr('number', { defaultValue : 0 }),
-  y: DS.attr('number', { defaultValue : 0 }),
+  x: DS.attr('number'),
+  y: DS.attr('number'),
 
   position: computed('x', 'y', function(){
     return {
