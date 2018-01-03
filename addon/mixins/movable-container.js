@@ -4,20 +4,21 @@ export default Ember.Mixin.create({
   selectedElements : new Map(),
 
   actions: {
-    elementMoved: function(offset){
-      const selectedElements = this.get("selectedElements");
+    elementMoved: function(offset, element){
+      let selectedElements = this.get("selectedElements");
+
+      console.log(selectedElements);
+
+      if(!selectedElements.has(element.get("elementId"))){
+        selectedElements.set(element.get("elementId"), element);
+      }
 
       selectedElements.forEach((value, key, map) => {
-        const positionX = value.get("positionX");
-        const positionY = value.get("positionY");
+        const position = value.get("model.position");
 
-        console.log(offset.x + "  "+ offset.y);
-
-        value.set("positionX", positionX + offset.x);
-        value.set("positionY", positionY + offset.y);
-      })
-
-
+        value.set("model.x", position.x + offset.x);
+        value.set("model.y", position.y + offset.y);
+      });
     },
 
 

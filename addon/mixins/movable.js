@@ -20,7 +20,7 @@ export default Ember.Mixin.create({
    * Defines a grid size that will be used for calculation the position.
    * Set this value in your component to 1 in order to disable the grid
    */
-  gridSize : 10,
+  gridSize : 1,
 
   positionX: 0,
   positionY: 0,
@@ -109,7 +109,7 @@ export default Ember.Mixin.create({
         elementMovedEvent({
           "x": x - position.left,
           "y": y - position.top
-        });
+        }, this);
       }
 
       return false;
@@ -124,9 +124,9 @@ export default Ember.Mixin.create({
    * @return {type}  description
    */
   mouseUp: function(e){
-    e.preventDefault();
+    this._super(...arguments);
 
-    this._super(e);
+    e.preventDefault();
 
     if(this.get('moveStart')){
       this.set('moveStart', false);

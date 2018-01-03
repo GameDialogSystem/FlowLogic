@@ -117,9 +117,6 @@ export default Ember.Component.extend(BrowserScrolling, {
       const scrollDifferenceWidth = Math.abs(scrollOffsetLeft - scrollOffsetStartLeft);
       const scrollDifferenceHeight = Math.abs(scrollOffsetTop - scrollOffsetStartTop);
 
-
-
-
       // calculate the final position based on scrolling offset,
       // moving the selection handle etc.
       const finalPositionX = (negativeEndX ? endX : startX) + scrollOffsetStartLeft;
@@ -181,12 +178,14 @@ export default Ember.Component.extend(BrowserScrolling, {
 
   mouseMove: function(e){
     e.preventDefault();
-    
+
     this.updateSelectionHandlerGeometry(e.clientX, e.clientY);
   },
 
   mouseUp: function(e){
     this._super(...arguments);
+
+    console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
 
     $(this.element).find(".flow-selection-indicator").hide();
 

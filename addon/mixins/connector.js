@@ -165,6 +165,8 @@ export default Ember.Mixin.create({
    * set to false to cancel the reconnection of the connector
    */
   mouseUp: function(e){
+    this._super(...arguments);
+    
     if(e.button == 0){
       e.stopPropagation();
       e.preventDefault();
