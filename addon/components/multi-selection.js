@@ -16,6 +16,8 @@ export default Ember.Component.extend(BrowserScrolling, {
 
   selectionModeEnabled: false,
 
+  selectionRectangle : {"x": 0, "y": 0, "width": 0, "height": 0},
+
   mouseMoveListener: null,
   mouseUpListener : null,
 
@@ -185,9 +187,9 @@ export default Ember.Component.extend(BrowserScrolling, {
   mouseUp: function(e){
     this._super(...arguments);
 
-    console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+    const element = $(this.element);
 
-    $(this.element).find(".flow-selection-indicator").hide();
+    element.find(".flow-selection-indicator").hide();
 
     document.removeEventListener('mousemove', this.get('mouseMoveListener'));
     document.removeEventListener('mouseup', this.get('mouseUpListener'));
@@ -195,6 +197,25 @@ export default Ember.Component.extend(BrowserScrolling, {
     this.set("selectionModeEnabled", false);
 
     const selectionIndicator = $(this.element).find(".flow-selection-indicator");
+
+    const selectionRectangle = this.get("selectionRectangle");
+
+
+    const mouseX = e.clientX - element.offset().left;
+    const mouseY = e.clientY - element.offset().top;
+
+    if(selectionRectangle.width < 20 && selectionRectangle.height < 20 ||
+       this.get("startX") === mouseX && this.get("startY") === mouseY){
+         
+      // set selection rectangle to empty in order to clear previously selected
+      // elements
+      this.set("selectionRectangle", {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      });
+    }
 
     // reposition the selection indicator and change the size of it
     selectionIndicator

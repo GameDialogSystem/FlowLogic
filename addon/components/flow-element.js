@@ -77,29 +77,6 @@ export default Ember.Component.extend(MovableMixin, {
   }),
 
 
-  positionChanged: Ember.observer('positionX', 'positionY', 'offsetX', 'offsetY', function(){
-    const offsetX = this.get('offsetX');
-    const offsetY = this.get('offsetY');
-
-    const model = this.get('model');
-    const self = this;
-
-    const position = this.get("position");
-
-
-
-    /*
-    Ember.run.schedule('afterRender', () => {
-      model.set('x', model.get('x') + offsetX);
-      model.set('y', model.get('y') + offsetY);
-    });
-    */
-
-
-    //Ember.$(this.element).css('left', `${this.get('model.x') + scrollOffsetX}px`);
-    //Ember.$(this.element).css('top', `${this.get('model.y') + scrollOffsetY}px`);
-  }),
-
   selectionChanged: Ember.observer("isSelected", function(){
     const isSelected = this.get("isSelected");
 
@@ -108,8 +85,20 @@ export default Ember.Component.extend(MovableMixin, {
     }else{
       this.get("onElementUnselect")(this);
     }
-
   }),
+
+  mouseDown: function(e){
+    this._super(...arguments);
+
+    this.get("onElementSelect")(this);
+  },
+
+  mouseUp: function(e){
+    this._super(...arguments);
+
+    this.get("onElementUnselect")(this);
+  },
+
 
 
   isSelected: Ember.computed("selection.x", "selection.y", "selection.width", "selection.height", function(){

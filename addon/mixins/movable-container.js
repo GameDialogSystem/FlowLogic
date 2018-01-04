@@ -7,11 +7,10 @@ export default Ember.Mixin.create({
     elementMoved: function(offset, element){
       let selectedElements = this.get("selectedElements");
 
-      console.log(selectedElements);
-
       if(!selectedElements.has(element.get("elementId"))){
         selectedElements.set(element.get("elementId"), element);
       }
+
 
       selectedElements.forEach((value, key, map) => {
         const position = value.get("model.position");
@@ -28,12 +27,16 @@ export default Ember.Mixin.create({
       }
 
       const selectedElements = this.get("selectedElements");
-      selectedElements.set(element.elementId, element);
+      selectedElements.set(element.get("elementId"), element);
     },
 
     elementUnselected: function(element){
+      if(element === undefined){
+        throw TypeError("you cannot pass an undefined element to the list of selected ones");
+      }
+
       const selectedElements = this.get("selectedElements");
-      selectedElements.delete(element.get("id"));
+      selectedElements.delete(element.get("elementId"));
     }
   }
 });

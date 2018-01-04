@@ -51,7 +51,6 @@ export default Ember.Mixin.create({
    * @return {type}   description
    */
   mouseDown: function(e){
-    e.preventDefault();
 
     this._super(e);
 
@@ -88,11 +87,7 @@ export default Ember.Mixin.create({
    * @param  {type} e description
    * @return {type}   description
    */
-
-
   mouseMove: function(e){
-    e.preventDefault();
-
     if(this.get('moveStart')){
       this.set('customLayouted', true);
 

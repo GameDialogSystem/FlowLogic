@@ -10,3 +10,12 @@ test('it works', function(assert) {
   let subject = MovableObject.create();
   assert.ok(subject);
 });
+
+test('', function(assert) {
+  const someThing = this.subject();
+  someThing.set('positionX', 0);
+  assert.equal($(someThing.element).css("left"), "0px");
+
+  someThing.set('positionY', 0);
+  assert.equal($(someThing.element).css("top"), "0px");
+})
