@@ -63,7 +63,7 @@ export default Ember.Mixin.create({
   getCenteredPosition : function(){
     let parentOffset = Ember.$(this.element).parent().parent().parent().offset();
     let rect = this.element.getBoundingClientRect();
-    let margin = this.getMarginOfElement();
+    //let margin = this.getMarginOfElement();
     let width = Ember.$(this.element).width();
     let height = Ember.$(this.element).height();
 
@@ -71,20 +71,20 @@ export default Ember.Mixin.create({
     let parent = Ember.$(this.element).parent();
 
     // the correct margin is determined by the flex options of the parent element
-    let correctHorizontalMargin = 0;
-    let correctVerticalMargin = 0;
+    //let correctHorizontalMargin = 0;
+    //let correctVerticalMargin = 0;
     let justifyContent = parent.css('justify-content');
     if(parent.css('flex-direction') === "row"){
       if(justifyContent === "flex-start"){
-        correctHorizontalMargin = margin.left;
+        //correctHorizontalMargin = margin.left;
       }else if(justifyContent === "flex-end"){
-        correctHorizontalMargin = margin.right;
+        //correctHorizontalMargin = margin.right;
       }
     }else if(parent.css('flex-direction') === "column"){
       if(justifyContent === "flex-start"){
-        correctVerticalMargin = margin.top;
+        //correctVerticalMargin = margin.top;
       }else if(justifyContent === "flex-end"){
-        correctVerticalMargin = margin.bottom;
+        //correctVerticalMargin = margin.bottom;
       }
     }
 
@@ -166,7 +166,7 @@ export default Ember.Mixin.create({
    */
   mouseUp: function(e){
     this._super(...arguments);
-    
+
     if(e.button == 0){
       e.stopPropagation();
       e.preventDefault();

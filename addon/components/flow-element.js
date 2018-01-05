@@ -87,13 +87,13 @@ export default Ember.Component.extend(MovableMixin, {
     }
   }),
 
-  mouseDown: function(e){
+  mouseDown: function(){
     this._super(...arguments);
 
     this.get("onElementSelect")(this);
   },
 
-  mouseUp: function(e){
+  mouseUp: function(){
     this._super(...arguments);
 
     this.get("onElementUnselect")(this);

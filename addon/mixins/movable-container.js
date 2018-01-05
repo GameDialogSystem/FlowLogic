@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import Map from 'Map';
 
 export default Ember.Mixin.create({
   selectedElements : new Map(),
@@ -12,7 +13,7 @@ export default Ember.Mixin.create({
       }
 
 
-      selectedElements.forEach((value, key, map) => {
+      selectedElements.forEach((value/*, key*/) => {
         const position = value.get("model.position");
 
         value.set("model.x", position.x + offset.x);

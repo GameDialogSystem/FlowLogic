@@ -8,20 +8,20 @@ export default Ember.Mixin.create({
       this.bindScrolling();
     },
 
-    bindScrolling: function(options){
+    bindScrolling: function(){
         const self = this;
 
         const scrollListener = function(){
             return self.scrolled();
         }
 
-        $(document).bind('touchmove', scrollListener);
-        $(window).bind('scroll', scrollListener);
+        Ember.$(document).bind('touchmove', scrollListener);
+        Ember.$(window).bind('scroll', scrollListener);
     },
 
     unbindScrolling: function(){
-        $(document).unbind('scroll');
-        $(document).unbind('touchmove');
+        Ember.$(document).unbind('scroll');
+        Ember.$(document).unbind('touchmove');
     },
 
     scrolled: function(){

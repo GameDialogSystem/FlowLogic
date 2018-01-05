@@ -1,11 +1,9 @@
 
 import Ember from 'ember';
-import RSVP from 'rsvp';
 import ScrollingMixin from '../mixins/scrolling';
 import MovableContainerMixin from '../mixins/movable-container';
-import MultiSelectionComponent from './multi-selection';
 import layout from '../templates/components/flow-container';
-import { observer } from '@ember/object';
+
 
 /**
 * Renders a container component where all flow blocks are displayed.
@@ -79,7 +77,7 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
 
       if(connectToNewBlock !== null){
         this.set('showReconnector', false);
-        console.log("flow-container.connectToNewBlock");
+
         connectToNewBlock(output, point);
       }
     },

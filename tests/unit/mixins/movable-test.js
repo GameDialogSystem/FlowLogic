@@ -14,8 +14,8 @@ test('it works', function(assert) {
 test('', function(assert) {
   const someThing = this.subject();
   someThing.set('positionX', 0);
-  assert.equal($(someThing.element).css("left"), "0px");
+  assert.equal(Ember.$(someThing.element).css("left"), "0px");
 
   someThing.set('positionY', 0);
-  assert.equal($(someThing.element).css("top"), "0px");
+  assert.equal(Ember.$(someThing.element).css("top"), "0px");
 })

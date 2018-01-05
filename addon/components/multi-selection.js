@@ -50,8 +50,8 @@ export default Ember.Component.extend(BrowserScrolling, {
    * @param  {type} "scrollOffset.top"  description
    */
   scrollingOffsetChanged: Ember.observer("scrollOffset.left", "scrollOffset.top", function(){
-    const left = this.get("scrollOffset.left");
-    const top = this.get("scrollOffset.top");
+    //const left = this.get("scrollOffset.left");
+    //const top = this.get("scrollOffset.top");
 
     const endX = this.get("endX");
     const endY = this.get("endY");
@@ -88,7 +88,7 @@ export default Ember.Component.extend(BrowserScrolling, {
       const startX = this.get("startX");
       const startY = this.get("startY");
 
-      const element = $(this.element);
+      const element = Ember.$(this.element);
       const elementOffsetX = element.offset().left;
       const elementOffsetY = element.offset().top;
 
@@ -125,7 +125,7 @@ export default Ember.Component.extend(BrowserScrolling, {
       const finalPositionY = (negativeEndY ? endY : startY) + scrollOffsetStartTop;
 
       // the selection indicator element
-      const selectionIndicator = $(this.element).find(".flow-selection-indicator");
+      const selectionIndicator = Ember.$(this.element).find(".flow-selection-indicator");
 
       // reposition the selection indicator and change the size of it
       selectionIndicator
@@ -155,7 +155,7 @@ export default Ember.Component.extend(BrowserScrolling, {
     this._super(...arguments);
 
     if(e.button === 0){
-      const element = $(this.element);
+      const element = Ember.$(this.element);
 
       this.set("startX", e.clientX - element.offset().left);
       this.set("startY", e.clientY - element.offset().top);
@@ -171,7 +171,7 @@ export default Ember.Component.extend(BrowserScrolling, {
         self.mouseUp(e);
       });
 
-      $(this.element).find(".flow-selection-indicator").show();
+      Ember.$(this.element).find(".flow-selection-indicator").show();
 
       document.addEventListener('mousemove', this.get('mouseMoveListener'));
       document.addEventListener('mouseup', this.get('mouseUpListener'));
@@ -187,7 +187,7 @@ export default Ember.Component.extend(BrowserScrolling, {
   mouseUp: function(e){
     this._super(...arguments);
 
-    const element = $(this.element);
+    const element = Ember.$(this.element);
 
     element.find(".flow-selection-indicator").hide();
 
@@ -196,7 +196,7 @@ export default Ember.Component.extend(BrowserScrolling, {
 
     this.set("selectionModeEnabled", false);
 
-    const selectionIndicator = $(this.element).find(".flow-selection-indicator");
+    const selectionIndicator = Ember.$(this.element).find(".flow-selection-indicator");
 
     const selectionRectangle = this.get("selectionRectangle");
 
@@ -206,7 +206,7 @@ export default Ember.Component.extend(BrowserScrolling, {
 
     if(selectionRectangle.width < 20 && selectionRectangle.height < 20 ||
        this.get("startX") === mouseX && this.get("startY") === mouseY){
-         
+
       // set selection rectangle to empty in order to clear previously selected
       // elements
       this.set("selectionRectangle", {

@@ -56,7 +56,7 @@ export default Ember.Mixin.create({
    * disables the scroll mode and sets the current scroll offset to a fixed
    * value.
    */
-  mouseUp: function(e){
+  mouseUp: function(){
     this._super(...arguments);
 
     this.set('scrollModeEnabled', false);

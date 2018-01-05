@@ -21,8 +21,8 @@ export default Ember.Component.extend({
    * Computes the form of the path that will be displayed to the user
    */
   d: Ember.computed('startX', 'startY', 'endX', 'endY', function(){
-    let index = this.get('index')-1;
-    let answersCount = this.get('start.answers.length');
+    //let index = this.get('index')-1;
+    //let answersCount = this.get('start.answers.length');
 
     let startX = this.get('startX');
     let startY = this.get('startY');

@@ -3,13 +3,13 @@ module.exports = {
   test_page: 'tests/index.html?hidepassed',
   disable_watching: true,
   launch_in_ci: [
-    'Chrome'
+    'Chromium'
   ],
   launch_in_dev: [
-    'Chrome'
+    'Chromium'
   ],
   browser_args: {
-    Chrome: [
+    Chromium: [
       '--disable-gpu',
       '--headless',
       '--remote-debugging-port=9222',

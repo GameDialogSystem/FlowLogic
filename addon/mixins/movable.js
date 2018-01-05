@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { computed } from '@ember/object';
+//import { computed } from '@ember/object';
 
 /**
 * Provides methods to make a component movable by using drag and drop.
@@ -20,14 +20,14 @@ export default Ember.Mixin.create({
    * Defines a grid size that will be used for calculation the position.
    * Set this value in your component to 1 in order to disable the grid
    */
-  gridSize : 1,
+  gridSize : 5,
 
   positionX: 0,
   positionY: 0,
 
   p : Ember.observer("positionX", "positionY", function(){
-    $(this.element).css("left", this.get("positionX"));
-    $(this.element).css("top", this.get("positionY"));
+    Ember.$(this.element).css("left", this.get("positionX"));
+    Ember.$(this.element).css("top", this.get("positionY"));
   }),
 
 
@@ -96,7 +96,7 @@ export default Ember.Mixin.create({
       const y = this.getScaledCoordinate(e.clientY - this.get('mouseOffsetY') - parentOffset.top);
 
 
-      const oldPosition = this.get("oldPosition");
+      //const oldPosition = this.get("oldPosition");
       const position = Ember.$(this.element).position();
       const elementMovedEvent = this.get("onElementMoved");
 
