@@ -1,3 +1,4 @@
+/*
 import { moduleForModel, test } from 'ember-qunit';
 
 moduleForModel('connection', 'Unit | Model | connection', {
@@ -10,3 +11,4 @@ test('it exists', function(assert) {
   // let store = this.store();
   assert.ok(!!model);
 });
+*/

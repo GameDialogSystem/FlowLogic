@@ -95,16 +95,16 @@ export default Ember.Mixin.create({
       const x = this.getScaledCoordinate(e.clientX - this.get('mouseOffsetX') - parentOffset.left);
       const y = this.getScaledCoordinate(e.clientY - this.get('mouseOffsetY') - parentOffset.top);
 
-
-      //const oldPosition = this.get("oldPosition");
       const position = Ember.$(this.element).position();
       const elementMovedEvent = this.get("onElementMoved");
 
+      const offset = {
+        "x" : x - position.left,
+        "y" : y - position.top
+      }
+
       if(typeof elementMovedEvent === "function"){
-        elementMovedEvent({
-          "x": x - position.left,
-          "y": y - position.top
-        }, this);
+        elementMovedEvent(offset, this);
       }
 
       return false;

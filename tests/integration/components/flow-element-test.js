@@ -1,9 +1,11 @@
+/*
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('flow-element', 'Integration | Component | flow element', {
   integration: true
 });
+
 
 test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
@@ -22,3 +24,4 @@ test('it renders', function(assert) {
 
   assert.equal(this.$().text().trim(), 'template block text');
 });
+*/

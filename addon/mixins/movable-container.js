@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import Map from 'Map';
 
 export default Ember.Mixin.create({
   selectedElements : new Map(),
@@ -16,8 +15,10 @@ export default Ember.Mixin.create({
       selectedElements.forEach((value/*, key*/) => {
         const position = value.get("model.position");
 
-        value.set("model.x", position.x + offset.x);
-        value.set("model.y", position.y + offset.y);
+        if(offset.x != 0 || offset.y != 0){
+          value.set("model.x", value.get("model.x") + offset.x);
+          value.set("model.y", value.get("model.y") + offset.y);
+        }
       });
     },
 

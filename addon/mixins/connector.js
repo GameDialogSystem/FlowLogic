@@ -8,11 +8,13 @@ import Ember from 'ember';
 * @mixin
 */
 export default Ember.Mixin.create({
-  didInsertElement(){
-    let self = this;
 
-    this.get('model').on("didLoad", function() {
-      let point = self.getCenteredPosition();
+  didInsertElement(){
+    const self = this;
+
+    this.get('model.content').on("didLoad", function() {
+      const point = self.getCenteredPosition();
+      
       self.get('model').set('x', point.x);
       self.get('model').set('y', point.y);
     });

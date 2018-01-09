@@ -1,8 +1,10 @@
 import Ember from 'ember';
 import MovableMixin from 'flow-logic/mixins/movable';
 import { module, test } from 'qunit';
+import hbs from 'htmlbars-inline-precompile';
+import triggerEvent from 'ember-native-dom-helpers';
 
-module('Unit | Mixin | movable');
+module('Unit | Mixin | Integration | Component | movable');
 
 // Replace this with your real tests.
 test('it works', function(assert) {
@@ -11,11 +13,15 @@ test('it works', function(assert) {
   assert.ok(subject);
 });
 
-test('', function(assert) {
-  const someThing = this.subject();
-  someThing.set('positionX', 0);
-  assert.equal(Ember.$(someThing.element).css("left"), "0px");
+['mousedown'].forEach((event) => {
+  test(`check if drag start is set on mouse down at ${event} event`, async function(assert){
+    let MovableObject = Ember.Object.extend(MovableMixin);
+    let subject = MovableObject.create();
 
-  someThing.set('positionY', 0);
-  assert.equal(Ember.$(someThing.element).css("top"), "0px");
+    this.render(hbs`{{flow-element}}`);
+
+    await triggerEvent('', event);
+
+    assert.ok(subject.get("moveStart"), true);
+  })
 })
