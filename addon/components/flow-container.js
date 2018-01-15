@@ -106,28 +106,4 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
       this.get('onAddNewElement')(output, point);
     }
   },
-/*
-  mouseDown: function(e){
-    this._super(...arguments);
-  },
-*/
-  /**
-   * calculates the offset caused by scrolling and sets the value to the
-   * attributes scrollOffsetX and scrollOffsetY to make the values publicly
-   * available to other components
-   */
-/*
-  mouseMove: function(e){
-    this._super(...arguments);
-  },
-*/
-  /**
-   * disables the scroll mode and sets the current scroll offset to a fixed
-   * value.
-   */
-/*
-  mouseUp: function(e){
-    this._super(...arguments);
-  },
-*/
 });

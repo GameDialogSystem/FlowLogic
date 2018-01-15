@@ -1,7 +1,9 @@
 import DS from 'ember-data';
 import Point from './point';
 
-export default Point.extend({
+import LayoutableMixin from '../mixins/layoutable';
+
+export default Point.extend(LayoutableMixin, {
   // allow object oriented programming by setting it to polymorphic
   inputs: DS.hasMany('input', { polymorphic: true }),
   outputs: DS.hasMany('output', { polymorphic: true }),

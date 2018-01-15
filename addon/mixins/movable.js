@@ -1,5 +1,4 @@
 import Ember from 'ember';
-//import { computed } from '@ember/object';
 
 /**
 * Provides methods to make a component movable by using drag and drop.
@@ -22,15 +21,6 @@ export default Ember.Mixin.create({
    */
   gridSize : 5,
 
-  positionX: 0,
-  positionY: 0,
-
-  p : Ember.observer("positionX", "positionY", function(){
-    Ember.$(this.element).css("left", this.get("positionX"));
-    Ember.$(this.element).css("top", this.get("positionY"));
-  }),
-
-
   /**
    * converts an absolute position to a grid based position.
    * Always use this function to read the component position
@@ -51,10 +41,9 @@ export default Ember.Mixin.create({
    * @return {type}   description
    */
   mouseDown: function(e){
+    this._super(...arguments);
 
-    this._super(e);
-
-    if(e.button == 0){
+    if(e.button == 0 && e.target.tagName !== "TEXTAREA"){
       this.set('moveStart', true);
 
       const offset = Ember.$(this.element).offset();
@@ -76,8 +65,6 @@ export default Ember.Mixin.create({
       document.addEventListener('mousemove', this.get('mouseMoveListener'));
       document.addEventListener('mouseup', this.get('mouseUpListener'));
     }
-
-    return false;
   },
 
   /**
@@ -88,7 +75,9 @@ export default Ember.Mixin.create({
    * @return {type}   description
    */
   mouseMove: function(e){
-    if(this.get('moveStart')){
+    this._super(...arguments);
+
+    if(this.get('moveStart') && e.target.tagName !== "TEXTAREA"){
       this.set('customLayouted', true);
 
       const parentOffset = Ember.$(this.element).parent().offset();
@@ -121,9 +110,7 @@ export default Ember.Mixin.create({
   mouseUp: function(e){
     this._super(...arguments);
 
-    e.preventDefault();
-
-    if(this.get('moveStart')){
+    if(this.get('moveStart') && e.target.tagName !== "TEXTAREA"){
       this.set('moveStart', false);
 
       document.removeEventListener('mousemove', this.get('mouseMoveListener'));

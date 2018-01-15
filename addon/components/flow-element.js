@@ -1,5 +1,7 @@
 import Ember from 'ember';
+
 import MovableMixin from '../mixins/movable';
+
 import layout from '../templates/components/flow-element';
 
 export default Ember.Component.extend(MovableMixin, {
@@ -18,11 +20,11 @@ export default Ember.Component.extend(MovableMixin, {
 
   tabindex: '1',
 
-  unselectable: 'on',
+  //unselectable: 'on',
 
-  onselectstart: 'return false;',
+  //onselectstart: 'return false;',
 
-  onmousedown: 'return false;',
+  //onmousedown: 'return false;',
 
   actions: {
     acceptRerouting: function(){
@@ -33,17 +35,6 @@ export default Ember.Component.extend(MovableMixin, {
       this.get('cancelReroute')(output, point);
     },
   },
-
-
-
-  /**
-   * Update the position in the model in case the element was dragged to a
-   * new position.
-   */
-
-
-
-
 
 
   /**
@@ -87,6 +78,7 @@ export default Ember.Component.extend(MovableMixin, {
     }
   }),
 
+/*
   mouseDown: function(){
     this._super(...arguments);
 
@@ -98,7 +90,7 @@ export default Ember.Component.extend(MovableMixin, {
 
     this.get("onElementUnselect")(this);
   },
-
+  */
 
 
   isSelected: Ember.computed("selection.x", "selection.y", "selection.width", "selection.height", function(){

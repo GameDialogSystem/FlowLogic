@@ -149,6 +149,7 @@ export default Ember.Component.extend(BrowserScrolling, {
     }
   },
 
+/*
   mouseDown: function(e){
     const self = this;
 
@@ -224,4 +225,5 @@ export default Ember.Component.extend(BrowserScrolling, {
     .width(0)
     .height(0);
   }
+*/
 });
