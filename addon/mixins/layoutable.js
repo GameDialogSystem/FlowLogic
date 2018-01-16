@@ -39,18 +39,20 @@ export default Ember.Mixin.create({
     const parentWidth = parentChildrenCount * w;
 
     if(parent !== undefined){
-      x = this.get("x"); //parent.get("x");
+      x = parent.get("x");
       y = this.get("y");
     }else{
-      this.set("x", 0 + parentWidth / 2 - w / 2);
+      this.set("x", ((parentChildrenCount - 1) * w) / 2);
       this.set("y", 0);
 
       x = 0;
       y = 0;
+
+      console.log(":'(")
     }
 
 
-
+    const self = this;
 
     const outputs = this.get('outputs').filterBy('isConnected', true);
     outputs.forEach(function(output, index){
@@ -60,8 +62,11 @@ export default Ember.Mixin.create({
 
 
       if(nextLine !== undefined){
-        nextLine.set("x", x + (index * w) + ((childrenCount > 0) ? w : 0));
-        nextLine.set("y", y + parentHeight);
+        const centerX = ((childrenCount - 1) * w) / 2;
+
+        console.log("x:" + x +" y: "+y+ " ["+self.get("message")+"]");
+        nextLine.set("x", x + (index * w) + ((childrenCount > 0) ? centerX : 0));
+        nextLine.set("y", y + 200);
 
         nextLine.set("relayoutTimestamp", relayoutTimestamp);
       }
