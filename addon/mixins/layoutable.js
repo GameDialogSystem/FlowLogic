@@ -38,19 +38,16 @@ export default Ember.Mixin.create({
     const parentChildrenCount = this.get("childrenCount");
     const parentWidth = parentChildrenCount * w;
 
-    if(parent !== undefined){
-      x = parent.get("x");
-      y = this.get("y");
-    }else{
+    if(parent === undefined){
       this.set("x", ((parentChildrenCount - 1) * w) / 2);
       this.set("y", 0);
-
-      x = 0;
-      y = 0;
-
-      console.log(":'(")
     }
 
+    x = this.get("x");
+    y = this.get("y");
+
+    console.log(parentChildrenCount)
+    const offsetX = - ((parentChildrenCount -1) / 2) * w;
 
     const self = this;
 
@@ -65,7 +62,7 @@ export default Ember.Mixin.create({
         const centerX = ((childrenCount - 1) * w) / 2;
 
         console.log("x:" + x +" y: "+y+ " ["+self.get("message")+"]");
-        nextLine.set("x", x + (index * w) + ((childrenCount > 0) ? centerX : 0));
+        nextLine.set("x", offsetX + x + (index * w) + ((childrenCount > 0) ? centerX : 0));
         nextLine.set("y", y + 200);
 
         nextLine.set("relayoutTimestamp", relayoutTimestamp);
