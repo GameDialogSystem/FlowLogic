@@ -7,7 +7,7 @@ export default Ember.Mixin.create({
 
   relayoutTimestamp: null,
 
-  width: 0,
+  margin: 20,
 
   parent: computed("inputs.[]", function(){
     const input = this.get("inputs.firstObject");
@@ -21,53 +21,76 @@ export default Ember.Mixin.create({
     return parent;
   }),
 
+  childrenWidth : Ember.computed('children.@each.childrenWidth', function() {
+    if(this.get("children.length") === 0){
+      return this.get("width");
+    }
 
+    let width = 0;
+    this.get("children").forEach(function(child, index){
+      width += child.get("childrenWidth");
+    });
+
+    width += (this.get("children.length") - 1) * this.get("margin");
+
+    return width;
+  }),
+
+
+  /**
+   * autoLayout - Observes the change of the relayout timestamp in order
+   * to relayout all children to their perfect position
+   *
+   * @param  {type} "relayoutTimestamp" description
+   * @param  {type} function(           description
+   * @return {type}                     description
+   */
   autoLayout: observer("relayoutTimestamp", function(){
-    const w = 200;
-
-    const relayoutTimestamp = this.get("relayoutTimestamp");
-
-    const parent = this.get("parent");
-
-
-
     let x = 0;
     let y = 0;
     let parentHeight = 180;
 
-    const parentChildrenCount = this.get("childrenCount");
-    const parentWidth = parentChildrenCount * w;
+    const childrenWidth = this.get("childrenWidth");
+    const outputs = this.get('outputs').filterBy('isConnected', true);
 
-    if(parent === undefined){
-      this.set("x", ((parentChildrenCount - 1) * w) / 2);
+    const parentChildrenCount = outputs.length;
+
+    const offsetX = -(childrenWidth / 2) + this.get("width") / 2;
+
+    if(this.get("parent") === undefined){
+      this.set("x", (childrenWidth - this.get("width")) / 2);
       this.set("y", 0);
     }
 
     x = this.get("x");
     y = this.get("y");
 
-    console.log(parentChildrenCount)
-    const offsetX = - ((parentChildrenCount -1) / 2) * w;
+
 
     const self = this;
 
-    const outputs = this.get('outputs').filterBy('isConnected', true);
-    outputs.forEach(function(output, index){
-      const nextLine = output.get("connection.input.belongsTo");
-      const childrenCount = nextLine.get("childrenCount");
-      const a = childrenCount;
 
+
+    let continuousX = 0;
+    outputs.forEach(function(output, index){
+      // reference to the child element
+      const nextLine = output.get("connection.input.belongsTo");
+      const nextLineOutputs = nextLine.get('outputs').filterBy('isConnected', true);
+      const childrenCount = nextLineOutputs.length;
 
       if(nextLine !== undefined){
-        const centerX = ((childrenCount - 1) * w) / 2;
+        const centerX = (nextLine.get("childrenWidth") - self.get("width")) / 2;
 
-        console.log("x:" + x +" y: "+y+ " ["+self.get("message")+"]");
-        nextLine.set("x", offsetX + x + (index * w) + ((childrenCount > 0) ? centerX : 0));
+        // sets the x coordinate of each child to the new value
+        nextLine.set("x", offsetX + x + continuousX + ((childrenCount > 0) ? centerX : 0));
         nextLine.set("y", y + 200);
 
-        nextLine.set("relayoutTimestamp", relayoutTimestamp);
+        // call the relocate hook for each child
+        nextLine.set("relayoutTimestamp", self.get("relayoutTimestamp"));
+
+        // increament the x coordinate accordingly to the width and margin
+        continuousX += nextLine.get("width") + self.get("margin");
       }
     });
-
   })
 });

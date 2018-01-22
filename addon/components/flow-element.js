@@ -16,25 +16,42 @@ export default Ember.Component.extend(MovableMixin, {
    * set tabindex to 1 in order to receive keyevents on this component
    * to allow deletion by pressing the DELETE button
    */
-  attributeBindings: ['tabindex', 'unselectable', 'onselectstart', 'onmousedown'],
+   attributeBindings: ['tabindex', 'unselectable', 'onselectstart', 'onmousedown', 'style'],
 
-  tabindex: '1',
+   tabindex: '1',
 
-  //unselectable: 'on',
+   actions: {
+     acceptRerouting: function(){
 
-  //onselectstart: 'return false;',
+     },
 
-  //onmousedown: 'return false;',
+     cancelReroute: function(output, point){
+       this.get('cancelReroute')(output, point);
+     },
+   },
 
-  actions: {
-    acceptRerouting: function(){
+   style: Ember.computed('model.x', 'model.y', 'offsetX', 'offsetY',
+                         'model.width', 'model.height', function(){
 
-    },
+     return Ember.String.htmlSafe(`left: ${this.get("model.x") + this.get("offsetX")}px; `+
+                                  `top: ${this.get("model.y") + this.get("offsetY")}px; `+
+                                  `width: ${this.get("model.width")}px; `+
+                                  `height: ${this.get("model.height")}px`);
+   }),
 
-    cancelReroute: function(output, point){
-      this.get('cancelReroute')(output, point);
-    },
-  },
+   /**
+    * isLoaded - Observer that listens for the model state. In case that
+    * the model has the state "root.loaded.saved" the model was fully loaded
+    * and the width and height can be set by the DOM element geometry.
+    */
+   isLoaded: Ember.observer("model.currentState.stateName", function(){
+     if(this.get("model.currentState.stateName") === "root.loaded.saved"){
+       const element = $(this.element);
+
+       this.set("model.width", 200);
+       this.set("model.height", element.height());
+     }
+   }),
 
 
   /**
@@ -56,16 +73,6 @@ export default Ember.Component.extend(MovableMixin, {
       deleteBlock(this.get('model'));
     }
   },
-
-
-  modelPositionChanged: Ember.observer("model.x", "model.y", function(){
-    const x = this.get('model').get('x');
-    const y = this.get('model').get('y');
-
-    const element = Ember.$(this.element);
-    element.css('left', x + 'px');
-    element.css('top', y + 'px');
-  }),
 
 
   selectionChanged: Ember.observer("isSelected", function(){

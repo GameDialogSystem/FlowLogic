@@ -20,18 +20,22 @@ export default Ember.Component.extend({
   /**
    * Computes the form of the path that will be displayed to the user
    */
-  d: Ember.computed('startX', 'startY', 'endX', 'endY', function(){
-    let startX = this.get('startX');
-    let startY = this.get('startY');
+  d: Ember.computed('startX', 'startY', 'endX', 'endY',
+                    'offsetX', 'offsetY', function(){
+    const offsetX = this.get('offsetX');
+    const offsetY = this.get('offsetY');
 
-    let endX = this.get('endX');
-    let endY = this.get('endY');
+    const startX = this.get('startX') + offsetX;
+    const startY = this.get('startY') + offsetY;
 
-    let cX = startX;
-    let cY = endY;
+    const endX = this.get('endX') + offsetX;
+    const endY = this.get('endY') + offsetY;
 
-    let dX = endX;
-    let dY = startY;
+    const cX = startX;
+    const cY = endY;
+
+    const dX = endX;
+    const dY = startY;
 
     if(isNaN(startX) || isNaN(startY) || isNaN(endX) || isNaN(endY))
       return `M0,0 C0,0 0,0 0,0`;

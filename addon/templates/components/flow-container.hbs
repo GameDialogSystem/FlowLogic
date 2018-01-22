@@ -5,6 +5,8 @@
                         startY=output.y
                         endX=output.connection.input.x
                         endY=output.connection.input.y
+                        offsetX = offsetX
+                        offsetY = offsetY
       }}
     {{/each}}
   {{/each}}
@@ -20,7 +22,6 @@
       model=block
       offsetX=offsetX
       offsetY=offsetY
-      browserScrollOffset=scrollOffset
       zoom=zoom
       reroute=(action 'reroute')
       deleteBlock=(action 'deleteBlock')
