@@ -26,10 +26,10 @@ export default Ember.Component.extend({
     const offsetY = this.get('offsetY');
 
     const startX = this.get('startX') + offsetX;
-    const startY = this.get('startY') + offsetY;
+    const startY = this.get('startY') - offsetY;
 
     const endX = this.get('endX') + offsetX;
-    const endY = this.get('endY') + offsetY;
+    const endY = this.get('endY') - offsetY;
 
     const cX = startX;
     const cY = endY;

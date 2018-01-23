@@ -4,7 +4,6 @@ import ScrollingMixin from '../mixins/scrolling';
 import MovableContainerMixin from '../mixins/movable-container';
 import layout from '../templates/components/flow-container';
 
-
 /**
 * Renders a container component where all flow blocks are displayed.
 * Also all connections are rendered within this container.
@@ -104,6 +103,10 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
       this.set('showReconnector', false);
 
       this.get('onAddNewElement')(output, point);
+    },
+
+    handleScroll: function(scrollOffset, event){
+      this.set("offsetY", scrollOffset);
     }
   },
 });

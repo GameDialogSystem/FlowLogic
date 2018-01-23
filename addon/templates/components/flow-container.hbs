@@ -15,21 +15,35 @@
     {{flow-connection startX=start.x startY=start.y endX=end.x endY=end.y}}
   {{/if}}
 </svg>
-{{#multi-selection as |selection|}}
-  {{#each blocks as |block|}}
-    {{component logicBlockComponent
-      selection=selection
-      model=block
-      offsetX=offsetX
-      offsetY=offsetY
-      zoom=zoom
-      reroute=(action 'reroute')
-      deleteBlock=(action 'deleteBlock')
-      connectToNewBlock=(action 'connectToNewBlock')
 
-      onElementSelect=(action 'elementSelected')
-      onElementUnselect=(action 'elementUnselected')
-      onElementMoved=(action 'elementMoved')
-    }}
-  {{/each}}
-{{/multi-selection}}
+
+
+
+
+  {{#multi-selection as |selection|}}
+    {{#each blocks as |block|}}
+      {{component logicBlockComponent
+        selection=selection
+        model=block
+        offsetX=offsetX
+        offsetY=offsetY
+        zoom=zoom
+        reroute=(action 'reroute')
+        deleteBlock=(action 'deleteBlock')
+        connectToNewBlock=(action 'connectToNewBlock')
+
+        onElementSelect=(action 'elementSelected')
+        onElementUnselect=(action 'elementUnselected')
+        onElementMoved=(action 'elementMoved')
+      }}
+    {{/each}}
+  {{/multi-selection}}
+
+  {{#ember-scrollable
+    horizontal=true
+    vertical=true
+    autoHide=false
+    onScroll=(action "handleScroll")
+  }}
+  <div style="width=2000px; height: 1500px"></div>
+{{/ember-scrollable}}
