@@ -4,6 +4,9 @@ import ScrollingMixin from '../mixins/scrolling';
 import MovableContainerMixin from '../mixins/movable-container';
 import layout from '../templates/components/flow-container';
 
+
+import { once } from '@ember/runloop';
+
 /**
 * Renders a container component where all flow blocks are displayed.
 * Also all connections are rendered within this container.
@@ -12,6 +15,45 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
   layout,
 
   tagName: 'flow-container',
+
+  scrollLeft: 0,
+  scrollTop: 0,
+
+  viewbox: Ember.computed('scrollLeft', 'scrollTop', 'width', 'height', function() {
+    const scrollLeft = 0; //this.get('scrollLeft');
+    const scrollTop = this.get('scrollTop');
+    const width = Ember.$(this.element).get(0).scrollWidth;
+    const height = Ember.$(this.element).height();
+
+
+    return Ember.String.htmlSafe(`${scrollLeft} ${scrollTop} ${width} ${height}`);
+  }),
+
+  style: Ember.computed('width', 'height', function() {
+    return Ember.String.htmlSafe(`width:${this.get('width')}; height:${this.get("height")}}`);
+  }),
+
+  relayouted : Ember.observer("blocks.@each.x", function(){
+    const self = this;
+
+// TODO get rid of the ugly workaround with the timeout
+    setTimeout(function () {
+      const element = Ember.$(self.element).get(0);
+
+      self.set("width", element.scrollWidth);
+      self.set("height", element.scrollHeight);
+    }, 1000);
+  }),
+
+  didInsertElement: function() {
+    const self = this;
+
+    this._super(...arguments);
+
+    Ember.$(this.element).scroll(function() {
+      self.set("scrollLeft", Ember.$(this).scrollLeft());
+    });
+  },
 
   offsetX : Ember.computed("scrollOffsetX", "relocateOffsetX", function(){
     const scrollOffsetX = this.get("scrollOffsetX");
@@ -107,6 +149,6 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
 
     handleScroll: function(scrollOffset, event){
       this.set("offsetY", scrollOffset);
-    }
+    },
   },
 });

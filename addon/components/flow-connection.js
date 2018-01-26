@@ -10,8 +10,9 @@ export default Ember.Component.extend({
   layout,
 
   tagName: 'path',
+  //tagName: 'line',
 
-  attributeBindings: ['d', 'fill', 'stroke', 'stroke-width', 'stroke-linecap'],
+  attributeBindings: ['d', 'fill', 'stroke', 'stroke-width', 'stroke-linecap'], //, 'startX:x1', 'startY:y1', 'endX:x2', 'endY:y2'],
   startX: -1,
   startY: -1,
   endX: -1,
@@ -20,6 +21,7 @@ export default Ember.Component.extend({
   /**
    * Computes the form of the path that will be displayed to the user
    */
+
   d: Ember.computed('startX', 'startY', 'endX', 'endY',
                     'offsetX', 'offsetY', function(){
     const offsetX = this.get('offsetX');
@@ -42,6 +44,7 @@ export default Ember.Component.extend({
 
     return `M${startX},${startY} C${cX},${cY} ${dX},${dY} ${endX},${endY}`;
   }),
+
 
   fill: 'none',
 

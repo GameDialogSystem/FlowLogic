@@ -8,10 +8,15 @@ export default Rectangle.extend(LayoutableMixin, {
   inputs: DS.hasMany('input', { polymorphic: true }),
   outputs: DS.hasMany('output', { polymorphic: true }),
 
-  belongsTo: DS.belongsTo('flow-element'),
 
-
-  children: Ember.computed("children", function(){
+  /**
+   * children - description
+   *
+   * @param  {type} "outputs" description
+   * @param  {type} function( description
+   * @return {type}           description
+   */
+  children: Ember.computed("outputs", function(){
     const outputs = this.get('outputs').filterBy('isConnected', true);
 
     let children = new Array();
@@ -20,5 +25,5 @@ export default Rectangle.extend(LayoutableMixin, {
     });
 
     return Ember.A(children);
-  }),
+  })
 });

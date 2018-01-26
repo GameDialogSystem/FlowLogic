@@ -9,16 +9,32 @@ import Ember from 'ember';
 */
 export default Ember.Mixin.create({
 
-  didInsertElement(){
-    const self = this;
+  didReceiveAttrs() {
+    this._super(...arguments);
 
-    this.get('model.content').on("didLoad", function() {
-      const point = self.getCenteredPosition();
-      
-      self.get('model').set('x', point.x);
-      self.get('model').set('y', point.y);
-    });
+    // for each dialog line an empty output is generated and has the status
+    // loaded.created.uncommited. Therefore the state name will not change
+    // and the isLoaded observer is not triggered. Therefore we trigger
+    // it at this position so that the output model has the correct coordinates
+    if(this.get("model.currentState.stateName") === "root.loaded.created.uncommitted"){
+      this.updatePosition();
+    }
   },
+
+
+  /**
+   * isLoaded - Observer that listens for the model state. In case that
+   * the model has the state "root.loaded.saved" the model was fully loaded
+   * and the width and height can be set by the DOM element geometry.
+   */
+  isLoaded: Ember.observer("model.currentState.stateName", function(){
+    if(this.get("model.currentState.stateName") === "root.loaded.saved"){
+      const point = this.getCenteredPosition();
+
+      this.get('model').set('x', point.x);
+      this.get('model').set('y', point.y);
+    }
+  }),
 
   /**
    * Returns the offset of the parent element as an object.
@@ -116,13 +132,16 @@ export default Ember.Mixin.create({
    * an internal Ember error
    */
   updatePosition : function(){
-    let point = this.getCenteredPosition();
-    let model = this.get('model');
+    const self = this;
 
     // schedule the modification of the position until the DOM rendering
     // is done. This is needed to prevent changing the position while Ember
     // renders the connector - otherwise an error would be generated
     Ember.run.schedule('afterRender', function() {
+
+      let point = self.getCenteredPosition();
+      let model = self.get('model');
+
       if(model.get('x') !== point.x){
         model.set('x', point.x);
       }

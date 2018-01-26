@@ -27,6 +27,8 @@ export default Ember.Mixin.create({
     }
 
     let width = 0;
+
+
     this.get("children").forEach(function(child, index){
       width += child.get("childrenWidth");
     });
