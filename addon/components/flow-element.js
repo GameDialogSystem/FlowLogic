@@ -85,7 +85,6 @@ export default Ember.Component.extend(MovableMixin, {
     }
   }),
 
-/*
   mouseDown: function(){
     this._super(...arguments);
 
@@ -97,7 +96,6 @@ export default Ember.Component.extend(MovableMixin, {
 
     this.get("onElementUnselect")(this);
   },
-  */
 
 
   isSelected: Ember.computed("selection.x", "selection.y", "selection.width", "selection.height", function(){

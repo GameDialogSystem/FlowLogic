@@ -1,4 +1,4 @@
-<svg width="100%" viewBox={{viewbox}} xmlns="http://www.w3.org/2000/svg" version="1.1" style={{style}}>
+<svg width="100%" viewBox={{viewbox}} xmlns="http://www.w3.org/2000/svg" version="1.1" style={{svgSize}}>
   {{#each blocks as |block|}}
     {{#each block.outputs as |output|}}
       {{flow-connection startX=output.x
@@ -34,13 +34,3 @@
     }}
   {{/each}}
 {{/multi-selection}}
-{{!--
-{{#ember-scrollable
-  horizontal=true
-  vertical=true
-  autoHide=false
-  onScroll=(action "handleScroll")
-}}
-<div style="width=2000px; height: 1500px"></div>
-{{/ember-scrollable}}
---}}

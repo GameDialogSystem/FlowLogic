@@ -149,12 +149,19 @@ export default Ember.Component.extend(BrowserScrolling, {
     }
   },
 
-/*
-  mouseDown: function(e){
-    const self = this;
 
+  mouseDown: function(e){
     this._super(...arguments);
 
+    // only process in case the user presses the mouse button on an empty spot
+    // of the multi selection element
+    if(e.target.tagName !== "MULTI-SELECTION"){
+      return;
+    }
+
+    const self = this;
+
+    // proceed in case the user pressed the left mouse button
     if(e.button === 0){
       const element = Ember.$(this.element);
 
@@ -172,8 +179,12 @@ export default Ember.Component.extend(BrowserScrolling, {
         self.mouseUp(e);
       });
 
+      // show the selection handle rectangle to visualize the
+      // user interaction
       Ember.$(this.element).find(".flow-selection-indicator").show();
 
+      // add document event listener to react even if the mouse event is not
+      // triggered within the bounding area of the element
       document.addEventListener('mousemove', this.get('mouseMoveListener'));
       document.addEventListener('mouseup', this.get('mouseUpListener'));
     }
@@ -225,5 +236,4 @@ export default Ember.Component.extend(BrowserScrolling, {
     .width(0)
     .height(0);
   }
-*/
 });

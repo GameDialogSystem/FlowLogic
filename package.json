@@ -3,16 +3,24 @@
   "version": "0.0.0",
   "description": "The default blueprint for ember-cli addons.",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "model",
+    "flow",
+    "graphical",
+    "logic"
   ],
   "license": "MIT",
-  "author": "",
+  "author": "Gil Engel",
+  "bugs": {
+    "url": "https://github.com/GameDialogSystem/FlowLogic/issues"
+  },
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "",
+  "repository": "https://github.com/GameDialogSystem/FlowLogic",
   "scripts": {
+    "postinstall": "npm rebuild node-sass",
     "build": "ember build",
     "start": "ember server",
     "test": "ember try:each"
@@ -20,9 +28,9 @@
   "dependencies": {
     "ember-cli-babel": "^6.11.0",
     "ember-cli-htmlbars": "^2.0.1",
-    "perfect-scrollbar": "^1.3.0",
     "snapsvg": "^0.5.1"
   },
+
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
     "ember-ajax": "^3.0.0",
@@ -34,10 +42,11 @@
     "ember-cli-htmlbars-inline-precompile": "^1.0.0",
     "ember-cli-inject-live-reload": "^1.4.1",
     "ember-cli-qunit": "^4.2.1",
-    "ember-cli-sass": "^7.1.3",
+    "ember-cli-sass": "^7.1.4",
     "ember-cli-shims": "^1.2.0",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-uglify": "^1.2.0",
+    "ember-cli-sass": "^7.1.4",
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-export-application-global": "^2.0.0",
     "ember-load-initializers": "^1.0.0",
