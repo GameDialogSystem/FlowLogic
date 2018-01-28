@@ -1,9 +1,15 @@
 import Ember from 'ember';
 import layout from '../templates/components/multi-selection';
 
-import BrowserScrolling from '../mixins/browser-scrolling';
 
-export default Ember.Component.extend(BrowserScrolling, {
+/**
+ * Component that allows the user to select multiple elements at the same time.
+ * The component calculates an area defined by the users mouse movement and clicks
+ * that can be passed to child elements. Within the child elements you can check
+ * if the child is inside the selection bounds or not. In this way the component
+ * is very independent from children and can be used more freely.
+ */
+export default Ember.Component.extend({
   layout,
 
   tagName: 'multi-selection',
@@ -22,6 +28,19 @@ export default Ember.Component.extend(BrowserScrolling, {
   mouseUpListener : null,
 
 
+  /**
+   * selectionChanged - Observes all changes of the selection bounding rectangle
+   * and recalculates the selection attribute that stores this rectangle
+   *
+   * @param  {number} "startX"  the x coordinate of the top left corner of the
+   * selection bounds
+   * @param  {number} "startY"  the y coordinate of the top left corner of the
+   * selection bounds
+   * @param  {number} "endX"    the x coordinate of the bottom right corner of the
+   * selection bounds
+   * @param  {number} "endY"    the y coordinate of the bottom right corner of the
+   * selection bounds
+   */
   selectionChanged: Ember.observer("startX", "startY", "endX", "endY", function(){
     const startX = this.get("startX");
     const startY = this.get("startY");
@@ -38,28 +57,6 @@ export default Ember.Component.extend(BrowserScrolling, {
       "width": negativeEndX ? (startX - endX) : (endX - startX),
       "height": negativeEndY ? (startY - endY) : (endY - startY)
     });
-  }),
-
-
-  /**
-   * scrollingOffsetChanged - Observer that is called each time the scrolling
-   * offset of the browser window is changed. This is mostly done by the user
-   * scrolling.
-   *
-   * @param  {type} "scrollOffset.left" description
-   * @param  {type} "scrollOffset.top"  description
-   */
-  scrollingOffsetChanged: Ember.observer("scrollOffset.left", "scrollOffset.top", function(){
-    //const left = this.get("scrollOffset.left");
-    //const top = this.get("scrollOffset.top");
-
-    const endX = this.get("endX");
-    const endY = this.get("endY");
-
-    // only update the selection handler if there was a change of the selection
-    if(endX !== null || endY !== null){
-        this.updateSelectionHandlerGeometry(this.get("endX"), this.get("endY"));
-    }
   }),
 
 
@@ -106,23 +103,16 @@ export default Ember.Component.extend(BrowserScrolling, {
       const negativeEndX = (endX < startX);
       const negativeEndY = (endY < startY);
 
-      // get scroll offset object from the browser scrolling mixin
-      // to respond to scroll events
-      const scrollOffsetStart = this.get("scrollOffsetStart");
-      const scrollOffsetStartLeft = scrollOffsetStart.left;
-      const scrollOffsetStartTop = scrollOffsetStart.top;
+      const scrollOffsetLeft = element.scrollLeft();
+      const scrollOffsetTop = element.scrollTop();
 
-      const scrollOffset = this.getScrollOffset();
-      const scrollOffsetLeft = scrollOffset.left;
-      const scrollOffsetTop = scrollOffset.top;
-
-      const scrollDifferenceWidth = Math.abs(scrollOffsetLeft - scrollOffsetStartLeft);
-      const scrollDifferenceHeight = Math.abs(scrollOffsetTop - scrollOffsetStartTop);
+      const scrollDifferenceWidth = 0; //Math.abs(scrollOffsetLeft - scrollOffsetStartLeft);
+      const scrollDifferenceHeight = 0; //Math.abs(scrollOffsetTop - scrollOffsetStartTop);
 
       // calculate the final position based on scrolling offset,
       // moving the selection handle etc.
-      const finalPositionX = (negativeEndX ? endX : startX) + scrollOffsetStartLeft;
-      const finalPositionY = (negativeEndY ? endY : startY) + scrollOffsetStartTop;
+      const finalPositionX = (negativeEndX ? endX : startX) + scrollOffsetLeft;
+      const finalPositionY = (negativeEndY ? endY : startY) + scrollOffsetTop;
 
       // the selection indicator element
       const selectionIndicator = Ember.$(this.element).find(".flow-selection-indicator");
@@ -168,8 +158,6 @@ export default Ember.Component.extend(BrowserScrolling, {
       this.set("startX", e.clientX - element.offset().left);
       this.set("startY", e.clientY - element.offset().top);
       this.set("selectionModeEnabled", true);
-
-      this.set("scrollOffsetStart", this.getScrollOffset());
 
       this.set('mouseMoveListener', function(e){
         self.mouseMove(e);

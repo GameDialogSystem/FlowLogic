@@ -5,18 +5,27 @@ import MovableContainerMixin from '../mixins/movable-container';
 import layout from '../templates/components/flow-container';
 
 
-import { once } from '@ember/runloop';
-
 /**
-* Renders a container component where all flow blocks are displayed.
-* Also all connections are rendered within this container.
-*/
+ * Renders a container component where all flow blocks are displayed.
+ * Also all connections are rendered within this container.
+ *
+ * @see {@link ScrollingMixin}
+ * @see {@link MovableContainerMixin}
+ */
 export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
   layout,
 
   tagName: 'flow-container',
 
+  /**
+   * Scrolling offset horizontally caused by the user due to scrolling
+   */
   scrollLeft: 0,
+
+
+  /**
+   * Scrolling offset vertically caused by the user due to scrolling
+   */
   scrollTop: 0,
 
 
@@ -61,77 +70,50 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
     return Ember.String.htmlSafe(`width:${this.get('width')}; height:${this.get("height")}}`);
   }),
 
+
+  /**
+   * relayouted - Observes all positional changes of single elements and adjusts
+   * the size of the parent container element accordingly. This is needed
+   * to set the correct size of the svg element and therefore the correct
+   * rendering of all connections between elements
+   *
+   * @todo currently this method uses a very ugly workaround with a fixed
+   * delay to set the size. This behaviour need to be changed to a more robust
+   * and dynamically behaviour in order prevent timing issues on different
+   * systems
+   */
   relayouted : Ember.observer("blocks.@each.x", function(){
     const self = this;
 
-// TODO get rid of the ugly workaround with the timeout
-    setTimeout(function () {
+    // TODO get rid of the ugly workaround with the timeout
+     setTimeout(function () {
       const element = Ember.$(self.element).get(0);
 
       self.set("width", element.scrollWidth);
       self.set("height", element.scrollHeight);
     }, 1000);
-  }),
 
-  didInsertElement: function() {
-    const self = this;
-
-    this._super(...arguments);
-
-    Ember.$(this.element).scroll(function() {
-      self.set("scrollLeft", Ember.$(this).scrollLeft());
-    });
-  },
-
-  offsetX : Ember.computed("scrollOffsetX", "relocateOffsetX", function(){
-    const scrollOffsetX = this.get("scrollOffsetX");
-    const relocateOffsetX = this.get("relocateOffsetX");
-
-    if(scrollOffsetX === undefined && relocateOffsetX === undefined){
-      return 0;
-    }
-
-    if(scrollOffsetX === undefined && relocateOffsetX !== undefined){
-      return relocateOffsetX;
-    }
-
-    if(scrollOffsetX !== undefined && relocateOffsetX === undefined){
-      return scrollOffsetX;
-    }
-
-    if(scrollOffsetX !== undefined && relocateOffsetX !== undefined){
-      return scrollOffsetX + relocateOffsetX;
-    }
-  }),
-
-
-  offsetY : Ember.computed("scrollOffsetY", "relocateOffsetY", function(){
-    const scrollOffsetY = this.get("scrollOffsetY");
-    const relocateOffsetY = this.get("relocateOffsetY");
-
-    if(scrollOffsetY === undefined && relocateOffsetY === undefined){
-      return 0;
-    }
-
-    if(scrollOffsetY === undefined && relocateOffsetY !== undefined){
-      return relocateOffsetY;
-    }
-
-    if(scrollOffsetY !== undefined && relocateOffsetY === undefined){
-      return scrollOffsetY;
-    }
-
-    if(scrollOffsetY !== undefined && relocateOffsetY !== undefined){
-      return scrollOffsetY + relocateOffsetY;
-    }
   }),
 
   actions: {
+
+    /**
+     * reroute - Sets the showReconnector property to true to show a
+     * connection to visualize the reconnection process. Also start and end
+     * coordinates for the connection are set so that the connection is
+     * displayed properly
+     *
+     * @param  {Point} start coordinates of the start point for the reconnection
+     * connection. This is usually an output of a block
+     * @param  {Point} end   coordinates of the end point for the reconnection
+     * connection. This is usually an arbitrary point not related to any block
+     */
     reroute: function(start, end){
       this.set('showReconnector', true);
       this.set('start', start);
       this.set('end', end);
     },
+
 
     /**
      * Use this function to add a block to the model. Overwrite this function
@@ -151,6 +133,7 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
       }
     },
 
+
     /**
      * deletes the block from the container and all related connections
      * to this element.
@@ -165,6 +148,7 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
         deleteBlock(block);
       }
     },
+
 
     /**
      * action will triggered if the user reroutes a connection to the container
@@ -181,10 +165,6 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
       this.set('showReconnector', false);
 
       this.get('onAddNewElement')(output, point);
-    },
-
-    handleScroll: function(scrollOffset, event){
-      this.set("offsetY", scrollOffset);
     },
   },
 });

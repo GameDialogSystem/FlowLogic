@@ -36,6 +36,7 @@ export default Ember.Mixin.create({
     }
   }),
 
+
   /**
    * Returns the offset of the parent element as an object.
    * The object has the form {left: x, top: x}.
@@ -43,6 +44,7 @@ export default Ember.Mixin.create({
   getParentOffset: function(){
     return Ember.$(this.element).parent().offset();
   },
+
 
   /**
    * Gets the size of the parent element and returns this as an object.
@@ -54,6 +56,7 @@ export default Ember.Mixin.create({
 
     return {width: parent.width(), height: parent.height()};
   },
+
 
   /**
    * Calculates the margin to the parent element based on the actual position
@@ -73,6 +76,7 @@ export default Ember.Mixin.create({
       bottom: (parentOffset.top + parentSize.height) - (offset.top + element.height())
     };
   },
+
 
   /**
    * Returns the centered position of the connector. Be aware that this function
@@ -112,6 +116,7 @@ export default Ember.Mixin.create({
     };
   },
 
+
   /**
    * Returns the actual mouse position subtracted with the offset of the container
    * element.
@@ -125,6 +130,7 @@ export default Ember.Mixin.create({
 
     return {'x': x, 'y': y};
   },
+
 
   /**
    * Updates the position as defined in the model to the new location.
@@ -151,6 +157,7 @@ export default Ember.Mixin.create({
       }
     });
   },
+
 
   /**
    * Handles pressing the mouse button and registers document listeners in
@@ -180,6 +187,7 @@ export default Ember.Mixin.create({
     }
   },
 
+
   /**
    * Handles releasing the mouse button and unregisters the document listeners
    * that were added during the mouseDown action. Also the 'moveStart' will be
@@ -198,6 +206,7 @@ export default Ember.Mixin.create({
     document.removeEventListener('mousemove', this.get('mouseMoveListener'));
     document.removeEventListener('mouseup', this.get('mouseUpListener'));
   },
+
 
   /**
    * Observer to respond if the user scrolled or changed the position of the

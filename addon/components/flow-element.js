@@ -30,11 +30,11 @@ export default Ember.Component.extend(MovableMixin, {
      },
    },
 
-   style: Ember.computed('model.x', 'model.y', 'offsetX', 'offsetY',
+   style: Ember.computed('model.x', 'model.y',
                          'model.width', 'model.height', function()
    {
-     return Ember.String.htmlSafe(`left: ${this.get("model.x") + this.get("offsetX")}px; `+
-                                  `top: ${this.get("model.y") - this.get("offsetY")}px; `+
+     return Ember.String.htmlSafe(`left: ${this.get("model.x")}px; `+
+                                  `top: ${this.get("model.y")}px; `+
                                   `width: ${this.get("model.width")}px; ` +
                                   `min-height: ${this.get("model.height")}px`);
    }),

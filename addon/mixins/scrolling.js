@@ -5,15 +5,28 @@ import Ember from 'ember';
  * Mixin to allow scrolling within a container
  */
 export default Ember.Mixin.create({
+  /**
+   * Property to toggle the scroll offset calculation via pressing the mouse
+   * wheel button
+   */
   scrollModeEnabled : false,
+
+
+  /**
+   * stores the x coordinate of the mouse cursor to calculate the difference
+   * between current position and the position when the user entered the
+   * scroll mode.
+   */
   scrollStartPositionX : 0,
+
+
+  /**
+   * stores the y coordinate of the mouse cursor to calculate the difference
+   * between current position and the position when the user entered the
+   * scroll mode.
+   */
   scrollStartPositionY : 0,
 
-  scrollOffsetX : 0,
-  scrollOffsetY : 0,
-
-  currentScrollOffsetX : 0,
-  currentScrollOffsetY : 0,
 
   /**
    * Handle the mouse down action to enable scrolling with the middle
@@ -25,10 +38,13 @@ export default Ember.Mixin.create({
     // pressed mouse button was the middle mouse button
     if(e.button == 1){
       this.set('scrollModeEnabled', true);
+      const element = Ember.$(this.element);
+
       this.set('scrollStartPositionX', e.clientX);
-      this.set('scrollStartPositionY', e.clientY);
+      this.set('scrollStartPositionY', element.scrollTop() + e.clientY);
     }
   },
+
 
   /**
    * calculates the offset caused by scrolling and sets the value to the
@@ -39,29 +55,33 @@ export default Ember.Mixin.create({
     this._super(...arguments);
 
     if(this.get('scrollModeEnabled') === true){
-      let x = e.clientX;
-      let y = e.clientY;
+      const element = Ember.$(this.element);
+      const x = e.clientX;
+      const y = e.clientY;
 
-      let scrollStartX = this.get('scrollStartPositionX');
-      let scrollStartY = this.get('scrollStartPositionY');
+      const scrollStartX = this.get('scrollStartPositionX');
+      const scrollStartY = this.get('scrollStartPositionY');
 
-      Ember.run.schedule('afterRender', this, function(){
-        this.set('scrollOffsetX', x-scrollStartX + this.get('currentScrollOffsetX'));
-        this.set('scrollOffsetY', y-scrollStartY + this.get('currentScrollOffsetY'));
-      });
+      const differenceX = (x - scrollStartX) * 0.1;
+      const differenceY = (y - scrollStartY) * 0.1;
+
+
+      element.scrollLeft(element.scrollLeft() + differenceX);
+      element.scrollTop(element.scrollTop() + differenceY);
     }
   },
+
 
   /**
    * disables the scroll mode and sets the current scroll offset to a fixed
    * value.
    */
-  mouseUp: function(){
+  mouseUp: function(e){
     this._super(...arguments);
 
-    this.set('scrollModeEnabled', false);
-
-    this.set('currentScrollOffsetX', this.get('scrollOffsetX'));
-    this.set('currentScrollOffsetY', this.get('scrollOffsetY'));
+    // leave scrolling mode in case the user released the mousewheel button
+    if(e.button == 1){
+      this.set('scrollModeEnabled', false);
+    }
   },
 });

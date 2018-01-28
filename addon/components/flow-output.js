@@ -14,6 +14,13 @@ export default Ember.Component.extend(ConnectorMixin, {
 
   classNameBindings: ['connected'],
 
+
+  /**
+   * connected - Determines if the output is connected to a block or not
+   *
+   * @return {boolean}                    true if the output is connected, false
+   * otherwise   
+   */
   connected: Ember.computed('model.connection', function(){
     if(this.get('model') === undefined)
       return false;

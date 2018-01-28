@@ -7,12 +7,32 @@ import Ember from 'ember';
 * @mixin
 */
 export default Ember.Mixin.create({
+  /**
+   * property to indicate that the user has started to move the element on the
+   * DOM canvas
+   */
   moveStart : false,
 
+  /**
+   * saves the mouse offset x coordinate
+   */
   mouseOffsetX: 0,
+
+  /**
+   * saves the mouse offset y coordinate
+   */
   mouseOffsetY: 0,
 
+  /**
+   * reference to a mouse move listener to react to mouse events that happens
+   * outside of the element that uses this mixin
+   */
   mouseMoveListener: null,
+
+  /**
+   * reference to a mouse up listener to react to mouse events that happens
+   * outside of the element that uses this mixin
+   */
   mouseUpListener : null,
 
   /**
@@ -37,8 +57,7 @@ export default Ember.Mixin.create({
    * mouseDown - handle the mouse down event. To move an element
    * the movable state is set during this event.
    *
-   * @param  {type} e description
-   * @return {type}   description
+   * @param  {object} e contains the mouse event as an object
    */
   mouseDown: function(e){
     this._super(...arguments);
@@ -71,8 +90,7 @@ export default Ember.Mixin.create({
    * mouseMove - moving an element is caused by moving the mouse while in
    * state "moveStart".
    *
-   * @param  {type} e description
-   * @return {type}   description
+   * @param  {object} e contains the mouse event as an object
    */
   mouseMove: function(e){
     this._super(...arguments);
@@ -105,7 +123,7 @@ export default Ember.Mixin.create({
    * mouseUp - reset the "moveStart" flag after releasing the pressed mouse
    * button to stop moving an element
    *
-   * @return {type}  description
+   * @param  {object} e contains the mouse event as an object
    */
   mouseUp: function(e){
     this._super(...arguments);
