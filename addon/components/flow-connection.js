@@ -18,6 +18,9 @@ export default Ember.Component.extend({
   endX: -1,
   endY: -1,
 
+  offsetX: 0,
+  offsetY: 0,
+
   /**
    * Computes the form of the path that will be displayed to the user
    */
