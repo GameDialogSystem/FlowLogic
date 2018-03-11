@@ -1,4 +1,8 @@
-<svg width="100%" viewBox={{viewbox}} xmlns="http://www.w3.org/2000/svg" version="1.1" style={{svgSize}}>
+<svg width="100%"
+     viewBox={{viewbox}}
+     xmlns="http://www.w3.org/2000/svg"
+     version="1.1"
+     style={{svgSize}}>
   {{#each blocks as |block|}}
     {{#each block.outputs as |output|}}
       {{#if output.isConnected}}
@@ -14,7 +18,7 @@
   {{/each}}
 
   {{#if showReconnector}}
-    {{flow-connection startX=start.x startY=start.y endX=end.x endY=end.y}}
+    {{flow-connection isAnimated=false startX=start.x startY=start.y endX=end.x endY=end.y}}
   {{/if}}
 </svg>
 
@@ -26,7 +30,7 @@
       offsetX=offsetX
       offsetY=offsetY
       zoom=zoom
-      reroute=(action 'reroute')
+      onReroute=(action 'reroute')
       deleteBlock=(action 'deleteBlock')
       connectToNewBlock=(action 'connectToNewBlock')
 

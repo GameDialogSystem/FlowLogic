@@ -71,30 +71,6 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
   }),
 
 
-  /**
-   * relayouted - Observes all positional changes of single elements and adjusts
-   * the size of the parent container element accordingly. This is needed
-   * to set the correct size of the svg element and therefore the correct
-   * rendering of all connections between elements
-   *
-   * @todo currently this method uses a very ugly workaround with a fixed
-   * delay to set the size. This behaviour need to be changed to a more robust
-   * and dynamically behaviour in order prevent timing issues on different
-   * systems
-   */
-  relayouted : Ember.observer("blocks.@each.x", function(){
-    const self = this;
-
-    // TODO get rid of the ugly workaround with the timeout
-     setTimeout(function () {
-      const element = Ember.$(self.element).get(0);
-
-      self.set("width", element.scrollWidth);
-      self.set("height", element.scrollHeight);
-    }, 1000);
-
-  }),
-
   actions: {
 
     /**

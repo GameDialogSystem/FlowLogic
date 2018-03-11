@@ -11,6 +11,22 @@ export default Ember.Component.extend(MovableMixin, {
 
   classNameBindings: ['isSelected:selected'],
 
+  didInsertElement() {
+    this._super(...arguments);
+
+    const self = this;
+    Ember.run.schedule('afterRender', function() {
+      const element = Ember.$(self.element);
+
+      // only set the width and height of the model in case the model is created
+      // locally first and not loaded from the server
+      if(self.get("model.currentState.stateName") === "root.loaded.created.uncommitted"){
+        self.set("model.width", element.width());
+        self.set("model.height", element.height());
+      }
+    });
+  },
+
 
   /**
    * set tabindex to 1 in order to receive keyevents on this component

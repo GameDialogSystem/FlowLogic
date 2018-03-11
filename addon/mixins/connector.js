@@ -1,4 +1,6 @@
 import Ember from 'ember';
+import AnimatedMixin from './animated';
+
 
 /**
 * Implements functionality needed for the connectors of two elements.
@@ -8,8 +10,10 @@ import Ember from 'ember';
 * @mixin
 */
 export default Ember.Mixin.create({
+  offsetX: null,
+  offsetY: null,
 
-  didReceiveAttrs() {
+  init() {
     this._super(...arguments);
 
     // for each dialog line an empty output is generated and has the status
@@ -17,10 +21,9 @@ export default Ember.Mixin.create({
     // and the isLoaded observer is not triggered. Therefore we trigger
     // it at this position so that the output model has the correct coordinates
     if(this.get("model.currentState.stateName") === "root.loaded.created.uncommitted"){
-      this.updatePosition();
+
     }
   },
-
 
   /**
    * isLoaded - Observer that listens for the model state. In case that
@@ -28,6 +31,7 @@ export default Ember.Mixin.create({
    * and the width and height can be set by the DOM element geometry.
    */
   isLoaded: Ember.observer("model.currentState.stateName", function(){
+
     if(this.get("model.currentState.stateName") === "root.loaded.saved"){
       const point = this.getCenteredPosition();
 
@@ -83,14 +87,14 @@ export default Ember.Mixin.create({
    * keeps margin, padding and position in a flex container in mind.
    */
   getCenteredPosition : function(){
-    let parentOffset = Ember.$(this.element).parent().parent().parent().offset();
+    const element = Ember.$(this.element);
+    let parentOffset = element.parents("multi-selection").offset();
     let rect = this.element.getBoundingClientRect();
     //let margin = this.getMarginOfElement();
-    let width = Ember.$(this.element).width();
-    let height = Ember.$(this.element).height();
+    let width = element.width();
+    let height = element.height();
 
-
-    let parent = Ember.$(this.element).parent();
+    let parent = element.parent();
 
     // the correct margin is determined by the flex options of the parent element
     //let correctHorizontalMargin = 0;
@@ -110,8 +114,9 @@ export default Ember.Mixin.create({
       }
     }
 
+
     return {
-      x: (rect.left + width / 2), // - parentOffset.left + 3, //+ correctHorizontalMargin,
+      x: (rect.left + width / 2), //+ element.parents("flow-container").scrollLeft(), // - parentOffset.left + 3, //+ correctHorizontalMargin,
       y: (rect.top + height / 2) - parentOffset.top// + correctVerticalMargin
     };
   },
@@ -130,34 +135,6 @@ export default Ember.Mixin.create({
 
     return {'x': x, 'y': y};
   },
-
-
-  /**
-   * Updates the position as defined in the model to the new location.
-   * Execution is scheduled after DOM rendering completion to prevent
-   * an internal Ember error
-   */
-  updatePosition : function(){
-    const self = this;
-
-    // schedule the modification of the position until the DOM rendering
-    // is done. This is needed to prevent changing the position while Ember
-    // renders the connector - otherwise an error would be generated
-    Ember.run.schedule('afterRender', function() {
-
-      let point = self.getCenteredPosition();
-      let model = self.get('model');
-
-      if(model.get('x') !== point.x){
-        model.set('x', point.x);
-      }
-
-      if(model.get('y') !== point.y){
-        model.set('y', point.y);
-      }
-    });
-  },
-
 
   /**
    * Handles pressing the mouse button and registers document listeners in
@@ -214,7 +191,54 @@ export default Ember.Mixin.create({
    * be changed accordingly.
    * @see {@link updatePosition}
    */
-  elementMoved : Ember.observer('parent.x', 'parent.y', 'scrollOffsetX', 'scrollOffsetY', function(){
-    this.updatePosition();
-  })
+  elementMoved : Ember.observer('parent.x', 'parent.y', function(){
+    const self = this;
+    const element = Ember.$(this.element);
+  }),
+
+  /**
+   * connected - Determines if the output is connected to a block or not
+   *
+   * @return {boolean}                    true if the output is connected, false
+   * otherwise
+   */
+  connected: Ember.computed('model.connection', function(){
+    if(this.get('model') === undefined)
+      return false;
+
+    const content = this.get('model.connection').content;
+    if (content !== undefined && content !== null){
+      return (content.content !== null);
+    }
+
+    return (content !== null);
+  }),
+
+
+
+  parentChanged: Ember.observer('model.belongsTo.x', 'model.belongsTo.y', function() {
+    this.setCSSOffset();
+  }),
+
+  parentOutputsChanged: Ember.observer('model.belongsTo.outputs.length', function() {
+    this.setCSSOffset();
+  }),
+
+  didInsertElement: function(){
+    this.setCSSOffset();
+  },
+
+
+    setCSSOffset: function(){
+      const parentOffset = $(this.element).parents("flow-element").offset();
+      const offset = $(this.element).offset();
+      const width = $(this.element).width();
+
+      this.set('offsetX', offset.left - parentOffset.left);
+      this.set('offsetY', offset.top - parentOffset.top);
+
+      this.set('model.x', this.get('model.belongsTo.x') + width + this.get('offsetX'));
+      this.set('model.y', this.get('model.belongsTo.y') + 10 + this.get('offsetY'));
+    }
+
 });

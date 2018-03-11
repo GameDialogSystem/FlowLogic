@@ -14,6 +14,10 @@ export default Ember.Component.extend({
    */
   tagName: 'path',
 
+  isAnimated: true,
+
+  classNameBindings: ['isAnimated:animated:not-animated'],
+
   /**
    * bind ember attributes to the element to change the visual presentation
    * dynamically
@@ -45,10 +49,10 @@ export default Ember.Component.extend({
    * Computes the form of the path that will be displayed to the user
    */
   d: Ember.computed('startX', 'startY', 'endX', 'endY', function(){
-    const startX = this.get('startX');
+    const startX = this.get('startX') - 10;
     const startY = this.get('startY');
 
-    const endX = this.get('endX');
+    const endX = this.get('endX') - 10;
     const endY = this.get('endY');
 
     const cX = startX;

@@ -12,7 +12,6 @@ export default Point.extend({
 
   belongsTo: DS.belongsTo('block'),
 
-
   /**
    * isConnected - Computes if a output is connected by a connection to a
    * input pin

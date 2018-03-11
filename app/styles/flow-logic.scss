@@ -20,6 +20,20 @@ $margin: 12px;
 $connectorMargin: 2px;
 $connectorSize: 32px;
 
+svg{
+  path{
+    transition: all ease .5s;
+  }
+
+  .animated{
+    transition: all ease .5s;
+  }
+
+  .not-animated{
+    transition: none !important;
+  }
+}
+
 @mixin connector{
   display: block;
   border: solid 1px #BDBDBD;
@@ -28,7 +42,15 @@ $connectorSize: 32px;
   width: #{($connectorSize)-($connectorMargin)*2};
   height: #{($connectorSize)-($connectorMargin)*2};
 
-  transition: background 1s;
+  transition:  all ease .5s;
+}
+
+.transition {
+    transition: all;
+}
+
+.no-transition {
+  transition: none !important;
 }
 
 flow-element{
@@ -47,6 +69,8 @@ flow-element{
   border: none;
   outline: none;
 
+
+  transition: all ease .5s;
 
   background: rgba(255, 255, 255, 0.75);
 
@@ -115,6 +139,8 @@ flow-element{
     justify-content: flex-end;
 
     padding: 6px;
+
+    transition: all ease .5s;
 
     > flow-output{
       @include connector;

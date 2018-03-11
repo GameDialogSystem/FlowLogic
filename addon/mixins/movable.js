@@ -1,12 +1,14 @@
 import Ember from 'ember';
 
+import AnimatedMixin from './animated';
+
 /**
 * Provides methods to make a component movable by using drag and drop.
 * Use this only for components
 *
 * @mixin
 */
-export default Ember.Mixin.create({
+export default Ember.Mixin.create(AnimatedMixin, {
   /**
    * property to indicate that the user has started to move the element on the
    * DOM canvas
@@ -65,11 +67,12 @@ export default Ember.Mixin.create({
     if(e.button == 0 && e.target.tagName !== "TEXTAREA"){
       this.set('moveStart', true);
 
-      const offset = Ember.$(this.element).offset();
-      this.set('mouseOffsetX', e.clientX-offset.left);
-      this.set('mouseOffsetY', e.clientY-offset.top);
+      const element = Ember.$(this.element);
+      const offset = element.offset();
+      this.set('mouseOffsetX', e.clientX - offset.left + element.scrollLeft());
+      this.set('mouseOffsetY', e.clientY - offset.top + element.scrollTop());
 
-      const position = Ember.$(this.element).position();
+      const position = element.position();
       this.set("oldPosition", {"x": position.left, "y": position.top});
 
       const self = this;
@@ -98,16 +101,17 @@ export default Ember.Mixin.create({
     if(this.get('moveStart') && e.target.tagName !== "TEXTAREA"){
       this.set('customLayouted', true);
 
-      const parentOffset = Ember.$(this.element).parent().offset();
+      const element = Ember.$(this.element);
+      const parentOffset = element.parent().offset();
       const x = this.getScaledCoordinate(e.clientX - this.get('mouseOffsetX') - parentOffset.left);
       const y = this.getScaledCoordinate(e.clientY - this.get('mouseOffsetY') - parentOffset.top);
 
-      const position = Ember.$(this.element).position();
+      const position = element.position();
       const elementMovedEvent = this.get("onElementMoved");
 
       const offset = {
-        "x" : x - position.left,
-        "y" : y - position.top
+        "x" : x - position.left + element.scrollLeft(),
+        "y" : y- position.top + element.scrollTop()
       }
 
       if(typeof elementMovedEvent === "function"){

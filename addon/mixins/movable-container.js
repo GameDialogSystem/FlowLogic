@@ -16,12 +16,12 @@ export default Ember.Mixin.create({
       }
 
 
-      selectedElements.forEach((value/*, key*/) => {
+      selectedElements.forEach((value) => {
         const position = value.get("model.position");
 
         if(offset.x != 0 || offset.y != 0){
-          value.set("model.x", value.get("model.x") + offset.x);
-          value.set("model.y", value.get("model.y") + offset.y);
+          value.set("model.x", offset.x);
+          value.set("model.y", offset.y);
         }
       });
     },

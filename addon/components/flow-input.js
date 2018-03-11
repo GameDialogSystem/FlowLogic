@@ -13,15 +13,4 @@ export default Ember.Component.extend(ConnectorMixin, {
   rerouting: false,
 
   classNameBindings: ['connected'],
-
-  /**
-   * returns if the input connector is connected with an output connector
-   * or not.
-   *
-   * @returns {boolean} If connected with an output connector, this will
-   * return true, otherwise false will be returned
-   */
-  connected: Ember.computed('model.connection', function(){
-    return (this.get('model.connection').content != null);
-  }),
 });

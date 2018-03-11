@@ -48,12 +48,16 @@ export default Ember.Mixin.create({
    * childrenWidth - Calculates the width of all the children needed for the
    * layouting algorithm.
    */
-  childrenWidth : Ember.computed('children.@each.childrenWidth', function() {
+  childrenWidth : computed("relayoutTimestamp",
+                           "width",
+                           "children.@each.width",
+                           "parent.children.@each.childrenWidth", function(){
     if(this.get("children.length") === 0){
       return this.get("width");
     }
 
     let width = 0;
+
     this.get("children").forEach(function(child, index){
       width += child.get("childrenWidth");
     });
@@ -102,7 +106,7 @@ export default Ember.Mixin.create({
         nextLine.set("relayoutTimestamp", self.get("relayoutTimestamp"));
 
         // increament the x coordinate accordingly to the width and margin
-        continuousX += nextLine.get("width") + self.get("margin");
+        continuousX += nextLine.get("childrenWidth") + self.get("margin");
       }
     });
   })

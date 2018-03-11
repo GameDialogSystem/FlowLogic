@@ -31,12 +31,17 @@ export default Rectangle.extend(LayoutableMixin, {
    * but can be used for multiple purposes for example to validate that a block
    * is always connected to another one
    */
-  children: Ember.computed("outputs", function(){
+  children: Ember.computed("outputs.@each.isConnected", function(){
     const outputs = this.get('outputs').filterBy('isConnected', true);
+
 
     let children = new Array();
     outputs.forEach(function(output, index){
-      children.push(output.get("connection.input.belongsTo"));
+      const child = output.get("connection.input.belongsTo");
+
+      if(child !== undefined){
+        children.push(child);
+      }
     });
 
     return Ember.A(children);
