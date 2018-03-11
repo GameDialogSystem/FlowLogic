@@ -23,6 +23,8 @@ export default Ember.Mixin.create({
    */
   margin: 20,
 
+  
+
 
   /**
    * Computes the parent node of a block. This is needed to get the size of

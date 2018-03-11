@@ -22,11 +22,30 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
    */
   scrollLeft: 0,
 
+  width : 0,
+  height: 0,
+
+  didInsertElement: function(){
+    this.set('width', $(this.element).width());
+    this.set('height', $(this.element).height());
+  },
+
 
   /**
    * Scrolling offset vertically caused by the user due to scrolling
    */
   scrollTop: 0,
+
+  foo: Ember.observer('blocks.@each.childrenWidth', function(){
+    const width = this.get('blocks.firstObject.childrenWidth');
+
+    if(!isNaN(width)){
+      console.log(width + "  "+ this.get('width'));
+      if(width > this.get('width')){
+        this.set("width", width);
+      }
+    }
+  }),
 
 
   /**
@@ -47,8 +66,8 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
   viewbox: Ember.computed('scrollLeft', 'scrollTop', 'width', 'height', function() {
     const scrollLeft = 0; //this.get('scrollLeft');
     const scrollTop = this.get('scrollTop');
-    const width = Ember.$(this.element).get(0).scrollWidth;
-    const height = Ember.$(this.element).height();
+    const width = this.get("width"); //Ember.$(this.element).get(0).scrollWidth;
+    const height = this.get("height"); //Ember.$(this.element).height();
 
     return Ember.String.htmlSafe(`${scrollLeft} ${scrollTop} ${width} ${height}`);
   }),
@@ -67,7 +86,7 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
    * e.g. 1920 1080
    */
   svgSize: Ember.computed('width', 'height', function() {
-    return Ember.String.htmlSafe(`width:${this.get('width')}; height:${this.get("height")}}`);
+    return Ember.String.htmlSafe(`width:${this.get('width')}; height:${this.get("height")}`);
   }),
 
 

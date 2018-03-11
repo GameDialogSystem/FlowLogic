@@ -15,10 +15,7 @@ export default Ember.Mixin.create({
         selectedElements.set(element.get("elementId"), element);
       }
 
-
       selectedElements.forEach((value) => {
-        const position = value.get("model.position");
-
         if(offset.x != 0 || offset.y != 0){
           value.set("model.x", offset.x);
           value.set("model.y", offset.y);

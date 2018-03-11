@@ -110,9 +110,11 @@ export default Ember.Mixin.create(AnimatedMixin, {
       const elementMovedEvent = this.get("onElementMoved");
 
       const offset = {
-        "x" : x - position.left + element.scrollLeft(),
-        "y" : y- position.top + element.scrollTop()
+        "x" : x, // - position.left + element.scrollLeft(),
+        "y" : y //- position.top + element.scrollTop()
       }
+
+
 
       if(typeof elementMovedEvent === "function"){
         elementMovedEvent(offset, this);
