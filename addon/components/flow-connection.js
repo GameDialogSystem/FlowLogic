@@ -16,7 +16,7 @@ export default Ember.Component.extend({
 
   isAnimated: true,
 
-  classNameBindings: ['isAnimated:animated:not-animated'],
+  classNameBindings: ['isAnimated:transition:no-transition'],
 
   /**
    * bind ember attributes to the element to change the visual presentation

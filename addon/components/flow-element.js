@@ -9,7 +9,7 @@ export default Ember.Component.extend(MovableMixin, {
 
   tagName: 'flow-element',
 
-  classNameBindings: ['isSelected:selected'],
+  classNameBindings: ['isSelected:selected', 'customLayouted:no-transition:transition'],
 
   didInsertElement() {
     this._super(...arguments);
@@ -95,7 +95,7 @@ export default Ember.Component.extend(MovableMixin, {
     const isSelected = this.get("isSelected");
 
     if(isSelected){
-      this.get("onElementSelect")(this);
+      this.get("onElementSelect")(this, false);
     }else{
       this.get("onElementUnselect")(this);
     }
@@ -104,7 +104,7 @@ export default Ember.Component.extend(MovableMixin, {
   mouseDown: function(){
     this._super(...arguments);
 
-    this.get("onElementSelect")(this);
+    this.get("onElementSelect")(this, true);
   },
 
   mouseUp: function(){

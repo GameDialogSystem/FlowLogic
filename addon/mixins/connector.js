@@ -1,6 +1,4 @@
 import Ember from 'ember';
-import AnimatedMixin from './animated';
-
 
 /**
 * Implements functionality needed for the connectors of two elements.
@@ -31,7 +29,7 @@ export default Ember.Mixin.create({
    * and the width and height can be set by the DOM element geometry.
    */
   isLoaded: Ember.observer("model.currentState.stateName", function(){
-
+    console.log(this.get("model.currentState.stateName"));
     if(this.get("model.currentState.stateName") === "root.loaded.saved"){
       const point = this.getCenteredPosition();
 
@@ -230,15 +228,18 @@ export default Ember.Mixin.create({
 
 
     setCSSOffset: function(){
-      const parentOffset = $(this.element).parents("flow-element").offset();
-      const offset = $(this.element).offset();
-      const width = $(this.element).width();
+      Ember.run.scheduleOnce('afterRender', this, function(){
+        const parentOffset = $(this.element).parents("flow-element").offset();
+        const offset = $(this.element).offset();
+        const width = $(this.element).width();
 
-      this.set('offsetX', offset.left - parentOffset.left);
-      this.set('offsetY', offset.top - parentOffset.top);
+        this.set('offsetX', offset.left - parentOffset.left);
+        this.set('offsetY', offset.top - parentOffset.top);
 
-      this.set('model.x', this.get('model.belongsTo.x') + width + this.get('offsetX'));
-      this.set('model.y', this.get('model.belongsTo.y') + 10 + this.get('offsetY'));
+        this.set('model.x', this.get('model.belongsTo.x') + width + this.get('offsetX'));
+        this.set('model.y', this.get('model.belongsTo.y') + 10 + this.get('offsetY'));
+      });
+
     }
 
 });

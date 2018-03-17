@@ -20,19 +20,14 @@ $margin: 12px;
 $connectorMargin: 2px;
 $connectorSize: 32px;
 
+$transition: all ease .5s;
+
 svg{
   path{
-    transition: all ease .5s;
-  }
-
-  .animated{
-    transition: all ease .5s;
-  }
-
-  .not-animated{
-    transition: none !important;
+    stroke: color($accent, '500');
   }
 }
+
 
 @mixin connector{
   display: block;
@@ -42,11 +37,11 @@ svg{
   width: #{($connectorSize)-($connectorMargin)*2};
   height: #{($connectorSize)-($connectorMargin)*2};
 
-  transition:  all ease .5s;
+  transition: $transition;
 }
 
 .transition {
-    transition: all;
+    transition: $transition;
 }
 
 .no-transition {
@@ -69,10 +64,7 @@ flow-element{
   border: none;
   outline: none;
 
-
-  transition: all ease .5s;
-
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba($cards, 0.85);
 
   > div{
     position: relative;
@@ -166,7 +158,7 @@ flow-element{
     > .actor{
       position: relative;
 
-      background-color: #546E7A;
+      background-color: color($accent, '500');
       width: 64px;
       height: 64px;
 
@@ -188,25 +180,9 @@ flow-element{
       margin-left: 1em;
     }
   }
-
-  textarea{
-    background: transparent;
-    resize: none;
-
-    box-sizing: border-box;
-    border-bottom: 1px solid #E0E0E0 !important;
-
-    transition: border 200ms;
-  }
-
-  textarea:focus {
-    outline: none !important;
-
-    border-bottom: 2px solid #01579B !important;
-  }
 }
 .connected{
-  background: #78909C;
+  background: color($accent, '500');
   border: none;
 }
 

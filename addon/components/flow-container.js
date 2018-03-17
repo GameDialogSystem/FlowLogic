@@ -30,7 +30,6 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
     this.set('height', $(this.element).height());
   },
 
-
   /**
    * Scrolling offset vertically caused by the user due to scrolling
    */
@@ -40,7 +39,7 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
     const width = this.get('blocks.firstObject.childrenWidth');
 
     if(!isNaN(width)){
-      console.log(width + "  "+ this.get('width'));
+
       if(width > this.get('width')){
         this.set("width", width);
       }
@@ -161,5 +160,12 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
 
       this.get('onAddNewElement')(output, point);
     },
+
+
+    onElementEdit: function(id){
+      const onElementEdit = this.get('onElementEdit');
+
+      onElementEdit(id);
+    }
   },
 });

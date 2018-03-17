@@ -23,7 +23,7 @@ export default Ember.Mixin.create({
    */
   margin: 20,
 
-  
+
 
 
   /**
@@ -54,6 +54,8 @@ export default Ember.Mixin.create({
                            "width",
                            "children.@each.width",
                            "parent.children.@each.childrenWidth", function(){
+
+    // element without children will just return their own width
     if(this.get("children.length") === 0){
       return this.get("width");
     }
@@ -64,6 +66,7 @@ export default Ember.Mixin.create({
       width += child.get("childrenWidth");
     });
 
+    // add margin between elements
     width += (this.get("children.length") - 1) * this.get("margin");
 
     return width;

@@ -1,14 +1,12 @@
 import Ember from 'ember';
 
-import AnimatedMixin from './animated';
-
 /**
 * Provides methods to make a component movable by using drag and drop.
 * Use this only for components
 *
 * @mixin
 */
-export default Ember.Mixin.create(AnimatedMixin, {
+export default Ember.Mixin.create({
   /**
    * property to indicate that the user has started to move the element on the
    * DOM canvas
@@ -89,6 +87,22 @@ export default Ember.Mixin.create(AnimatedMixin, {
     }
   },
 
+  handleConnectionAnimations: Ember.observer('customLayouted', function() {
+    const element = Ember.$(this.element);
+    const enabled = !this.get('customLayouted');
+
+    $(element.parents("flow-container")
+    .children("svg")[0])
+    .children("path")
+    .each(function(index, object){
+      if(enabled){
+        $(object).addClass("transition");
+      }else{
+        $(object).removeClass("transition")
+      }
+    })
+  }),
+
   /**
    * mouseMove - moving an element is caused by moving the mouse while in
    * state "moveStart".
@@ -102,6 +116,7 @@ export default Ember.Mixin.create(AnimatedMixin, {
       this.set('customLayouted', true);
 
       const element = Ember.$(this.element);
+
       const parentOffset = element.parent().offset();
       const x = this.getScaledCoordinate(e.clientX - this.get('mouseOffsetX') - parentOffset.left);
       const y = this.getScaledCoordinate(e.clientY - this.get('mouseOffsetY') - parentOffset.top);
@@ -136,6 +151,7 @@ export default Ember.Mixin.create(AnimatedMixin, {
 
     if(this.get('moveStart') && e.target.tagName !== "TEXTAREA"){
       this.set('moveStart', false);
+      this.set('customLayouted', false);
 
       document.removeEventListener('mousemove', this.get('mouseMoveListener'));
       document.removeEventListener('mouseup', this.get('mouseUpListener'));

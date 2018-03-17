@@ -6,6 +6,8 @@ import Ember from 'ember';
  */
 export default Ember.Mixin.create({
   selectedElements : new Map(),
+  focusedElement: null,
+
 
   actions: {
     elementMoved: function(offset, element){
@@ -15,10 +17,15 @@ export default Ember.Mixin.create({
         selectedElements.set(element.get("elementId"), element);
       }
 
+      const x = this.get('focusedElement.model.x');
+      const y = this.get('focusedElement.model.y');
+
       selectedElements.forEach((value) => {
+        value.set('customLayouted', true);
+
         if(offset.x != 0 || offset.y != 0){
-          value.set("model.x", offset.x);
-          value.set("model.y", offset.y);
+          value.set("model.x", value.get("model.x") - x + offset.x);
+          value.set("model.y", value.get("model.y") - y + offset.y);
         }
       });
     },
@@ -31,9 +38,13 @@ export default Ember.Mixin.create({
      * @param  {object} element the object that is about to be added to the list
      * of selected elements
      */
-    elementSelected: function(element){
+    elementSelected: function(element, focused){
       if(element === undefined){
         throw TypeError("you cannot pass an undefined element to the list of selected elements");
+      }
+
+      if(focused){
+        this.set('focusedElement', element);
       }
 
       const selectedElements = this.get("selectedElements");
