@@ -2,6 +2,7 @@
 import Ember from 'ember';
 import ScrollingMixin from '../mixins/scrolling';
 import MovableContainerMixin from '../mixins/movable-container';
+import MultiselectionContainerMixin from '../mixins/multiselection-container';
 import layout from '../templates/components/flow-container';
 
 
@@ -11,8 +12,9 @@ import layout from '../templates/components/flow-container';
  *
  * @see {@link ScrollingMixin}
  * @see {@link MovableContainerMixin}
+ * @see {@link MultiselectionContainerMixin}
  */
-export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
+export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, MultiselectionContainerMixin, {
   layout,
 
   tagName: 'flow-container',
@@ -26,14 +28,25 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
   height: 0,
 
   didInsertElement: function(){
-    this.set('width', $(this.element).width());
-    this.set('height', $(this.element).height());
+    this.set('width', Ember.$(this.element).width());
+    this.set('height', Ember.$(this.element).height());
   },
 
   /**
    * Scrolling offset vertically caused by the user due to scrolling
    */
   scrollTop: 0,
+
+  observerHeight: Ember.observer('blocks.length', function() {
+    let maxY = 0;
+    this.get('blocks').forEach((block) => {
+      if(block.get('y') > maxY){
+        maxY = block.get('y');
+      }
+    })
+
+    this.set('height', maxY + 400);
+  }),
 
   foo: Ember.observer('blocks.@each.childrenWidth', function(){
     const width = this.get('blocks.firstObject.childrenWidth');
@@ -84,8 +97,8 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
    * @return {string}            A string in the form of width height
    * e.g. 1920 1080
    */
-  svgSize: Ember.computed('width', 'height', function() {
-    return Ember.String.htmlSafe(`width:${this.get('width')}; height:${this.get("height")}`);
+  style: Ember.computed('width', 'height', function() {
+    return Ember.String.htmlSafe(`left: 0px; top: 0px; width:${this.get('width')}px; height:${this.get("height")}px`);
   }),
 
 
@@ -117,10 +130,11 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
      * @param {Point} point - the position where the mouse button was released and
      * the new block should be inserted
      */
-    connectToNewBlock: function(output, point){
-      let connectToNewBlock = this.get('connectToNewBlock');
+    onConnectToNewBlock: function(output, point){
+      const connectToNewBlock = this.get('onConnectToNewBlock');
+      const connected = output.get('isConnected');
 
-      if(connectToNewBlock !== null){
+      if(connectToNewBlock !== null && !connected){
         this.set('showReconnector', false);
 
         connectToNewBlock(output, point);
@@ -135,8 +149,8 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, {
      * @param {FlowElement} block - the block that the user want to remove
      * from the model
      */
-    deleteBlock: function(block){
-      let deleteBlock = this.get('deleteBlock');
+    onDeleteBlock: function(block){
+      let deleteBlock = this.get('onDeleteBlock');
 
       if(deleteBlock !== null || deleteBlock !== undefined){
         deleteBlock(block);

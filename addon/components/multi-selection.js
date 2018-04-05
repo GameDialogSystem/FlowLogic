@@ -14,6 +14,11 @@ export default Ember.Component.extend({
 
   tagName: 'multi-selection',
 
+  // bind tabIndex to attribute in order to receive keypress events on the
+  // element and react accordingly
+  attributeBindings: ['tabIndex', 'style'],
+  tabIndex: '0',
+
   startX : null,
   startY : null,
 

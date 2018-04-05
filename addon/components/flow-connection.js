@@ -14,6 +14,11 @@ export default Ember.Component.extend({
    */
   tagName: 'path',
 
+  /**
+  * Controls if the connection should be animated or not. This currently works
+  * only in Chromium. Disabling animations is necessary in case the user
+  * choose a custom layout to avoid a delay of the connection rendering
+  */
   isAnimated: true,
 
   classNameBindings: ['isAnimated:transition:no-transition'],
@@ -73,12 +78,6 @@ export default Ember.Component.extend({
    * Disable fill for stroke lines
    */
   fill: 'none',
-
-  /**
-   * Defines the color of the stroke line. This may change in future to a css
-   * implementation.
-   */
-  stroke: '#78909C',
 
   /**
    * Sets the width for the stroke line

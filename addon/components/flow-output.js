@@ -36,19 +36,26 @@ export default Ember.Component.extend(ConnectorMixin, {
   */
   mouseUp : function(e){
     e.preventDefault();
+
+    if(e.target.tagName !== "MULTI-SELECTION"){
+      return;
+    }
+
     if(this.get('moveStart')){
       this._super(e);
 
-      this.get('connectToNewBlock')(this.get('model'), this.getCorrectMousePosition(e));
+      if(!this.get('model.isConnected')){
+        this.get('connectToNewBlock')(this.get('model'), this.getCorrectMousePosition(e));
+      }
     }
   },
 
   getCenteredPosition : function(){
-    let boundingRectangle = this.element.getBoundingClientRect();
-    let parentOffset = $(this.element).parents("flow-container").offset();
-    let blockElementBoundingRectangle = $(this.element).parents("flow-element")[0].getBoundingClientRect();
+    //let boundingRectangle = this.element.getBoundingClientRect();
+    //let parentOffset = Ember.$(this.element).parents("flow-container").offset();
+    //let blockElementBoundingRectangle = Ember.$(this.element).parents("flow-element")[0].getBoundingClientRect();
 
-    const x = boundingRectangle.left - blockElementBoundingRectangle.left + 10 + boundingRectangle.width / 2;
+    //const x = boundingRectangle.left - blockElementBoundingRectangle.left + 10 + boundingRectangle.width / 2;
 
     return {
       'x': this.get("model.x"),

@@ -62,7 +62,7 @@ export default Ember.Mixin.create({
 
     let width = 0;
 
-    this.get("children").forEach(function(child, index){
+    this.get("children").forEach(function(child){
       width += child.get("childrenWidth");
     });
 
@@ -94,7 +94,7 @@ export default Ember.Mixin.create({
 
     let continuousX = 0;
     const outputs = this.get('outputs').filterBy('isConnected', true);
-    outputs.forEach(function(output, index){
+    outputs.forEach(function(output){
       // reference to the child element
       const nextLine = output.get("connection.input.belongsTo");
       const nextLineOutputs = nextLine.get('outputs').filterBy('isConnected', true);

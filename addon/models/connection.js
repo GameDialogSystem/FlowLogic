@@ -8,5 +8,5 @@ import DS from 'ember-data';
  */
 export default Model.extend({
   input: DS.belongsTo('input'),
-  output: DS.belongsTo('output')
+  output: DS.belongsTo('output'),
 });

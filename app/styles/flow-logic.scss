@@ -9,11 +9,15 @@ flow-container{
   padding: 10px;
   padding-right: 0px;
 
-  multi-selection{
-    position: absolute;
-    top: 10px;
-    left: 10px;
+  display: flex;
+
+  > multi-selection{
+    position: relative;
+    z-index: 1;
+
+    outline: none;
   }
+
 }
 
 $margin: 12px;
@@ -204,12 +208,4 @@ div.flow-selection-indicator{
 .selected{
   background: #E6EE9C;
   box-sizing: border-box;
-}
-
-multi-selection{
-  position: relative;
-  z-index: 1;
-
-  width: 100%;
-  height: 100%;
 }

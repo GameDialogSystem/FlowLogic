@@ -91,14 +91,14 @@ export default Ember.Mixin.create({
     const element = Ember.$(this.element);
     const enabled = !this.get('customLayouted');
 
-    $(element.parents("flow-container")
+    Ember.$(element.parents("flow-container")
     .children("svg")[0])
     .children("path")
     .each(function(index, object){
       if(enabled){
-        $(object).addClass("transition");
+        Ember.$(object).addClass("transition");
       }else{
-        $(object).removeClass("transition")
+        Ember.$(object).removeClass("transition")
       }
     })
   }),
@@ -121,7 +121,7 @@ export default Ember.Mixin.create({
       const x = this.getScaledCoordinate(e.clientX - this.get('mouseOffsetX') - parentOffset.left);
       const y = this.getScaledCoordinate(e.clientY - this.get('mouseOffsetY') - parentOffset.top);
 
-      const position = element.position();
+      //const position = element.position();
       const elementMovedEvent = this.get("onElementMoved");
 
       const offset = {

@@ -24,6 +24,7 @@ export default Ember.Mixin.create({
         value.set('customLayouted', true);
 
         if(offset.x != 0 || offset.y != 0){
+          //value.set("model.width", value.get("model.x") - x + offset.x)
           value.set("model.x", value.get("model.x") - x + offset.x);
           value.set("model.y", value.get("model.y") - y + offset.y);
         }

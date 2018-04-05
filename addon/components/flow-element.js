@@ -1,7 +1,5 @@
 import Ember from 'ember';
-
 import MovableMixin from '../mixins/movable';
-
 import layout from '../templates/components/flow-element';
 
 export default Ember.Component.extend(MovableMixin, {
@@ -10,6 +8,7 @@ export default Ember.Component.extend(MovableMixin, {
   tagName: 'flow-element',
 
   classNameBindings: ['isSelected:selected', 'customLayouted:no-transition:transition'],
+
 
   didInsertElement() {
     this._super(...arguments);
@@ -44,6 +43,14 @@ export default Ember.Component.extend(MovableMixin, {
      cancelReroute: function(output, point){
        this.get('cancelReroute')(output, point);
      },
+
+     onDeleteBlock(model) {
+       const onDeleteBlock = this.get('onDeleteBlock');
+
+       if(onDeleteBlock){
+         onDeleteBlock(model);
+       }
+     }
    },
 
    style: Ember.computed('model.x', 'model.y',
@@ -62,9 +69,9 @@ export default Ember.Component.extend(MovableMixin, {
     */
    isLoaded: Ember.observer("model.currentState.stateName", function(){
      if(this.get("model.currentState.stateName") === "root.loaded.saved"){
-       const element = $(this.element);
+       const element = Ember.$(this.element);
 
-       this.set("model.width", 200);
+       this.set("model.width", element.width());
        this.set("model.height", element.height());
      }
    }),
@@ -83,10 +90,10 @@ export default Ember.Component.extend(MovableMixin, {
    * by pressing the DELETE button.
    */
   keyPress: function(e){
-    let deleteBlock = this.get('deleteBlock');
+    const onDeleteBlock = this.get('onDeleteBlock');
 
-    if(e.keyCode === 127 && (deleteBlock !== null || deleteBlock !== undefined)){
-      deleteBlock(this.get('model'));
+    if(e.keyCode === 127 && (onDeleteBlock !== null || onDeleteBlock !== undefined)){
+      onDeleteBlock(this.get('model'));
     }
   },
 
@@ -101,20 +108,24 @@ export default Ember.Component.extend(MovableMixin, {
     }
   }),
 
-  mouseDown: function(){
+  mouseDown() {
     this._super(...arguments);
 
+    this.set('singleSelection', true);
     this.get("onElementSelect")(this, true);
   },
 
-  mouseUp: function(){
+  mouseUp() {
     this._super(...arguments);
 
+    this.set('singleSelection', false);
     this.get("onElementUnselect")(this);
   },
 
-
-  isSelected: Ember.computed("selection.x", "selection.y", "selection.width", "selection.height", function(){
+  isSelected: Ember.computed("selection.x", "selection.y", "selection.width", "selection.height", 'singleSelection', function() {
+    if(this.get('singleSelection')){
+      return true;
+    }
 
     // rectangle of the user selection in absolute coordinates
     const selection = this.get("selection");
