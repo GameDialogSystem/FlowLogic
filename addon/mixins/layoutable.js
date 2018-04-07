@@ -1,6 +1,4 @@
 import Ember from 'ember';
-import { computed, observer } from '@ember/object';
-
 
 /**
  * Adds the functionallity to layout elements automatically in a tree
@@ -33,7 +31,7 @@ export default Ember.Mixin.create({
    * @return node as a block or polymorphic child in case the parent is defined.
    * In case the node has no parent the function returns undefined
    */
-  parent: computed("inputs.[]", function(){
+  parent: Ember.computed("inputs.[]", function(){
     const input = this.get("inputs.firstObject");
 
     if(input === undefined){
@@ -50,7 +48,7 @@ export default Ember.Mixin.create({
    * childrenWidth - Calculates the width of all the children needed for the
    * layouting algorithm.
    */
-  childrenWidth : computed("relayoutTimestamp",
+  childrenWidth : Ember.computed("relayoutTimestamp",
                            "width",
                            "children.@each.width",
                            "parent.children.@each.childrenWidth", function(){
@@ -77,7 +75,7 @@ export default Ember.Mixin.create({
    * autoLayout - Observes the change of the relayout timestamp in order
    * to relayout all children to their perfect position
    */
-  autoLayout: observer("relayoutTimestamp", function(){
+  autoLayout: Ember.observer("relayoutTimestamp", function(){
     const childrenWidth = this.get("childrenWidth");
     const offsetX = -(childrenWidth / 2) + this.get("width") / 2;
 

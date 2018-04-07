@@ -208,16 +208,8 @@ export default Ember.Mixin.create({
   * @return {boolean}                    true if the output is connected, false
   * otherwise
   */
-  connected: Ember.computed('model.connection', function(){
-    if(this.get('model') === undefined)
-    return false;
-
-    const content = this.get('model.connection').content;
-    if (content !== undefined && content !== null){
-      return (content.content !== null);
-    }
-
-    return (content !== null);
+  connected: Ember.computed('model.isConnected', function(){
+    return this.get('model.isConnected');
   }),
 
 

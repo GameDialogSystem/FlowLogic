@@ -3,8 +3,8 @@ import layout from '../templates/components/flow-input';
 import ConnectorMixin from '../mixins/connector';
 
 /**
-* Connector that will be used to display an input pin on a block element.
-*/
+ * Connector that will be used to display an input pin on a block element.
+ */
 export default Ember.Component.extend(ConnectorMixin, {
   layout,
 
@@ -13,4 +13,5 @@ export default Ember.Component.extend(ConnectorMixin, {
   rerouting: false,
 
   classNameBindings: ['connected'],
+
 });

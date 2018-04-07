@@ -1,8 +1,4 @@
-<svg width="100%"
-     viewBox={{viewbox}}
-     xmlns="http://www.w3.org/2000/svg"
-     version="1.1"
-     style={{style}}>
+<svg width="100%" viewBox= {{viewbox}} xmlns="http://www.w3.org/2000/svg" version="1.1" style= {{style}}>
   {{#each blocks as |block|}}
     {{#each block.outputs as |output|}}
       {{#if output.isConnected}}
@@ -10,6 +6,7 @@
                           startY=output.y
                           endX=output.connection.input.x
                           endY=output.connection.input.y
+                          id=output.connection.id
                           offsetX = offsetX
                           offsetY = offsetY
         }}
@@ -23,21 +20,21 @@
 </svg>
 
 {{#multi-selection style=style as |selection|}}
-  {{#each blocks as |block|}}
-    {{component logicBlockComponent
-      selection=selection
-      model=block
-      offsetX=offsetX
-      offsetY=offsetY
-      zoom=zoom
-      onReroute=(action 'reroute')
-      onDeleteBlock=(action 'onDeleteBlock')
-      onConnectToNewBlock=(action 'onConnectToNewBlock')
+{{#each blocks as |block|}}
+  {{component logicBlockComponent
+    selection=selection
+    model=block
+    offsetX=offsetX
+    offsetY=offsetY
+    zoom=zoom
+    onReroute=(action 'reroute')
+    onDeleteBlock=(action 'onDeleteBlock')
+    onConnectToNewBlock=(action 'onConnectToNewBlock')
 
-      onElementEdit=(action 'onElementEdit' block.id)
-      onElementSelect=(action 'elementSelected')
-      onElementUnselect=(action 'elementUnselected')
-      onElementMoved=(action 'elementMoved')
-    }}
-  {{/each}}
+    onElementEdit=(action 'onElementEdit' block.id)
+    onElementSelect=(action 'elementSelected')
+    onElementUnselect=(action 'elementUnselected')
+    onElementMoved=(action 'elementMoved')
+  }}
+{{/each}}
 {{/multi-selection}}

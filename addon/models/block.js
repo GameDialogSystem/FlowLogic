@@ -1,9 +1,9 @@
+import Ember from 'ember';
 import DS from 'ember-data';
 import Rectangle from './rectangle';
 
 import LayoutableMixin from '../mixins/layoutable';
 
-import { computed } from '@ember/object';
 import { A } from '@ember/array';
 
 /**
@@ -23,9 +23,8 @@ import { A } from '@ember/array';
  */
 export default Rectangle.extend(LayoutableMixin, {
   // allow object oriented programming by setting it to polymorphic
-  inputs: DS.hasMany('input', { polymorphic: true, inverse: "belongsTo"}),
+  inputs: DS.hasMany('input', { polymorphic: true, inverse: "belongsTo" }),
   outputs: DS.hasMany('output', { polymorphic: true, inverse: "belongsTo" }),
-
 
   /**
    * children - computes a list of all children that are connected to this block.
@@ -33,7 +32,7 @@ export default Rectangle.extend(LayoutableMixin, {
    * but can be used for multiple purposes for example to validate that a block
    * is always connected to another one
    */
-  children: computed("outputs.@each.isConnected", function(){
+  children: Ember.computed("outputs.@each.isConnected", function(){
     const outputs = this.get('outputs').filterBy('isConnected', true);
 
 
