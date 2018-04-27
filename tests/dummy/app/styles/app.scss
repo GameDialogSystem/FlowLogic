@@ -1,0 +1,130 @@
+$primary-color: #00897B;
+
+html {
+    height: 100%;
+}
+body {
+  padding: 0;
+  margin: 0;
+
+  height: 100%;
+  margin: 0;
+
+
+}
+
+
+
+.flow-navigation{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  background: $primary-color;
+
+
+
+  display: flex;
+  align-items: flex-end;
+
+  > ul {
+    height: 100%;
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+
+
+    > li {
+      font-size: 1.3em;
+      padding: 0.6em;
+      color: white;
+
+      transition: background 0.3s;
+    }
+
+    > li:hover{
+      background: #00897B;
+      cursor: default;
+    }
+  }
+
+  > .flow-icon {
+    margin: 1em;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    //background: linear-gradient(30deg, #8BC34A, #4FC3F7);
+    border: solid 4px white;
+
+    > h1{
+      font-family: 'Oxygen', sans-serif;
+      color: white;
+      font-size: 2em;
+
+      margin-left: 12px;
+
+      text-shadow: 2px -2px rgba(0, 0, 0, 0.1);
+      position: relative;
+      display: flex;
+
+      padding: 0.2em !important;
+      margin: 0 !important;
+
+      > span:nth-child(1){
+        align-self: flex-start;
+
+      }
+      > span:nth-child(2){
+        align-self: flex-end;
+        margin-top: 1em;
+        margin-left: -2em;
+      }
+
+      > span:nth-child(2):before{
+        position: absolute;
+        content: "";
+        top: 30px;
+        left: -60px;
+        background: green;
+        width:  20px;
+        height: 20px;
+      }
+    }
+  }
+
+  > h1, > ul li{
+    font-family: 'Oxygen', sans-serif;
+  }
+}
+
+.flow-content{
+  margin: 0 auto;
+  margin-top: 150px;
+  width: 80%;
+
+
+  .flow-step{
+    display: flex;
+
+    div:nth-child(1){
+      width: 40%;
+      border-right: $primary-color solid 2px;
+      margin-right: 1em;
+      padding: 1em;
+
+      > h2{
+        font-family: 'Oxygen', sans-serif;
+      }
+    }
+  }
+
+
+}
+
+.flow-logos{
+  > img{
+    height: 64px;
+  }
+}

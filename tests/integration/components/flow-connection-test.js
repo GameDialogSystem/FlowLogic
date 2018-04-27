@@ -12,4 +12,13 @@ test('it renders', function(assert) {
   this.render(hbs`{{flow-connection}}`);
 
   assert.equal(this.$().text().trim(), '');
+
+  // Template block usage:
+  this.render(hbs`
+    {{#flow-connection}}
+      template block text
+    {{/flow-connection}}
+  `);
+
+  assert.equal(this.$().text().trim(), 'template block text');
 });

@@ -95,10 +95,11 @@ export default Ember.Mixin.create({
     outputs.forEach(function(output){
       // reference to the child element
       const nextLine = output.get("connection.input.belongsTo");
-      const nextLineOutputs = nextLine.get('outputs').filterBy('isConnected', true);
-      const childrenCount = nextLineOutputs.length;
 
-      if(nextLine !== undefined){
+      if(nextLine !== undefined && nextLine.get('outputs')){
+        const nextLineOutputs = nextLine.get('outputs').filterBy('isConnected', true);
+        const childrenCount = nextLineOutputs.length;
+
         const centerX = (nextLine.get("childrenWidth") - self.get("width")) / 2;
 
         // sets the x coordinate of each child to the new value

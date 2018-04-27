@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/multi-selection';
 
-
 /**
  * Component that allows the user to select multiple elements at the same time.
  * The component calculates an area defined by the users mouse movement and clicks
@@ -73,7 +72,7 @@ export default Ember.Component.extend({
    * @param  {type} mouseY description
    * @return {type}        description
    */
-  updateSelectionHandlerGeometry: function(mouseX, mouseY){
+  updateSelectionHandlerGeometry(mouseX, mouseY){
     // verify that mouseX coordinate is a number
     if(mouseX === null || mouseX === undefined || typeof mouseX !== "number"){
       throw new TypeError(`mouse position x is not a number. Its actual value is ${mouseX}`);
@@ -134,7 +133,6 @@ export default Ember.Component.extend({
 
       // set selection object to inform child views that a selection was
       // successfully created
-      //
       this.set("selectionRectangle", {
         "x": finalPositionX,
         "y": finalPositionY,
@@ -145,7 +143,7 @@ export default Ember.Component.extend({
   },
 
 
-  mouseDown: function(e){
+  mouseDown(e){
     this._super(...arguments);
 
     // only process in case the user presses the mouse button on an empty spot
@@ -183,13 +181,13 @@ export default Ember.Component.extend({
     }
   },
 
-  mouseMove: function(e){
+  mouseMove(e){
     e.preventDefault();
 
     this.updateSelectionHandlerGeometry(e.clientX, e.clientY);
   },
 
-  mouseUp: function(e){
+  mouseUp(e){
     this._super(...arguments);
 
     const element = Ember.$(this.element);

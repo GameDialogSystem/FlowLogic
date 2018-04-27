@@ -11,8 +11,6 @@ export default Point.extend({
   connection: DS.belongsTo('connection', {async: false}),
 
   belongsTo: DS.belongsTo('block'),
-  //isConnected: false,
-
 
   /**
    * isConnected - Computes if a output is connected by a connection to a
@@ -20,7 +18,6 @@ export default Point.extend({
    *
    * @return{boolean} True in case the output is connected, False otherwise
    */
-
   isConnected: Ember.computed('connection', function(){
     return this.get('connection') !== null;
   })

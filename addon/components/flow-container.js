@@ -1,10 +1,8 @@
-
 import Ember from 'ember';
+import layout from '../templates/components/flow-container';
 import ScrollingMixin from '../mixins/scrolling';
 import MovableContainerMixin from '../mixins/movable-container';
-import MultiselectionContainerMixin from '../mixins/multiselection-container';
-import layout from '../templates/components/flow-container';
-
+//import MultiselectionContainerMixin from '../../mixins/multiselection-container';
 
 /**
  * Renders a container component where all flow blocks are displayed.
@@ -14,7 +12,7 @@ import layout from '../templates/components/flow-container';
  * @see {@link MovableContainerMixin}
  * @see {@link MultiselectionContainerMixin}
  */
-export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, MultiselectionContainerMixin, {
+export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, /*MultiselectionContainerMixin,*/ {
   layout,
 
   tagName: 'flow-container',
@@ -27,7 +25,7 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, Mul
   width : 0,
   height: 0,
 
-  didInsertElement: function(){
+  didInsertElement(){
     this.set('width', Ember.$(this.element).width());
     this.set('height', Ember.$(this.element).height());
   },
@@ -115,7 +113,7 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, Mul
      * @param  {Point} end   coordinates of the end point for the reconnection
      * connection. This is usually an arbitrary point not related to any block
      */
-    reroute: function(start, end){
+    reroute(start, end){
       this.set('showReconnector', true);
       this.set('start', start);
       this.set('end', end);
@@ -130,7 +128,7 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, Mul
      * @param {Point} point - the position where the mouse button was released and
      * the new block should be inserted
      */
-    onConnectToNewBlock: function(output, point){
+    onConnectToNewBlock(output, point){
       const connectToNewBlock = this.get('onConnectToNewBlock');
       const connected = output.get('isConnected');
 
@@ -149,7 +147,7 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, Mul
      * @param {FlowElement} block - the block that the user want to remove
      * from the model
      */
-    onDeleteBlock: function(block){
+    onDeleteBlock(block){
       let deleteBlock = this.get('onDeleteBlock');
 
       if(deleteBlock !== null || deleteBlock !== undefined){
@@ -169,14 +167,14 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, Mul
      * @param {Point} point - the coordinates where the user released the mouse
      * or touch to create a new connected block to the connection
      */
-    cancelReroute: function(output, point){
+    cancelReroute(output, point){
       this.set('showReconnector', false);
 
       this.get('onAddNewElement')(output, point);
     },
 
 
-    onElementEdit: function(id){
+    onElementEdit(id){
       const onElementEdit = this.get('onElementEdit');
 
       onElementEdit(id);

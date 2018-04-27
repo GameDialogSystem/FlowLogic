@@ -4,11 +4,11 @@
 module.exports = {
   name: 'flow-logic',
 
-  isDevelopingAddon: function() {
+  isDevelopingAddon() {
     return true;
   },
 
-  included: function(/* app */) {
+  included(/* app */) {
     this._super.included.apply(this, arguments);
   }
 };

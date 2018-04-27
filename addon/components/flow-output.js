@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/flow-output';
+
 import ConnectorMixin from '../mixins/connector';
 
 /**
@@ -14,7 +15,7 @@ export default Ember.Component.extend(ConnectorMixin, {
 
   classNameBindings: ['connected'],
 
-  mouseMove: function(e){
+  mouseMove(e){
     let point = this.getCenteredPosition();
 
     if(this.get('moveStart')){
@@ -34,7 +35,7 @@ export default Ember.Component.extend(ConnectorMixin, {
   * Respond to the mouse up event to handle drag and drop of a connection
   * to an input pin or to the container in order to create a new block.
   */
-  mouseUp : function(e){
+  mouseUp (e){
     e.preventDefault();
 
     if(e.target.tagName !== "MULTI-SELECTION"){
@@ -50,7 +51,7 @@ export default Ember.Component.extend(ConnectorMixin, {
     }
   },
 
-  getCenteredPosition : function(){
+  getCenteredPosition (){
     //let boundingRectangle = this.element.getBoundingClientRect();
     //let parentOffset = Ember.$(this.element).parents("flow-container").offset();
     //let blockElementBoundingRectangle = Ember.$(this.element).parents("flow-element")[0].getBoundingClientRect();

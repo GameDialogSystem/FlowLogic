@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import MovableMixin from '../mixins/movable';
 import layout from '../templates/components/flow-element';
+import MovableMixin from '../mixins/movable';
 
 export default Ember.Component.extend(MovableMixin, {
   layout,
@@ -36,11 +36,11 @@ export default Ember.Component.extend(MovableMixin, {
    tabindex: '1',
 
    actions: {
-     acceptRerouting: function(){
+     acceptRerouting(){
 
      },
 
-     cancelReroute: function(output, point){
+     cancelReroute(output, point){
        this.get('cancelReroute')(output, point);
      },
 
@@ -81,7 +81,7 @@ export default Ember.Component.extend(MovableMixin, {
    * Overwrite the custom behaviour in order to hide the context menu in case
    * the right mouse button was pressed.
    */
-  //contextMenu: function(){
+  //contextMenu(){
   //  return false;
   //},
 
@@ -89,7 +89,7 @@ export default Ember.Component.extend(MovableMixin, {
    * Respond to keypress events to allow the deletion of the element
    * by pressing the DELETE button.
    */
-  keyPress: function(e){
+  keyPress(e){
     const onDeleteBlock = this.get('onDeleteBlock');
 
     if(e.keyCode === 127 && (onDeleteBlock !== null || onDeleteBlock !== undefined)){

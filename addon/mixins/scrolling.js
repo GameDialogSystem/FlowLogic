@@ -32,7 +32,7 @@ export default Ember.Mixin.create({
    * Handle the mouse down action to enable scrolling with the middle
    * mouse button
    */
-  mouseDown: function(e){
+  mouseDown(e){
     this._super(...arguments);
 
     // pressed mouse button was the middle mouse button
@@ -51,7 +51,7 @@ export default Ember.Mixin.create({
    * attributes scrollOffsetX and scrollOffsetY to make the values publicly
    * available to other components
    */
-  mouseMove: function(e){
+  mouseMove(e){
     this._super(...arguments);
 
     if(this.get('scrollModeEnabled') === true){
@@ -76,7 +76,7 @@ export default Ember.Mixin.create({
    * disables the scroll mode and sets the current scroll offset to a fixed
    * value.
    */
-  mouseUp: function(e){
+  mouseUp(e){
     this._super(...arguments);
 
     // leave scrolling mode in case the user released the mousewheel button

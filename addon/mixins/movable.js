@@ -59,7 +59,7 @@ export default Ember.Mixin.create({
    *
    * @param  {object} e contains the mouse event as an object
    */
-  mouseDown: function(e){
+  mouseDown(e){
     this._super(...arguments);
 
     if(e.button == 0 && e.target.tagName !== "TEXTAREA"){
@@ -109,7 +109,7 @@ export default Ember.Mixin.create({
    *
    * @param  {object} e contains the mouse event as an object
    */
-  mouseMove: function(e){
+  mouseMove(e){
     this._super(...arguments);
 
     if(this.get('moveStart') && e.target.tagName !== "TEXTAREA"){
@@ -146,7 +146,7 @@ export default Ember.Mixin.create({
    *
    * @param  {object} e contains the mouse event as an object
    */
-  mouseUp: function(e){
+  mouseUp(e){
     this._super(...arguments);
 
     if(this.get('moveStart') && e.target.tagName !== "TEXTAREA"){

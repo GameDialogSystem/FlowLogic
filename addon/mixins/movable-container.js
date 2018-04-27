@@ -10,7 +10,7 @@ export default Ember.Mixin.create({
 
 
   actions: {
-    elementMoved: function(offset, element){
+    elementMoved(offset, element){
       let selectedElements = this.get("selectedElements");
 
       if(!selectedElements.has(element.get("elementId"))){
@@ -39,7 +39,7 @@ export default Ember.Mixin.create({
      * @param  {object} element the object that is about to be added to the list
      * of selected elements
      */
-    elementSelected: function(element, focused){
+    elementSelected(element, focused){
       if(element === undefined){
         throw TypeError("you cannot pass an undefined element to the list of selected elements");
       }
@@ -58,7 +58,7 @@ export default Ember.Mixin.create({
      *
      * @param  {object} element the element you want to remove from the list
      */
-    elementUnselected: function(element){
+    elementUnselected(element){
       if(element === undefined){
         throw TypeError("you cannot remove an undefined element from the list of selected elements");
       }

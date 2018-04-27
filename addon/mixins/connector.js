@@ -41,7 +41,7 @@ export default Ember.Mixin.create({
   * Returns the offset of the parent element as an object.
   * The object has the form {left: x, top: x}.
   */
-  getParentOffset: function(){
+  getParentOffset(){
     return Ember.$(this.element).parent().offset();
   },
 
@@ -50,7 +50,7 @@ export default Ember.Mixin.create({
   * Gets the size of the parent element and returns this as an object.
   * The object has the form {width: x, height: x}.
   */
-  getParentSize: function(){
+  getParentSize(){
     let element = Ember.$(this.element);
     let parent = element.parent();
 
@@ -62,7 +62,7 @@ export default Ember.Mixin.create({
   * Calculates the margin to the parent element based on the actual position
   * within the DOM.
   */
-  getMarginOfElement: function(){
+  getMarginOfElement(){
     let element = Ember.$(this.element);
 
     let offset = element.offset();
@@ -82,7 +82,7 @@ export default Ember.Mixin.create({
   * Returns the centered position of the connector. Be aware that this function
   * keeps margin, padding and position in a flex container in mind.
   */
-  getCenteredPosition : function(){
+  getCenteredPosition (){
     const element = Ember.$(this.element);
     let parentOffset = element.parents("multi-selection").offset();
     let rect = this.element.getBoundingClientRect();
@@ -124,7 +124,7 @@ export default Ember.Mixin.create({
   *
   * @param {MouseEvent} mouseEvent - the mouse event as defined by jQuery.
   */
-  getCorrectMousePosition: function(mouseEvent){
+  getCorrectMousePosition(mouseEvent){
     const container = Ember.$(this.element).closest('flow-container');
     const scrollTop = container.scrollTop();
     const scrollLeft = container.scrollLeft();
@@ -143,7 +143,7 @@ export default Ember.Mixin.create({
   * is set to true to indicate that the user wants to reconnect the connector
   * with another one
   */
-  mouseDown: function(e){
+  mouseDown(e){
     if(e.button == 0){
       e.stopPropagation();
       e.preventDefault();
@@ -174,10 +174,11 @@ export default Ember.Mixin.create({
   * that were added during the mouseDown action. Also the 'moveStart' will be
   * set to false to cancel the reconnection of the connector
   */
-  mouseUp: function(e){
+  mouseUp(e){
     this._super(...arguments);
 
-    if(e.path[0].tagName !== "MULTI-SELECTION"){
+
+    if(e.path === undefined || e.path[0].tagName !== "MULTI-SELECTION"){
       return;
     }
 
@@ -222,7 +223,7 @@ export default Ember.Mixin.create({
     this.setCSSOffset();
   }),
 
-  didInsertElement: function(){
+  didInsertElement(){
     this.setCSSOffset();
   },
 
@@ -232,11 +233,11 @@ export default Ember.Mixin.create({
     }
   }),
 
-  setCSSOffset: function(){
+  setCSSOffset(){
 
     Ember.run.scheduleOnce('afterRender', this, function(){
-
-      if(this.get("model.currentState.stateName") !== "root.loading"){
+      const stateName = this.get("model.currentState.stateName");
+      if(!(stateName === "root.loading" || stateName === "root.deleted.inFlight")){
         const element = Ember.$(this.element);
         const parentOffset = element.parents("flow-element").offset();
         const offset = element.offset();

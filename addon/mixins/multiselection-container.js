@@ -8,11 +8,13 @@ import Ember from 'ember';
 * @mixin
 */
 export default Ember.Mixin.create({
-  keyPress(){
-    let deleteBlock = this.get('deleteBlock');
+  keyPress(e){
+    const onDeleteBlock = this.get('onDeleteBlock');
 
-    this.get('selectedElements').forEach((element) => {
-      deleteBlock(element.get('model'));
-    });
+    if(e.keyCode === 127 && (onDeleteBlock !== null || onDeleteBlock !== undefined)){
+      this.get('selectedElements').forEach((element) => {
+        onDeleteBlock(element.get('model'));
+      });
+    }
   }
 });
