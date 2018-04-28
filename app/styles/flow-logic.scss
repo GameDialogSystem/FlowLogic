@@ -65,7 +65,6 @@ flow-element{
   justify-content: space-between;
 
   box-shadow: $card-box-shadow;
-  border: none;
   outline: none;
 
   background: rgba($cards, 0.85);
@@ -78,25 +77,6 @@ flow-element{
     position: absolute;
     top: 0;
     right: 0;
-
-
-    /**
-     * button to toggle the height of the block
-     */
-    > button{
-      margin: 0;
-      transform: rotate(0deg);
-    }
-
-    > button.isExtended{
-      transition: 200ms ease-in-out;
-      transform: rotate(180deg);
-    }
-
-    > button.isCollapsed{
-      transition: 200ms ease-in-out;
-      transform: rotate(0deg);
-    }
   }
 
   > flow-input-container{

@@ -21,7 +21,7 @@ export default Ember.Mixin.create({
       const y = this.get('focusedElement.model.y');
 
       selectedElements.forEach((value) => {
-        value.set('customLayouted', true);
+        value.set('autolayout', false);
 
         if(offset.x != 0 || offset.y != 0){
           //value.set("model.width", value.get("model.x") - x + offset.x)

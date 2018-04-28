@@ -2,7 +2,7 @@ import Ember from 'ember';
 import layout from '../templates/components/flow-container';
 import ScrollingMixin from '../mixins/scrolling';
 import MovableContainerMixin from '../mixins/movable-container';
-//import MultiselectionContainerMixin from '../../mixins/multiselection-container';
+import MultiselectionContainerMixin from '../mixins/multiselection-container';
 
 /**
  * Renders a container component where all flow blocks are displayed.
@@ -12,7 +12,7 @@ import MovableContainerMixin from '../mixins/movable-container';
  * @see {@link MovableContainerMixin}
  * @see {@link MultiselectionContainerMixin}
  */
-export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, /*MultiselectionContainerMixin,*/ {
+export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, MultiselectionContainerMixin, {
   layout,
 
   tagName: 'flow-container',

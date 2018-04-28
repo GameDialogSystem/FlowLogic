@@ -112,8 +112,8 @@ export default Ember.Mixin.create({
 
 
     return {
-      x: (rect.left + width / 2), //+ element.parents("flow-container").scrollLeft(), // - parentOffset.left + 3, //+ correctHorizontalMargin,
-      y: (rect.top + height / 2) - parentOffset.top// + correctVerticalMargin
+      x: 50, //(rect.left + width / 2), //+ element.parents("flow-container").scrollLeft(), // - parentOffset.left + 3, //+ correctHorizontalMargin,
+      y: 50 //(rect.top + height / 2) - parentOffset.top// + correctVerticalMargin
     };
   },
 
@@ -242,13 +242,15 @@ export default Ember.Mixin.create({
         const parentOffset = element.parents("flow-element").offset();
         const offset = element.offset();
         const width = element.width();
+        const height = element.height();
 
         if(offset !== undefined){
           this.set('offsetX', offset.left - parentOffset.left);
           this.set('offsetY', offset.top - parentOffset.top);
 
-          this.set('model.x', this.get('model.belongsTo.x') + width + this.get('offsetX'));
-          this.set('model.y', this.get('model.belongsTo.y') + 10 + this.get('offsetY'));
+
+          this.set('model.x', this.get('model.belongsTo.x') + width + this.get('offsetX') + 6);
+          this.set('model.y', this.get('model.belongsTo.y') + 10 + height / 2 + this.get('offsetY'));
         }
       }
     });

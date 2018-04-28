@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import layout from '../templates/components/flow-element';
 import MovableMixin from '../mixins/movable';
+import ElementQueries from "npm:css-element-queries";
 
 export default Ember.Component.extend(MovableMixin, {
   layout,
@@ -23,6 +24,31 @@ export default Ember.Component.extend(MovableMixin, {
         self.set("model.width", element.width());
         self.set("model.height", element.height());
       }
+
+
+
+      new ElementQueries.ResizeSensor(element, function() {
+        self.set("model.height", element[0].clientHeight);
+/*
+        const neighbours = self.get('model.neighbours');
+
+        if(neighbours){
+          let maxHeight = 0;
+          neighbours.forEach(neighbour => {
+            let height = neighbour.get('height');
+
+            if(height > maxHeight){
+              maxHeight = height;
+            }
+          });
+
+          neighbours.forEach(neighbour => {
+            neighbour.set('height', maxHeight);
+          })
+        }
+        */
+      });
+
     });
   },
 
@@ -56,9 +82,11 @@ export default Ember.Component.extend(MovableMixin, {
    style: Ember.computed('model.x', 'model.y',
                          'model.width', 'model.height', function()
    {
+     const model = this.get('model');
+
      return Ember.String.htmlSafe(`left: ${this.get("model.x")}px; `+
                                   `top: ${this.get("model.y")}px; `+
-                                  `width: ${this.get("model.width")}px; ` +
+                                  `min-width: ${this.get("model.width")}px; ` +
                                   `min-height: ${this.get("model.height")}px`);
    }),
 
