@@ -4,6 +4,11 @@ import ConnectorMixin from '../mixins/connector';
 
 /**
  * Connector that will be used to display an input pin on a block element.
+ *
+ * @see {@link Connector}
+ *
+ * @module
+ * @augments Ember/Component
  */
 export default Ember.Component.extend(ConnectorMixin, {
   layout,

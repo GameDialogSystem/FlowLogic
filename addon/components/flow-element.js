@@ -3,10 +3,20 @@ import layout from '../templates/components/flow-element';
 import MovableMixin from '../mixins/movable';
 import ElementQueries from "npm:css-element-queries";
 
+/**
+ * Renders an element on the flow container that represents a logical block
+ *
+ * @see {@link Movable}
+ *
+ * @module
+ * @augments Ember/Component
+ */
 export default Ember.Component.extend(MovableMixin, {
   layout,
 
   tagName: 'flow-element',
+
+  animated: true,
 
   classNameBindings: ['isSelected:selected', 'customLayouted:no-transition:transition'],
 
@@ -80,14 +90,21 @@ export default Ember.Component.extend(MovableMixin, {
    },
 
    style: Ember.computed('model.x', 'model.y',
-                         'model.width', 'model.height', function()
+                         'model.width', 'model.height', 'animated', function()
    {
      const model = this.get('model');
 
-     return Ember.String.htmlSafe(`left: ${this.get("model.x")}px; `+
+     let style = `left: ${this.get("model.x")}px; `+
                                   `top: ${this.get("model.y")}px; `+
                                   `min-width: ${this.get("model.width")}px; ` +
-                                  `min-height: ${this.get("model.height")}px`);
+                                  `min-height: ${this.get("model.height")}px;`;
+
+      
+    if(!this.animated){
+      style += `transition: none !important;`;
+    }
+
+    return Ember.String.htmlSafe(style);
    }),
 
    /**

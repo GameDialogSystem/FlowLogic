@@ -3,6 +3,8 @@ import Ember from 'ember';
 
 /**
  * Mixin to allow scrolling within a container
+ *
+ * @mixin Scrolling
  */
 export default Ember.Mixin.create({
   /**
@@ -33,7 +35,7 @@ export default Ember.Mixin.create({
    * mouse button
    */
   mouseDown(e){
-    this._super(...arguments);
+    this._super(e);
 
     // pressed mouse button was the middle mouse button
     if(e.button == 1){
@@ -52,7 +54,7 @@ export default Ember.Mixin.create({
    * available to other components
    */
   mouseMove(e){
-    this._super(...arguments);
+    this._super(e);
 
     if(this.get('scrollModeEnabled') === true){
       const element = Ember.$(this.element);
@@ -77,7 +79,7 @@ export default Ember.Mixin.create({
    * value.
    */
   mouseUp(e){
-    this._super(...arguments);
+    this._super(e);
 
     // leave scrolling mode in case the user released the mousewheel button
     if(e.button == 1){

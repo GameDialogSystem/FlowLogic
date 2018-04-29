@@ -3,17 +3,26 @@ import Ember from 'ember';
 
 /**
  * Mixin to save a list of selected elements
+ *
+ * @mixin MovableContainer
  */
 export default Ember.Mixin.create({
-  selectedElements : new Map(),
+  selectedElements: new Map(),
   focusedElement: null,
 
+  mouseUp(e) {
+    this.selectedElements.forEach((value) => {
+      value.set('animated', true);
+    });
+  },
 
   actions: {
-    elementMoved(offset, element){
+
+
+    elementMoved(offset, element) {
       let selectedElements = this.get("selectedElements");
 
-      if(!selectedElements.has(element.get("elementId"))){
+      if (!selectedElements.has(element.get("elementId"))) {
         selectedElements.set(element.get("elementId"), element);
       }
 
@@ -21,9 +30,8 @@ export default Ember.Mixin.create({
       const y = this.get('focusedElement.model.y');
 
       selectedElements.forEach((value) => {
-        value.set('autolayout', false);
-
-        if(offset.x != 0 || offset.y != 0){
+        value.set('animated', false);
+        if (offset.x != 0 || offset.y != 0) {
           //value.set("model.width", value.get("model.x") - x + offset.x)
           value.set("model.x", value.get("model.x") - x + offset.x);
           value.set("model.y", value.get("model.y") - y + offset.y);
@@ -39,12 +47,12 @@ export default Ember.Mixin.create({
      * @param  {object} element the object that is about to be added to the list
      * of selected elements
      */
-    elementSelected(element, focused){
-      if(element === undefined){
+    elementSelected(element, focused) {
+      if (element === undefined) {
         throw TypeError("you cannot pass an undefined element to the list of selected elements");
       }
 
-      if(focused){
+      if (focused) {
         this.set('focusedElement', element);
       }
 
@@ -58,8 +66,8 @@ export default Ember.Mixin.create({
      *
      * @param  {object} element the element you want to remove from the list
      */
-    elementUnselected(element){
-      if(element === undefined){
+    elementUnselected(element) {
+      if (element === undefined) {
         throw TypeError("you cannot remove an undefined element from the list of selected elements");
       }
 

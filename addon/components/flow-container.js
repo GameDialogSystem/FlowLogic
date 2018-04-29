@@ -3,37 +3,67 @@ import layout from '../templates/components/flow-container';
 import ScrollingMixin from '../mixins/scrolling';
 import MovableContainerMixin from '../mixins/movable-container';
 import MultiselectionContainerMixin from '../mixins/multiselection-container';
+import ZoomContainerMixin from '../mixins/zoom-container';
 
 /**
  * Renders a container component where all flow blocks are displayed.
  * Also all connections are rendered within this container.
  *
- * @see {@link ScrollingMixin}
- * @see {@link MovableContainerMixin}
- * @see {@link MultiselectionContainerMixin}
+ * @see {@link Scrolling}
+ * @see {@link MovableContainer}
+ * @see {@link MultiselectionContainer}
+ * @see {@link ZoomContainer}
+ *
+ * @module
+ * @augments Ember/Component
  */
-export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, MultiselectionContainerMixin, {
+export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, MultiselectionContainerMixin, ZoomContainerMixin, {
   layout,
 
+  /**
+   * Defines the html tag name that will used by adding the element to the DOM.
+   *
+   * @constant
+   * @type {string}
+   */
   tagName: 'flow-container',
 
   /**
    * Scrolling offset horizontally caused by the user due to scrolling
+   *
+   * @type {number}
    */
   scrollLeft: 0,
 
+  /**
+   * Scrolling offset vertically caused by the user due to scrolling
+   *
+   * @type {number}
+   */
+  scrollTop: 0,
+
+  /**
+   * The absolute width needed to display all elements.
+   *
+   * @type {number}
+   */
   width : 0,
+
+  /**
+   * The absolute height needed to display all elements. 
+   *
+   * @type {number}
+   */
   height: 0,
 
   didInsertElement(){
+    this._super(...arguments);
+
     this.set('width', Ember.$(this.element).width());
     this.set('height', Ember.$(this.element).height());
   },
 
-  /**
-   * Scrolling offset vertically caused by the user due to scrolling
-   */
-  scrollTop: 0,
+
 
   observerHeight: Ember.observer('blocks.length', function() {
     let maxY = 0;
@@ -95,8 +125,16 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, Mul
    * @return {string}            A string in the form of width height
    * e.g. 1920 1080
    */
-  style: Ember.computed('width', 'height', function() {
-    return Ember.String.htmlSafe(`left: 0px; top: 0px; width:${this.get('width')}px; height:${this.get("height")}px`);
+  style: Ember.computed('width', 'height', 'currentZoomLevel', function() {
+
+    const style = Ember.String.htmlSafe(`left: 0px; top: 0px;
+      width:${this.get('width')}px;
+      height:${this.get("height")}px;
+      transform: scale(${100 / this.currentZoomLevel});
+      tranform-origin: 0 0;
+      `);
+
+      return style;
   }),
 
 

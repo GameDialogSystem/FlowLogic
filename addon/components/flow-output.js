@@ -5,6 +5,11 @@ import ConnectorMixin from '../mixins/connector';
 
 /**
 * Connector that will be used to display an output pin on a block element.
+*
+* @see {@link Connector}
+*
+* @module
+* @augments Ember/Component
 */
 export default Ember.Component.extend(ConnectorMixin, {
   layout,
@@ -18,7 +23,7 @@ export default Ember.Component.extend(ConnectorMixin, {
   mouseMove(e){
     let point = this.getCenteredPosition();
 
-    if(this.get('moveStart')){
+    if(this.get('moveStart') && !this.get('model.isConnected')){
       this.get('onReroute')(point, this.getCorrectMousePosition(e));
     }
   },

@@ -4,7 +4,7 @@ import Ember from 'ember';
 * Provides methods to make a component movable by using drag and drop.
 * Use this only for components
 *
-* @mixin
+* @mixin Movable
 */
 export default Ember.Mixin.create({
   /**
@@ -122,7 +122,7 @@ export default Ember.Mixin.create({
       const y = this.getScaledCoordinate(e.clientY - this.get('mouseOffsetY') - parentOffset.top);
 
       //const position = element.position();
-      const elementMovedEvent = this.get("onElementMoved");
+
 
       const offset = {
         "x" : x, // - position.left + element.scrollLeft(),
@@ -130,7 +130,7 @@ export default Ember.Mixin.create({
       }
 
 
-
+      const elementMovedEvent = this.get("onElementMoved");
       if(typeof elementMovedEvent === "function"){
         elementMovedEvent(offset, this);
       }
@@ -147,11 +147,12 @@ export default Ember.Mixin.create({
    * @param  {object} e contains the mouse event as an object
    */
   mouseUp(e){
-    this._super(...arguments);
+    this._super(e);
 
     if(this.get('moveStart') && e.target.tagName !== "TEXTAREA"){
       this.set('moveStart', false);
       this.set('customLayouted', false);
+      this.set('animated', true);
 
       document.removeEventListener('mousemove', this.get('mouseMoveListener'));
       document.removeEventListener('mouseup', this.get('mouseUpListener'));

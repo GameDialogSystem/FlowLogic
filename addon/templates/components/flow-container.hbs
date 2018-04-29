@@ -20,21 +20,21 @@
 </svg>
 
 {{#multi-selection style=style as |selection|}}
-{{#each blocks as |block|}}
-  {{component logicBlockComponent
-    selection=selection
-    model=block
-    offsetX=offsetX
-    offsetY=offsetY
-    zoom=zoom
-    onReroute=(action 'reroute')
-    onDeleteBlock=(action 'onDeleteBlock')
-    onConnectToNewBlock=(action 'onConnectToNewBlock')
+  {{#each blocks as |block|}}
+    {{component logicBlockComponent
+      selection=selection
+      model=block
+      offsetX=offsetX
+      offsetY=offsetY
+      zoom=zoom
+      onReroute=(action 'reroute')
+      onDeleteBlock=(action 'onDeleteBlock')
+      onConnectToNewBlock=(action 'onConnectToNewBlock')
 
-    onElementEdit=(action 'onElementEdit' block.id)
-    onElementSelect=(action 'elementSelected')
-    onElementUnselect=(action 'elementUnselected')
-    onElementMoved=(action 'elementMoved')
-  }}
-{{/each}}
+      onElementEdit=(action 'onElementEdit' block.id)
+      onElementSelect=(action 'elementSelected')
+      onElementUnselect=(action 'elementUnselected')
+      onElementMoved=(action 'elementMoved')
+    }}
+  {{/each}}
 {{/multi-selection}}

@@ -5,7 +5,7 @@ import Ember from 'ember';
 * This mixin might change in future to an own component so please be aware of
 * this.
 *
-* @mixin
+* @mixin Connector
 */
 export default Ember.Mixin.create({
   offsetX: null,
