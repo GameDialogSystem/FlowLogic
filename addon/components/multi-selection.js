@@ -99,46 +99,36 @@ export default Ember.Component.extend({
       const startY = this.get("startY");
 
       const element = Ember.$(this.element);
-      const elementOffsetX = element.offset().left;
-      const elementOffsetY = element.offset().top;
 
-      // save the end position of the selection handler to the
-      // current mouse position
-      this.set("endX", mouseX - elementOffsetX);
-      this.set("endY", mouseY - elementOffsetY);
+      const zoomLevel = (this.zoomLevel / 100);
 
-      // end position of the selection handler
-      const endX = this.get("endX");
-      const endY = this.get("endY");
+      // save the end position of the selection handler to the current mouse position
+      this.set("endX", mouseX / zoomLevel);
+      this.set("endY", mouseY / zoomLevel);
 
       // switch x coordinates in case the end coordinate is smaller than the
       // start coordinate
-      const negativeEndX = (endX < startX);
-      const negativeEndY = (endY < startY);
+      const negativeEndX = (mouseX < startX);
+      const negativeEndY = (mouseY < startY);
 
       const scrollOffsetLeft = element.scrollLeft();
       const scrollOffsetTop = element.scrollTop();
 
-      const scrollDifferenceWidth = 0; //Math.abs(scrollOffsetLeft - scrollOffsetStartLeft);
-      const scrollDifferenceHeight = 0; //Math.abs(scrollOffsetTop - scrollOffsetStartTop);
-
       // calculate the final position based on scrolling offset,
       // moving the selection handle etc.
-      const finalPositionX = (negativeEndX ? endX : startX) + scrollOffsetLeft;
-      const finalPositionY = (negativeEndY ? endY : startY) + scrollOffsetTop;
+      const finalPositionX = (negativeEndX ? mouseX : startX) + scrollOffsetLeft;
+      const finalPositionY = (negativeEndY ? mouseY : startY) + scrollOffsetTop;
 
       // the selection indicator element
       const selectionIndicator = Ember.$(this.element).find(".flow-selection-indicator");
 
+      const offset = Ember.$(this.element).offset();
       // reposition the selection indicator and change the size of it
       selectionIndicator
         .css("left", finalPositionX)
         .css("top", finalPositionY)
-        .width(negativeEndX ? (startX - endX) : (endX - startX) + scrollDifferenceWidth)
-        .height(negativeEndY ? (startY - endY) : (endY - startY) + scrollDifferenceHeight) - elementOffsetY;
-
-      this.set("endX", endX);
-      this.set("endY", endY);
+        .width(negativeEndX ? (startX - mouseX) : (mouseX - startX))
+        .height(negativeEndY ? (startY - mouseY) : (mouseY - startY));
 
       // set selection object to inform child views that a selection was
       // successfully created
@@ -179,8 +169,10 @@ export default Ember.Component.extend({
     if (e.button === 0) {
       const element = Ember.$(this.element);
 
-      this.set("startX", e.clientX - element.offset().left);
-      this.set("startY", e.clientY - element.offset().top);
+      const zoomLevel = (this.zoomLevel / 100);
+
+      this.set("startX", (e.clientX - element.offset().left) / zoomLevel);
+      this.set("startY", (e.clientY - element.offset().top) / zoomLevel);
       this.set("selectionModeEnabled", true);
 
       this.set('mouseMoveListener', function(e) {
@@ -213,7 +205,13 @@ export default Ember.Component.extend({
     this._super(e);
     e.preventDefault();
 
-    this.updateSelectionHandlerGeometry(e.clientX, e.clientY);
+    const element = Ember.$(this.element);
+    const zoomLevel = (this.zoomLevel / 100);
+
+    const mouseX = (e.clientX - element.offset().left) / zoomLevel;
+    const mouseY = (e.clientY - element.offset().top) / zoomLevel;
+
+    this.updateSelectionHandlerGeometry(mouseX, mouseY);
   },
 
 
@@ -231,6 +229,7 @@ export default Ember.Component.extend({
     this._super(e);
 
     const element = Ember.$(this.element);
+    const zoomLevel = (this.zoomLevel / 100);
 
     element.find(".flow-selection-indicator").hide();
 
@@ -244,8 +243,8 @@ export default Ember.Component.extend({
     const selectionRectangle = this.get("selectionRectangle");
 
 
-    const mouseX = e.clientX - element.offset().left;
-    const mouseY = e.clientY - element.offset().top;
+    const mouseX = (e.clientX - element.offset().left) / zoomLevel;
+    const mouseY = (e.clientY - element.offset().top) / zoomLevel;
 
     if (selectionRectangle.width < 20 && selectionRectangle.height < 20 ||
       this.get("startX") === mouseX && this.get("startY") === mouseY) {

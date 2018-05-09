@@ -50,12 +50,19 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, Mul
   width : 0,
 
   /**
-   * The absolute height needed to display all elements. 
+   * The absolute height needed to display all elements.
    *
    * @type {number}
    */
   height: 0,
 
+
+  /**
+   * didInsertElement - Initialize sets the width and height properties
+   * to the actual values from the rendered element within the DOM
+   *
+   * @return {undefined}
+   */
   didInsertElement(){
     this._super(...arguments);
 
@@ -126,12 +133,11 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, Mul
    * e.g. 1920 1080
    */
   style: Ember.computed('width', 'height', 'currentZoomLevel', function() {
-
     const style = Ember.String.htmlSafe(`left: 0px; top: 0px;
       width:${this.get('width')}px;
       height:${this.get("height")}px;
-      transform: scale(${100 / this.currentZoomLevel});
-      tranform-origin: 0 0;
+      transform-origin: 0 0;
+      transform: scale(${this.currentZoomLevel / 100});
       `);
 
       return style;

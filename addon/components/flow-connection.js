@@ -27,7 +27,7 @@ export default Ember.Component.extend({
   *
   * @type {boolean}
   */
-  isAnimated: true,
+  isAnimated: false,
 
   /**
    * binds the isAnimated property to a class name to enable/disable animation
@@ -122,5 +122,30 @@ export default Ember.Component.extend({
    *
    * @type {string}
    */
-  'stroke-linecap': 'round'
+  'stroke-linecap': 'round',
+
+
+  /**
+   * didUpdateAttrs - This event is used to check if start and end point are
+   * properly defined and if so the isAnimated property will be set to true
+   * to enable the animation of connection lines after relayouting an block
+   *
+   * @event
+   * @return {undefined}
+   */
+  didUpdateAttrs() {
+    this._super(...arguments);
+
+    const sx = this.startX !== undefined;
+    const sy = this.startY !== undefined;
+    const ex = this.endX !== undefined;
+    const ey = this.endY !== undefined;
+
+    const self = this;
+    if(sx && sy && ex && ey){
+      setTimeout(() => {
+        self.set('isAnimated', true);
+      }, 0)
+    }
+  },
 });

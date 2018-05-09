@@ -99,7 +99,7 @@ export default Ember.Component.extend(MovableMixin, {
                                   `min-width: ${this.get("model.width")}px; ` +
                                   `min-height: ${this.get("model.height")}px;`;
 
-      
+
     if(!this.animated){
       style += `transition: none !important;`;
     }
@@ -167,13 +167,14 @@ export default Ember.Component.extend(MovableMixin, {
     this.get("onElementUnselect")(this);
   },
 
-  isSelected: Ember.computed("selection.x", "selection.y", "selection.width", "selection.height", 'singleSelection', function() {
+  isSelected: Ember.computed("selection.x", "selection.y", "selection.width", "selection.height", 'singleSelection', 'zoomLevel', function() {
     if(this.get('singleSelection')){
       return true;
     }
 
+    const zoomLevel = this.zoomLevel / 100;
     // rectangle of the user selection in absolute coordinates
-    const selection = this.get("selection");
+    const selection = this.selection;
 
     const element = Ember.$(this.element);
 
@@ -181,37 +182,41 @@ export default Ember.Component.extend(MovableMixin, {
     const position = element.position();
 
     // left top position of the flow element
-    const elementLeftTopX = position.left;
-    const elementLeftTopY = position.top;
+    const elementLeftTopX = position.left / zoomLevel;
+    const elementLeftTopY = position.top / zoomLevel;
 
     // right bottom position of the flow element
-    const elementRightBottomX = elementLeftTopX + element.width();
-    const elementRightBottomY = elementLeftTopY + element.height();
+    const elementRightBottomX = (position.left) / zoomLevel + element.width();
+    const elementRightBottomY = (position.top) / zoomLevel + element.height();
 
     // only calculate the overlapping percentage if there is
     // a user selection otherwise the overlapping percentage
     // is just 0
     if(selection !== undefined){
+
       // left top position of the user selection rectangle
       const selectionLeftTopX = selection.x;
       const selectionLeftTopY = selection.y;
 
       // right bottom position of the user selection rectangle
-      const selectionRightBottomX = selection.x + selection.width;
-      const selectionRightBottomY = selection.y + selection.height;
+      const selectionRightBottomX = (selection.x + selection.width);
+      const selectionRightBottomY = (selection.y + selection.height);
 
 
       const overlapHorizontal = Math.max(0, Math.min(elementRightBottomX, selectionRightBottomX) -
                                 Math.max(elementLeftTopX, selectionLeftTopX));
       const overlapVertical = Math.max(0, Math.min(elementRightBottomY, selectionRightBottomY) -
                               Math.max(elementLeftTopY, selectionLeftTopY));
+
+
       const overlapArea = (overlapHorizontal * overlapVertical);
       const elementArea = element.width() * element.height();
       const overlapFactor = overlapArea / elementArea;
 
+
       // mark all elements as selected if at least 15% of the element is
       // selected
-      return (overlapFactor > 0.15);
+      return (overlapFactor >= 0.25);
     }
 
     // if there is no selection present just return false to indicate it

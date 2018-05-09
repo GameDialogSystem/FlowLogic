@@ -19,14 +19,18 @@
   {{/if}}
 </svg>
 
-{{#multi-selection style=style as |selection|}}
+{{#multi-selection
+  style=style
+  zoomLevel=currentZoomLevel
+  as |selection|
+}}
   {{#each blocks as |block|}}
     {{component logicBlockComponent
       selection=selection
+      zoomLevel=currentZoomLevel
       model=block
       offsetX=offsetX
       offsetY=offsetY
-      zoom=zoom
       onReroute=(action 'reroute')
       onDeleteBlock=(action 'onDeleteBlock')
       onConnectToNewBlock=(action 'onConnectToNewBlock')

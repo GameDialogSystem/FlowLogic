@@ -10,6 +10,7 @@ export default Service.extend({
 
     if (parent === undefined) {
       startingLine.set('x', (childrenWidth - width) / 2.0);
+      startingLine.set('y', 10);
     }
 
     const x = startingLine.get('x');

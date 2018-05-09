@@ -31,11 +31,11 @@ export default Mixin.create({
     const zoomStepSize = this.zoomStepSize;
     if (e.originalEvent.wheelDelta / 120 > 0) {
       if (this.currentZoomLevel < this.maxZoomLevel) {
-        this.decrementProperty('currentZoomLevel', zoomStepSize);
+        this.incrementProperty('currentZoomLevel', zoomStepSize);
       }
     } else {
       if (this.currentZoomLevel > this.minZoomLevel) {
-        this.incrementProperty('currentZoomLevel', zoomStepSize);
+        this.decrementProperty('currentZoomLevel', zoomStepSize);
       }
     }
   }
