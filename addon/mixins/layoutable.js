@@ -55,9 +55,8 @@ export default Ember.Mixin.create({
   }),
 
   neighbours: Ember.computed('parent.outputs.@each', function() {
-    const self = this;
     if (this.get('parent.outputs') !== undefined) {
-      let a = this.get('parent.outputs').filterBy('isConnected', true).map(function(item, index, array) {
+      let a = this.get('parent.outputs').filterBy('isConnected', true).map(function(item, index) {
         return item.get('connection.input.belongsTo');
       });
 

@@ -122,7 +122,6 @@ export default Ember.Component.extend({
       // the selection indicator element
       const selectionIndicator = Ember.$(this.element).find(".flow-selection-indicator");
 
-      const offset = Ember.$(this.element).offset();
       // reposition the selection indicator and change the size of it
       selectionIndicator
         .css("left", finalPositionX)

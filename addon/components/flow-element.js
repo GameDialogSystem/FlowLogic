@@ -92,8 +92,6 @@ export default Ember.Component.extend(MovableMixin, {
    style: Ember.computed('model.x', 'model.y',
                          'model.width', 'model.height', 'animated', function()
    {
-     const model = this.get('model');
-
      let style = `left: ${this.get("model.x")}px; `+
                                   `top: ${this.get("model.y")}px; `+
                                   `min-width: ${this.get("model.width")}px; ` +

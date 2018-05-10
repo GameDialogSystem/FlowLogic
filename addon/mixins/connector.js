@@ -84,12 +84,6 @@ export default Ember.Mixin.create({
   */
   getCenteredPosition (){
     const element = Ember.$(this.element);
-    let parentOffset = element.parents("multi-selection").offset();
-    let rect = this.element.getBoundingClientRect();
-    //let margin = this.getMarginOfElement();
-    let width = element.width();
-    let height = element.height();
-
     let parent = element.parent();
 
     // the correct margin is determined by the flex options of the parent element

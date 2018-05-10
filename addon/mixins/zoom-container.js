@@ -1,4 +1,5 @@
 import Mixin from '@ember/object/mixin';
+import Ember from 'ember';
 
 /**
 * Adds a scroll property to an arbitraty ember object. The mixin defines four

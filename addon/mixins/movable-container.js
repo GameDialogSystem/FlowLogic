@@ -10,7 +10,7 @@ export default Ember.Mixin.create({
   selectedElements: new Map(),
   focusedElement: null,
 
-  mouseUp(e) {
+  mouseUp() {
     this.selectedElements.forEach((value) => {
       value.set('animated', true);
     });

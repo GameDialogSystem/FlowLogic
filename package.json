@@ -56,7 +56,7 @@
     "ember-export-application-global": "^2.0.0",
     "ember-load-initializers": "^1.0.0",
     "ember-paper": "^1.0.0-beta.4",
-    "ember-prism": "^0.2.0",
+    "ember-prism": "^0.3.0",
     "ember-resolver": "^4.0.0",
     "ember-scrollable": "^0.4.10",
     "ember-source": "~3.1.1",
