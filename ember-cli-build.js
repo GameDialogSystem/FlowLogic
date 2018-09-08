@@ -5,8 +5,15 @@ const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 module.exports = function(defaults) {
   let app = new EmberAddon(defaults, {
-    // Add options here
+    exclude: ['qunit']
   });
+/*
+  app.import('node_modules/css-element-queries/index.js', {
+    using: [
+      { transformation: 'amd', as: 'css-element-queries' }
+    ]
+  });
+  */
 
   /*
     This build file specifies the options for the dummy test app of this

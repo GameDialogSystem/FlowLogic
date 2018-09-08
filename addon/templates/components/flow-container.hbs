@@ -29,12 +29,13 @@
       selection=selection
       zoomLevel=currentZoomLevel
       model=block
+      enableRelayouting=relayoutingEnabled
       offsetX=offsetX
       offsetY=offsetY
-      onReroute=(action 'reroute')
+      onReroutePin=(action 'onReroutePin')
       onDeleteBlock=(action 'onDeleteBlock')
       onConnectToNewBlock=(action 'onConnectToNewBlock')
-
+      onInputPinMouseUp=(action "onInputPinMouseUp")
       onElementEdit=(action 'onElementEdit' block.id)
       onElementSelect=(action 'elementSelected')
       onElementUnselect=(action 'elementUnselected')

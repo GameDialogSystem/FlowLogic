@@ -183,8 +183,12 @@ export default Ember.Mixin.create({
       this.set('moveStart', false);
     }
 
+
+
     document.removeEventListener('mousemove', this.get('mouseMoveListener'));
     document.removeEventListener('mouseup', this.get('mouseUpListener'));
+
+
   },
 
 
@@ -196,18 +200,6 @@ export default Ember.Mixin.create({
   */
   elementMoved : Ember.observer('parent.x', 'parent.y', function(){
   }),
-
-  /**
-  * connected - Determines if the output is connected to a block or not
-  *
-  * @return {boolean}                    true if the output is connected, false
-  * otherwise
-  */
-  connected: Ember.computed('model.isConnected', function(){
-    return this.get('model.isConnected');
-  }),
-
-
 
   parentChanged: Ember.observer('model.belongsTo.x', 'model.belongsTo.y', function() {
     this.setCSSOffset();
@@ -228,10 +220,11 @@ export default Ember.Mixin.create({
   }),
 
   setCSSOffset(){
-
     Ember.run.scheduleOnce('afterRender', this, function(){
       const stateName = this.get("model.currentState.stateName");
       if(!(stateName === "root.loading" || stateName === "root.deleted.inFlight")){
+
+
         const element = Ember.$(this.element);
         const parentOffset = element.parents("flow-element").offset();
         const offset = element.offset();
@@ -241,7 +234,6 @@ export default Ember.Mixin.create({
         if(offset !== undefined){
           this.set('offsetX', offset.left - parentOffset.left);
           this.set('offsetY', offset.top - parentOffset.top);
-
 
           this.set('model.x', this.get('model.belongsTo.x') + width + this.get('offsetX') + 6);
           this.set('model.y', this.get('model.belongsTo.y') + 10 + height / 2 + this.get('offsetY'));

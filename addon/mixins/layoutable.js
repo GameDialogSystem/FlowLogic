@@ -12,7 +12,7 @@ export default Ember.Mixin.create({
    */
   margin: 20,
 
-  width: 400,
+  width: 160,
 
 
   /**
@@ -54,6 +54,7 @@ export default Ember.Mixin.create({
     return width;
   }),
 
+  /*
   neighbours: Ember.computed('parent.outputs.@each', function() {
     if (this.get('parent.outputs') !== undefined) {
       let a = this.get('parent.outputs').filterBy('isConnected', true).map(function(item, index) {
@@ -63,4 +64,5 @@ export default Ember.Mixin.create({
       return a;
     }
   }),
+  */
 });

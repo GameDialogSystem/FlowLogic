@@ -12,7 +12,7 @@ export default Point.extend({
 
   belongsTo: DS.belongsTo('block'),
 
-  isConnected: Ember.computed('connection', function(){
-    return this.get('connection') !== null;
+  isConnected: Ember.computed('connection.content', function(){
+    return this.get('connection.content') !== null;
   })
 });

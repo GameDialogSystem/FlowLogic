@@ -2,9 +2,21 @@ import Ember from 'ember';
 import DS from 'ember-data';
 import Rectangle from './rectangle';
 
+// Used for validate the number of inputs/maxOutputConnectionsAllowed
+import { buildValidations, validator } from 'ember-cp-validations'
+
 import LayoutableMixin from '../mixins/layoutable';
 
 import { A } from '@ember/array';
+
+const Validations = buildValidations({
+  inputs: [
+    validator('has-many'),
+    validator('length', {
+      min: 1
+    })
+  ]
+})
 
 /**
  * A block represents a logical element that can be connected to other blocks
@@ -22,9 +34,24 @@ import { A } from '@ember/array';
  * @todo move parts of the description to an own tutorial
  */
 export default Rectangle.extend(LayoutableMixin, {
+  Validations,
+
   // allow object oriented programming by setting it to polymorphic
   inputs: DS.hasMany('input', { polymorphic: true, inverse: "belongsTo" }),
   outputs: DS.hasMany('output', { polymorphic: true, inverse: "belongsTo" }),
+
+  /**
+   * can be used to allow/disallow the changing of the value.
+   * Unfortunately EmberJS does not have the ability to mark an attribute as
+   * readonly. So be aware to make usage of this parameter as a workaround
+   */
+  editableValue: DS.attr('boolean', { defaultValue: true} ),
+
+  /**
+   * the value of the block contains. It can be of arbitrary form and based on
+   * editableValue editable or not
+  */
+  value: DS.attr(),
 
   /**
    * children - computes a list of all children that are connected to this block.

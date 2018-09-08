@@ -1,1 +1,31 @@
-{{yield}}
+<flow-input-container>
+    {{#each model.inputs as |input|}}
+
+      {{flow-input
+          scrollOffsetX=scrollOffsetX
+          scrollOffsetY=scrollOffsetY
+          parent=model
+          model=input
+          onInputPinMouseUp=onInputPinMouseUp
+          acceptRerouting=(action "acceptRerouting")
+          cancelReroute=(action "cancelReroute")}}
+    {{/each}}
+</flow-input-container>
+
+<flow-content>
+
+
+</flow-content>
+
+<flow-output-container>
+  {{#each model.outputs as |output|}}
+      {{flow-output
+          scrollOffsetX=scrollOffsetX
+          scrollOffsetY=scrollOffsetY
+          parent=(mut model)
+          model=output
+          onReroutePin=onReroutePin
+          onConnectToNewBlock=onConnectToNewBlock
+        }}
+  {{/each}}
+</flow-output-container>

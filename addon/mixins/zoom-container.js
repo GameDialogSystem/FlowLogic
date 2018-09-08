@@ -17,6 +17,8 @@ export default Mixin.create({
   currentZoomLevel: 100,
   zoomStepSize: 5,
 
+  zoomEnabled: true,
+
   didInsertElement() {
     this._super(...arguments);
 
@@ -26,17 +28,18 @@ export default Mixin.create({
   },
 
   scrolledEvent(e) {
-    e.preventDefault();
+    if(this.zoomEnabled){
+      e.preventDefault();
 
-
-    const zoomStepSize = this.zoomStepSize;
-    if (e.originalEvent.wheelDelta / 120 > 0) {
-      if (this.currentZoomLevel < this.maxZoomLevel) {
-        this.incrementProperty('currentZoomLevel', zoomStepSize);
-      }
-    } else {
-      if (this.currentZoomLevel > this.minZoomLevel) {
-        this.decrementProperty('currentZoomLevel', zoomStepSize);
+      const zoomStepSize = this.zoomStepSize;
+      if (e.originalEvent.wheelDelta / 120 > 0) {
+        if (this.currentZoomLevel < this.maxZoomLevel) {
+          this.incrementProperty('currentZoomLevel', zoomStepSize);
+        }
+      } else {
+        if (this.currentZoomLevel > this.minZoomLevel) {
+          this.decrementProperty('currentZoomLevel', zoomStepSize);
+        }
       }
     }
   }

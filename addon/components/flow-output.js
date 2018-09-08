@@ -23,8 +23,9 @@ export default Ember.Component.extend(ConnectorMixin, {
   mouseMove(e){
     let point = this.getCenteredPosition();
 
-    if(this.get('moveStart') && !this.get('model.isConnected')){
-      this.get('onReroute')(point, this.getCorrectMousePosition(e));
+    const reroute = this.get('onReroutePin');
+    if(this.get('moveStart') && !this.get('model.isConnected') && reroute){
+      reroute(point, this.getCorrectMousePosition(e), this.model);
     }
   },
 
@@ -41,6 +42,7 @@ export default Ember.Component.extend(ConnectorMixin, {
   * to an input pin or to the container in order to create a new block.
   */
   mouseUp (e){
+
     e.preventDefault();
 
     if(e.target.tagName !== "MULTI-SELECTION"){
@@ -50,8 +52,9 @@ export default Ember.Component.extend(ConnectorMixin, {
     if(this.get('moveStart')){
       this._super(e);
 
-      if(!this.get('model.isConnected')){
-        this.get('connectToNewBlock')(this.get('model'), this.getCorrectMousePosition(e));
+      const onConnectToNewBlock = this.onConnectToNewBlock;
+      if(!this.get('model.isConnected') && onConnectToNewBlock){
+        onConnectToNewBlock(this.get('model'), this.getCorrectMousePosition(e));
       }
     }
   },
@@ -67,6 +70,5 @@ export default Ember.Component.extend(ConnectorMixin, {
       'x': this.get("model.x"),
       'y': this.get("model.y")
     }
-  },
-
+  }
 });

@@ -45,7 +45,7 @@ export default Ember.Component.extend({
    * @constant
    * @type {string[]}
    */
-  attributeBindings: ['d', 'fill', 'stroke', 'stroke-width', 'stroke-linecap'],
+  attributeBindings: ['d', 'fill', 'stroke', 'stroke-width', 'stroke-linecap', 'stroke'],
 
   /**
    * X coordinate of the starting point. Usually this is an output of a block
@@ -110,11 +110,17 @@ export default Ember.Component.extend({
   fill: 'none',
 
   /**
+  * The color of the connection
+  *
+  */
+  stroke: 'black',
+
+  /**
    * Sets the width for the stroke line
    *
    * @type {number}
    */
-  'stroke-width': 4,
+  'stroke-width': 1,
 
   /**
    * Sets the linecap to round. Line endings are rendered round with this

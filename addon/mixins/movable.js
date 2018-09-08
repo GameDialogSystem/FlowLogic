@@ -7,6 +7,9 @@ import Ember from 'ember';
 * @mixin Movable
 */
 export default Ember.Mixin.create({
+
+  enableRelayouting: true,
+
   /**
    * property to indicate that the user has started to move the element on the
    * DOM canvas
@@ -60,30 +63,32 @@ export default Ember.Mixin.create({
    * @param  {object} e contains the mouse event as an object
    */
   mouseDown(e){
-    this._super(...arguments);
+    if(this.enableRelayouting){
+      this._super(...arguments);
 
-    if(e.button == 0 && e.target.tagName !== "TEXTAREA"){
-      this.set('moveStart', true);
+      if(e.button == 0 && e.target.tagName !== "TEXTAREA"){
+        this.set('moveStart', true);
 
-      const element = Ember.$(this.element);
-      const offset = element.offset();
-      this.set('mouseOffsetX', e.clientX - offset.left + element.scrollLeft());
-      this.set('mouseOffsetY', e.clientY - offset.top + element.scrollTop());
+        const element = Ember.$(this.element);
+        const offset = element.offset();
+        this.set('mouseOffsetX', e.clientX - offset.left + element.scrollLeft());
+        this.set('mouseOffsetY', e.clientY - offset.top + element.scrollTop());
 
-      const position = element.position();
-      this.set("oldPosition", {"x": position.left, "y": position.top});
+        const position = element.position();
+        this.set("oldPosition", {"x": position.left, "y": position.top});
 
-      const self = this;
-      this.set('mouseMoveListener', function(e){
-        self.mouseMove(e);
-      });
+        const self = this;
+        this.set('mouseMoveListener', function(e){
+          self.mouseMove(e);
+        });
 
-      this.set('mouseUpListener', function(e){
-        self.mouseUp(e);
-      })
+        this.set('mouseUpListener', function(e){
+          self.mouseUp(e);
+        })
 
-      document.addEventListener('mousemove', this.get('mouseMoveListener'));
-      document.addEventListener('mouseup', this.get('mouseUpListener'));
+        document.addEventListener('mousemove', this.get('mouseMoveListener'));
+        document.addEventListener('mouseup', this.get('mouseUpListener'));
+      }
     }
   },
 

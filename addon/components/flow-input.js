@@ -19,4 +19,13 @@ export default Ember.Component.extend(ConnectorMixin, {
 
   classNameBindings: ['connected'],
 
+  mouseUp (e){
+    e.preventDefault();
+
+    const onInputPinMouseUp = this.onInputPinMouseUp;
+
+    if(onInputPinMouseUp){
+      onInputPinMouseUp(this.model);
+    }
+  },
 });

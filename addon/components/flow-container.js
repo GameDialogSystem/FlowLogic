@@ -56,6 +56,8 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, Mul
    */
   height: 0,
 
+  logicBlockComponent: "flow-element",
+
 
   /**
    * didInsertElement - Initialize sets the width and height properties
@@ -156,9 +158,12 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, Mul
      * connection. This is usually an output of a block
      * @param  {Point} end   coordinates of the end point for the reconnection
      * connection. This is usually an arbitrary point not related to any block
+     * @param {Output} output the output pin of the element where the reroute
+     * connection was dragged initially
      */
-    reroute(start, end){
+    onReroutePin(start, end, output){
       this.set('showReconnector', true);
+      this.set('rerouteInputPin', output);
       this.set('start', start);
       this.set('end', end);
     },
@@ -176,13 +181,28 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, Mul
       const connectToNewBlock = this.get('onConnectToNewBlock');
       const connected = output.get('isConnected');
 
-      if(connectToNewBlock !== null && !connected){
+      console.log(connected);
+
+      if(connectToNewBlock && !connected){
         this.set('showReconnector', false);
 
         connectToNewBlock(output, point);
+      }else{
+        this.set('showReconnector', false);
       }
     },
 
+    onInputPinMouseUp(input){
+
+      //if(!input.isConnected){
+        const onReconnectingPins = this.onReconnectingPins;
+
+        if(onReconnectingPins){
+          onReconnectingPins(this.rerouteInputPin, input);
+          this.set('showReconnector', false);
+        }
+      //}
+    },
 
     /**
      * deletes the block from the container and all related connections

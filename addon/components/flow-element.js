@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import layout from '../templates/components/flow-element';
 import MovableMixin from '../mixins/movable';
-import ElementQueries from "npm:css-element-queries";
+//import ElementQueries from "css-element-queries";
 
 /**
  * Renders an element on the flow container that represents a logical block
@@ -37,8 +37,8 @@ export default Ember.Component.extend(MovableMixin, {
 
 
 
-      new ElementQueries.ResizeSensor(element, function() {
-        self.set("model.height", element[0].clientHeight);
+      //new ElementQueries.ResizeSensor(element, function() {
+      //  self.set("model.height", element[0].clientHeight);
 /*
         const neighbours = self.get('model.neighbours');
 
@@ -57,7 +57,7 @@ export default Ember.Component.extend(MovableMixin, {
           })
         }
         */
-      });
+      //});
 
     });
   },
@@ -94,8 +94,8 @@ export default Ember.Component.extend(MovableMixin, {
    {
      let style = `left: ${this.get("model.x")}px; `+
                                   `top: ${this.get("model.y")}px; `+
-                                  `min-width: ${this.get("model.width")}px; ` +
-                                  `min-height: ${this.get("model.height")}px;`;
+                                  `width: ${this.get("model.width")}px; ` +
+                                  `height: ${this.get("model.height")}px;`;
 
 
     if(!this.animated){
