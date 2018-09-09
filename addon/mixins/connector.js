@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { computed } from '@ember/object';
 
 /**
 * Implements functionality needed for the connectors of two elements.
@@ -8,11 +9,16 @@ import Ember from 'ember';
 * @mixin Connector
 */
 export default Ember.Mixin.create({
+  classNameBindings: ['isConnected'],
+
+
+
   offsetX: null,
   offsetY: null,
 
   init() {
     this._super(...arguments);
+
 
     // for each dialog line an empty output is generated and has the status
     // loaded.created.uncommited. Therefore the state name will not change
@@ -23,21 +29,6 @@ export default Ember.Mixin.create({
   },
 
   /**
-  * isLoaded - Observer that listens for the model state. In case that
-  * the model has the state "root.loaded.saved" the model was fully loaded
-  * and the width and height can be set by the DOM element geometry.
-  */
-  isLoaded: Ember.observer("model.isLoaded", function(){
-    if(this.get("model.isLoaded")){
-      const point = this.getCenteredPosition();
-
-      this.get('model').set('x', point.x);
-      this.get('model').set('y', point.y);
-    }
-  }),
-
-
-  /**
   * Returns the offset of the parent element as an object.
   * The object has the form {left: x, top: x}.
   */
@@ -45,6 +36,15 @@ export default Ember.Mixin.create({
     return Ember.$(this.element).parent().offset();
   },
 
+  /**
+  * Attribute that stores the state of a connector (connected, not connected)
+  * in a boolean value that is used to add a class to the pin to visually indicate
+  * if the pin is connected or not. The class added to the element is named
+  * is-connected.
+  */
+  isConnected: computed('model.isConnected', function() {
+    return this.model.isConnected;
+  }),
 
   /**
   * Gets the size of the parent element and returns this as an object.
@@ -76,41 +76,6 @@ export default Ember.Mixin.create({
       bottom: (parentOffset.top + parentSize.height) - (offset.top + element.height())
     };
   },
-
-
-  /**
-  * Returns the centered position of the connector. Be aware that this function
-  * keeps margin, padding and position in a flex container in mind.
-  */
-  getCenteredPosition (){
-    const element = Ember.$(this.element);
-    let parent = element.parent();
-
-    // the correct margin is determined by the flex options of the parent element
-    //let correctHorizontalMargin = 0;
-    //let correctVerticalMargin = 0;
-    let justifyContent = parent.css('justify-content');
-    if(parent.css('flex-direction') === "row"){
-      if(justifyContent === "flex-start"){
-        //correctHorizontalMargin = margin.left;
-      }else if(justifyContent === "flex-end"){
-        //correctHorizontalMargin = margin.right;
-      }
-    }else if(parent.css('flex-direction') === "column"){
-      if(justifyContent === "flex-start"){
-        //correctVerticalMargin = margin.top;
-      }else if(justifyContent === "flex-end"){
-        //correctVerticalMargin = margin.bottom;
-      }
-    }
-
-
-    return {
-      x: 50, //(rect.left + width / 2), //+ element.parents("flow-container").scrollLeft(), // - parentOffset.left + 3, //+ correctHorizontalMargin,
-      y: 50 //(rect.top + height / 2) - parentOffset.top// + correctVerticalMargin
-    };
-  },
-
 
   /**
   * Returns the actual mouse position subtracted with the offset of the container
@@ -199,25 +164,24 @@ export default Ember.Mixin.create({
   * @see {@link updatePosition}
   */
   elementMoved : Ember.observer('parent.x', 'parent.y', function(){
-  }),
-
-  parentChanged: Ember.observer('model.belongsTo.x', 'model.belongsTo.y', function() {
     this.setCSSOffset();
   }),
 
   parentOutputsChanged: Ember.observer('model.belongsTo.outputs.length', function() {
-    this.setCSSOffset();
+    //this.setCSSOffset();
   }),
 
   didInsertElement(){
     this.setCSSOffset();
   },
 
+  /*
   modelChanged: Ember.observer('model.currentState.stateName', function() {
     if(this.get("model.currentState.stateName") === 'root.loaded.saved'){
       this.setCSSOffset();
     }
   }),
+  */
 
   setCSSOffset(){
     Ember.run.scheduleOnce('afterRender', this, function(){
@@ -226,21 +190,16 @@ export default Ember.Mixin.create({
 
 
         const element = Ember.$(this.element);
-        const parentOffset = element.parents("flow-element").offset();
-        const offset = element.offset();
-        const width = element.width();
-        const height = element.height();
 
-        if(offset !== undefined){
-          this.set('offsetX', offset.left - parentOffset.left);
-          this.set('offsetY', offset.top - parentOffset.top);
 
-          this.set('model.x', this.get('model.belongsTo.x') + width + this.get('offsetX') + 6);
-          this.set('model.y', this.get('model.belongsTo.y') + 10 + height / 2 + this.get('offsetY'));
-        }
+        const containerRect = element.parents("flow-container")[0].getBoundingClientRect();
+        const rect = this.element.getBoundingClientRect();
+        const x = rect.left - containerRect.left +  element.width() / 2;
+        const y = rect.top - containerRect.top + element.height() / 2;
+
+        this.set('model.x', x);
+        this.set('model.y', y);
       }
     });
-
   }
-
 });

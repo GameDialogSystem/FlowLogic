@@ -58,6 +58,8 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, Mul
 
   logicBlockComponent: "flow-element",
 
+  connectionType: "flow-connection",
+
 
   /**
    * didInsertElement - Initialize sets the width and height properties
@@ -145,6 +147,22 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, Mul
       return style;
   }),
 
+  /**
+  * Handles mouse clicks (left mouse button) on the blank canvas of the container
+  * by calling the onContainerMouseClick function. If you didn't define it, the
+  * function will do nothing.
+  */
+  click(event){
+    if(event.target.tagName === "MULTI-SELECTION"){
+      const onContainerMouseClick = this.onContainerMouseClick;
+
+      if(onContainerMouseClick){
+        onContainerMouseClick();
+      }
+    }
+  },
+
+
 
   actions: {
 
@@ -181,8 +199,6 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, Mul
       const connectToNewBlock = this.get('onConnectToNewBlock');
       const connected = output.get('isConnected');
 
-      console.log(connected);
-
       if(connectToNewBlock && !connected){
         this.set('showReconnector', false);
 
@@ -212,9 +228,9 @@ export default Ember.Component.extend(ScrollingMixin, MovableContainerMixin, Mul
      * from the model
      */
     onDeleteBlock(block){
-      let deleteBlock = this.get('onDeleteBlock');
+      const deleteBlock = this.onDeleteBlock;
 
-      if(deleteBlock !== null || deleteBlock !== undefined){
+      if(deleteBlock){
         deleteBlock(block);
       }
     },

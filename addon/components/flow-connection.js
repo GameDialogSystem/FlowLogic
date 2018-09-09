@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import StraightConnection from './flow-straight-connection';
 import layout from '../templates/components/flow-connection';
 
 /**
@@ -9,7 +10,7 @@ import layout from '../templates/components/flow-connection';
 * @module
 * @augments Ember/Component
 */
-export default Ember.Component.extend({
+export default StraightConnection.extend({
   layout,
 
   /**
@@ -102,33 +103,7 @@ export default Ember.Component.extend({
     return `M${startX},${startY} C${cX},${cY} ${dX},${dY} ${endX},${endY}`;
   }),
 
-  /**
-   * Disable fill for stroke lines
-   *
-   * @type {string}
-   */
-  fill: 'none',
 
-  /**
-  * The color of the connection
-  *
-  */
-  stroke: 'black',
-
-  /**
-   * Sets the width for the stroke line
-   *
-   * @type {number}
-   */
-  'stroke-width': 1,
-
-  /**
-   * Sets the linecap to round. Line endings are rendered round with this
-   * attribute
-   *
-   * @type {string}
-   */
-  'stroke-linecap': 'round',
 
 
   /**

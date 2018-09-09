@@ -55,7 +55,6 @@ svg{
 flow-element{
   position: absolute;
 
-  min-height: 150px;
   overflow: hidden;
 
 
@@ -64,10 +63,10 @@ flow-element{
   flex-direction: column;
   justify-content: space-between;
 
-  box-shadow: $card-box-shadow;
   outline: none;
 
-  background: rgba($cards, 0.85);
+  //box-shadow: $card-box-shadow;
+  //background: rgba($cards, 0.85);
 
   > div{
     position: relative;

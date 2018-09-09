@@ -1,8 +1,8 @@
-<svg width="100%" viewBox= {{viewbox}} xmlns="http://www.w3.org/2000/svg" version="1.1" style= {{style}}>
+<svg width="100%" height="100%" viewBox= {{viewbox}} xmlns="http://www.w3.org/2000/svg" version="1.1" style= {{style}}>
   {{#each blocks as |block|}}
     {{#each block.outputs as |output|}}
       {{#if output.isConnected}}
-        {{flow-connection startX=output.x
+        {{component connectionType startX=output.x
                           startY=output.y
                           endX=output.connection.input.x
                           endY=output.connection.input.y
@@ -15,7 +15,7 @@
   {{/each}}
 
   {{#if showReconnector}}
-    {{flow-connection isAnimated=false startX=start.x startY=start.y endX=end.x endY=end.y}}
+    {{component connectionType isAnimated=false startX=start.x startY=start.y endX=end.x endY=end.y}}
   {{/if}}
 </svg>
 
@@ -25,21 +25,21 @@
   as |selection|
 }}
   {{#each blocks as |block|}}
-    {{component logicBlockComponent
-      selection=selection
-      zoomLevel=currentZoomLevel
-      model=block
-      enableRelayouting=relayoutingEnabled
-      offsetX=offsetX
-      offsetY=offsetY
-      onReroutePin=(action 'onReroutePin')
-      onDeleteBlock=(action 'onDeleteBlock')
-      onConnectToNewBlock=(action 'onConnectToNewBlock')
-      onInputPinMouseUp=(action "onInputPinMouseUp")
-      onElementEdit=(action 'onElementEdit' block.id)
-      onElementSelect=(action 'elementSelected')
-      onElementUnselect=(action 'elementUnselected')
-      onElementMoved=(action 'elementMoved')
-    }}
+      {{component logicBlockComponent
+        selection=selection
+        zoomLevel=currentZoomLevel
+        model=block
+        enableRelayouting=relayoutingEnabled
+        offsetX=offsetX
+        offsetY=offsetY
+        onReroutePin=(action 'onReroutePin')
+        onDeleteBlock=(action 'onDeleteBlock')
+        onConnectToNewBlock=(action 'onConnectToNewBlock')
+        onInputPinMouseUp=(action "onInputPinMouseUp")
+        onElementEdit=(action 'onElementEdit' block.id)
+        onElementSelect=(action 'elementSelected')
+        onElementUnselect=(action 'elementUnselected')
+        onElementMoved=(action 'elementMoved')
+      }}
   {{/each}}
 {{/multi-selection}}

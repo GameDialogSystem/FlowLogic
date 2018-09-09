@@ -1,7 +1,9 @@
 import Ember from 'ember';
 import layout from '../templates/components/flow-element';
 import MovableMixin from '../mixins/movable';
-//import ElementQueries from "css-element-queries";
+
+//import ResizeAware from 'ember-resize/mixins/resize-aware';
+
 
 /**
  * Renders an element on the flow container that represents a logical block
@@ -93,9 +95,9 @@ export default Ember.Component.extend(MovableMixin, {
                          'model.width', 'model.height', 'animated', function()
    {
      let style = `left: ${this.get("model.x")}px; `+
-                                  `top: ${this.get("model.y")}px; `+
-                                  `width: ${this.get("model.width")}px; ` +
-                                  `height: ${this.get("model.height")}px;`;
+                                  `top: ${this.get("model.y")}px; `;
+                                  //`width: ${this.get("model.width")}px; ` +
+                                  //`height: ${this.get("model.height")}px;`;
 
 
     if(!this.animated){
